@@ -2,6 +2,14 @@ language: csharp
 solution: main.csproj
 dotnet: 2.2.401
 mono: none
+env:
+    - defs=AL_BEST_PERF;
+    - defs=AL_OPTIMIZE;
+    - defs=AL_THREAD_SAFE;
+    - defs=AL_BEST_PERF;AL_OPTIMIZE;
+    - defs=AL_OPTIMIZE;AL_THREAD_SAFE;
+    - defs=AL_THREAD_SAFE;AL_BEST_PERF;
+    - defs=AL_BEST_PERF;AL_OPTIMIZE;AL_THREAD_SAFE;
 script:
-- dotnet test -c Release
-- dotnet test -c Debug 
+    - dotnet test -c Release -p:DefineConstants=$defs
+    - dotnet test -c Debug -p:DefineConstants=$defs
