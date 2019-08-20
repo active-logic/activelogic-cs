@@ -1,4 +1,4 @@
-#if UNITY
+#if UNITY_2018_1_OR_NEWER
 
 using NUnit.Framework;
 using Active.Core;
@@ -13,10 +13,7 @@ public class TestTask : CoreTest {
 
     Job x;
 
-    [SetUp] public void Setup(){
-        x  = new UnityEngine.GameObject().AddComponent<Job>();
-        F.UseASCII();
-    }
+    [SetUp] public void Setup(){ x = new Job(); F.UseASCII(); }
 
   #if !AL_OPTIMIZE
 
@@ -32,7 +29,7 @@ public class TestTask : CoreTest {
 
   #endif  // AL_OPTIMIZE
 
-    class Job : UTask{
+    class Job : Task{
 
         string port = "port";
 

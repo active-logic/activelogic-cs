@@ -1,4 +1,4 @@
-#if UNITY
+#if UNITY_2018_1_OR_NEWER
 
 using Ex = System.Exception;
 using NUnit.Framework;
@@ -12,8 +12,7 @@ public class TestCompositeInTask : CoreTest {
     const int MaxIter = 16;
     Job x;
 
-    [SetUp] public void Setup()
-        => x = new UnityEngine.GameObject().AddComponent<Job>();
+    [SetUp] public void Setup() => x = new Job();
 
     [Test] public void StatefulCompositeViaTernary(){
         status s = fail;
@@ -24,7 +23,7 @@ public class TestCompositeInTask : CoreTest {
         o(x.foo, 15);
     }
 
-    class Job : Active.Core.UTask{
+    class Job : Active.Core.Task{
 
         public int foo = 0;
       #if !AL_THREAD_SAFE

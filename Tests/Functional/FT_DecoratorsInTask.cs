@@ -1,4 +1,4 @@
-#if UNITY
+#if UNITY_2018_1_OR_NEWER
 
 using NUnit.Framework;
 using Active.Core;
@@ -12,27 +12,23 @@ public class FT_DecoratorsInTask : CoreTest {
     // TODO try moving this to CoreTest
     protected static readonly LogString log = null;
 
-    UTask task;
+    Task task;
 
     [SetUp] public void Setup(){
-        task = new GO().AddComponent<UTask>();
+        task = new Task();
         StatusFormat.UseASCII();  // TODO move to CoreTest
     }
 
     [Test] public void StepCooldownInTask() => task.Step();
 
-    class UTask : Active.Core.UTask{
+    class Task : Active.Core.Task{
 
       #if AL_BEST_PERF
-
         public Cooldown overheat = 0.1f;
         override protected void Start() => Register(overheat);
-        override public status  Step()  => overheat.pass?[Fire()];
-
+        override public status  Step()  => overheat.pass?[ Fire() ];
       #else
-
-        override public status Step() => Cooldown(0.1f)?[Fire()];
-
+        override public status Step() => Cooldown(0.1f)?[ Fire() ];
       #endif
 
         status Fire() => done();

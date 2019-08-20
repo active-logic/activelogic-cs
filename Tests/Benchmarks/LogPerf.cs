@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using System;
-//using UnityEngine;
 using Active.Core;
 using Active.Core.Details;
 
@@ -41,11 +40,11 @@ public class LogPerf : CoreTest {
         }
     }
 
-  #if UNITY
+  #if UNITY_2018_1_OR_NEWER
     [Test] public void Bench_4_Vectors_280(){
         Setup();
-        var u = new Vector3(1, 2, 3);
-        var v = new Vector3(7.2f, 24f, 0.3f);
+        var u = new UnityEngine.Vector3(1, 2, 3);
+        var v = new UnityEngine.Vector3(7.2f, 24f, 0.3f);
         for(int i = 0; i < HighTestIters; i++){
             var s = u + v;
         }

@@ -1,4 +1,4 @@
-#if UNITY
+#if UNITY_2018_1_OR_NEWER
 #if !AL_BEST_PERF
 
 using NUnit.Framework;
@@ -10,12 +10,11 @@ class FT_Duelist : TestBase{
 
     Duelist x;
 
-    [SetUp] public void Setup()
-    { x = new UnityEngine.GameObject().AddComponent<Duelist>(); }
+    [SetUp] public void Setup(){ x = new Duelist(); }
 
     [Test] public void Step(){ status s = x; }
 
-    class Duelist : UTask{
+    class Duelist : Task{
 
         float health = 100;
 

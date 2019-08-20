@@ -22,12 +22,6 @@ public class Latch : Decorator{
 // ----------------------------------------------------------------------------
 
 #if !AL_BEST_PERF
-#if UNITY
-partial class UTask{
-	public Decorator.Gate? Latch(bool @in, [Tag] int key = -1)
-	=> store.Decorator<Latch>(key, Active.Core.Latch.id)[@in];
-}
-#endif
 partial class Task{
 	public Decorator.Gate? Latch(bool @in, [Tag] int key = -1)
 	=> store.Decorator<Latch>(key, Active.Core.Latch.id)[@in];

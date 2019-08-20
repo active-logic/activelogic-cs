@@ -9,7 +9,7 @@ namespace Active.Core{
 public abstract partial class AbstractDecorator : IDecorator, Resettable{
 
     protected virtual float time{ get{
-      #if UNITY
+      #if UNITY_2018_1_OR_NEWER_2018_1_OR_NEWER
         return Time.time;
       #else
         return System.DateTime.Now.Second;

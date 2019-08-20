@@ -32,12 +32,6 @@ public class Wait : AbstractDecorator{
 // ----------------------------------------------------------------------------
 
 #if !AL_BEST_PERF
-#if UNITY
-partial class UTask{
-	public status Wait(float duration, [Tag] int key = -1)
-    => store.Decorator<Wait>(key, Active.Core.Wait.id)[duration];
-}
-#endif
 partial class Task{
 	public status Wait(float duration, [Tag] int key = -1)
     => store.Decorator<Wait>(key, Active.Core.Wait.id)[duration];

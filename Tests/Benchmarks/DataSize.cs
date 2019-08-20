@@ -11,7 +11,7 @@ public class DataSize : TestBase {  // Note: sizes in bytes
     [Test] public void StatusSize() => o (Marshal.SizeOf(status.cont()), 4);
   #else
 
-  #if UNITY
+  #if UNITY_2018_1_OR_NEWER
     [Test] public void StatusSize() => o (Marshal.SizeOf(status.cont()), 24);
   #endif
 

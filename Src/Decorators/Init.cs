@@ -131,12 +131,6 @@ public class Init : AbstractDecorator{
 // ----------------------------------------------------------------------------
 
 #if !AL_BEST_PERF
-#if UNITY
-partial class UTask{
-    public Init With([Tag] int key = -1)
-    => store.Decorator<Init>(key, Active.Core.Init.id);
-}
-#endif
 partial class Task{
     public Init With([Tag] int key = -1)
     => store.Decorator<Init>(key, Active.Core.Init.id);

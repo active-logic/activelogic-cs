@@ -30,12 +30,6 @@ public class Cooldown: Decorator, Decorator.OptionalArguments{
 }
 
 #if !AL_BEST_PERF
-#if UNITY
-partial class UTask{
-	public Decorator.Gate? Cooldown(float duration, [Tag] int key = -1)
-	=> store.Decorator<Cooldown>(key, Active.Core.Cooldown.id)[duration];
-}
-#endif
 partial class Task{
 	public Decorator.Gate? Cooldown(float duration, [Tag] int key = -1)
 	=> store.Decorator<Cooldown>(key, Active.Core.Cooldown.id)[duration];
