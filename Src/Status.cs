@@ -8,7 +8,7 @@ using Active.Core.Details;
 namespace Active.Core{
 public readonly partial struct status{
 
-    #if !AL_OPTIMIZE
+  #if !AL_OPTIMIZE
 
     public   bool failing  => ω <= -1;
     public   bool running  => ω ==  0;
@@ -50,6 +50,10 @@ public readonly partial struct status{
         if(log) s.trace?.Prefix('-');
         return new impending(System.Math.Max(s.ω - 1, -1), s.meta);
     }
+
+  #if !AL_STRICT
+    public static implicit operator status(bool that) => that?done():fail();
+  #endif
 
   #else  // !AL_OPTIMIZE <> AL_OPTIMIZE
 

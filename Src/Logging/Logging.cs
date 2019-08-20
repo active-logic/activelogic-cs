@@ -29,6 +29,8 @@ partial struct action{
 
     public status now => new status(1, meta);
 
+    public static failure operator ! (action s) => new failure(s.meta);
+
     public action Via(V reason = null, [P]S p="", [M]S m="", [L]int l=0)
     => Lg.Action(reason, p, m, l);
 
@@ -39,6 +41,8 @@ partial struct failure{
     readonly Meta meta;
 
     public status fail => new status(-1, meta);
+
+    public static action operator ! (failure s) => new action(s.meta);
 
     internal failure(Meta meta) { this.meta = meta; }
 
@@ -63,6 +67,10 @@ partial struct pending{
 
     internal pending(int val, Meta m) { ω = val; meta = m; }
 
+    public status due => new status(ω, meta);
+
+    public static impending operator !(pending s)=>new impending(-s.ω, s.meta);
+
     public static pending cont(ValidString reason = null,
     [P] S p="", [M] S m="", [L] int l=0)
     => Lg.Pending(pending._cont, reason, p, m, l);
@@ -81,6 +89,8 @@ partial struct impending{
     internal impending(int val, Meta m) { ω = val; meta = m; }
 
     public status undue => new status(ω, meta);
+
+    public static pending operator !(impending s) => new pending(-s.ω, s.meta);
 
     public static impending cont(ValidString reason = null,
     [P] S p="", [M] S m="", [L] int l=0)
