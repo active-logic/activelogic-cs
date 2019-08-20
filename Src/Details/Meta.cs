@@ -42,8 +42,6 @@ public readonly struct Meta{
         }
     }
 
-    void print(string str) => UnityEngine.Debug.Log(str);
-
     status[] Unwind(in status owner, int i=0){
         var n = i + 1;
         var @out = prev?.value.meta.Unwind(prev.value, n) ?? new status[n];

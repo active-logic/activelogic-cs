@@ -1,0 +1,7 @@
+language: csharp
+solution: main.csproj
+dotnet: 2.2.401
+mono: none
+script:
+- dotnet test -c Release
+- dotnet test -c Debug 

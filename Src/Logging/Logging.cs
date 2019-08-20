@@ -12,12 +12,10 @@ using M  = System.Runtime.CompilerServices.CallerMemberNameAttribute;
 using P  = System.Runtime.CompilerServices.CallerFilePathAttribute;
 using S  = System.String;
 using X  = Active.Core.status;
-//
-using static Active.Core.status;
-
 #if !AL_OPTIMIZE
 using Lg = Active.Core.Details.Logging;
 #endif
+using static Active.Core.status;
 
 #if !AL_OPTIMIZE
 
@@ -106,7 +104,7 @@ public static class BoolExt{
 
 }
 
-} // Active.Core
+}  // Active.Core
 
 // ============================================================================
 
@@ -136,8 +134,6 @@ public static class Logging{
     internal static status ViaScope(in status s, object scope, string reason)
     => new status(s.ω, s.meta.ViaScope(s, scope, reason));
 
-}
+}}  // Active.Core.Details
 
-#endif
-
-} // Active.Core.Details
+#endif  // !AL_OPTIMIZE

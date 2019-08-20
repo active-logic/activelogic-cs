@@ -10,7 +10,7 @@ using static Active.Core.Decorator;
 using static Active.Core.status;
 
 namespace Active.Core{
-public abstract partial class Task : UGig, Context {
+public abstract partial class Task : Gig, Context {
 
     public void Register(Resettable rsc)
     => (_context ?? (_context = new List<Resettable>())).Add(rsc);

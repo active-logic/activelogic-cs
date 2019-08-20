@@ -33,18 +33,20 @@ public class Undef : AbstractDecorator{
 
 }
 
+// ----------------------------------------------------------------------------
+
 #if !AL_BEST_PERF
+#if UNITY
 partial class UTask{
 	public status undef(float duration = 1, [Tag] int key = -1)
     => store.Decorator<Undef>(key, Active.Core.Undef.id)[duration];
 }
-
+#endif
 partial class Task{
 	public status undef(float duration = 1, [Tag] int key = -1)
     => store.Decorator<Undef>(key, Active.Core.Undef.id)[duration];
 }
-#endif
-
-}
+#endif  // !AL_BEST_PERF
+}  // Active.Core
 
 #endif  // !AL_OPTIMIZE

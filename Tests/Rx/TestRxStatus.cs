@@ -1,5 +1,4 @@
 // TODO: enable
-/*
 using System;
 using NUnit.Framework;
 using Active.Rx; using S = Active.Rx.status;
@@ -175,4 +174,3 @@ public class TestRxStatus : TestBase {
 	}
 
 }
-*/

@@ -17,14 +17,19 @@ public class Once : Decorator, Decorator.OptionalArguments{
 
 }
 
+// ----------------------------------------------------------------------------
+
 #if !AL_BEST_PERF
+#if UNITY
 partial class UTask{
 	public Decorator.Gate? Once([Tag] int key = -1)
 	=> store.Decorator<Once>(key, Active.Core.Once.id)?.pass;
-}partial class Task{
+}
+#endif
+partial class Task{
 	public Decorator.Gate? Once([Tag] int key = -1)
 	=> store.Decorator<Once>(key, Active.Core.Once.id)?.pass;
 }
 #endif
 
-}
+}  // Active.Core

@@ -1,4 +1,4 @@
-using UnityEngine;
+//using UnityEngine;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 using Active.Core.Details;
 
@@ -20,6 +20,8 @@ public abstract class Composite{
 }}
 
 namespace Active.Core{
+
+#if UNITY
 partial class UTask{
 
     #if !AL_BEST_PERF
@@ -52,6 +54,7 @@ partial class UTask{
     #endif  // end !AL_BEST_PERF
 
 }
+#endif
 
 partial class Task{
 

@@ -40,6 +40,7 @@ public class Interval : Decorator, Decorator.OptionalArguments{
 
 }
 
+#if UNITY
 public class RTInterval : Interval{
 
 	public RTInterval(float period, float offset=0f, bool fireOnStart=true)
@@ -51,21 +52,23 @@ public class RTInterval : Interval{
     => new RTInterval(val);
 
 }
+#endif
+
+// ----------------------------------------------------------------------------
 
 #if !AL_BEST_PERF
-
+#if UNITY
 partial class UTask{
 	public Decorator.Gate? Every(float delay, float offset = 0f,
                                              [Tag] int key = -1)
     => store.Decorator<Interval>(key, Active.Core.Interval.id)[delay];
 }
-
+#endif
 partial class Task{
 	public Decorator.Gate? Every(float delay, float offset = 0f,
                                              [Tag] int key = -1)
     => store.Decorator<Interval>(key, Active.Core.Interval.id)[delay];
 }
-
 #endif
 
-}
+}  // Active.Core

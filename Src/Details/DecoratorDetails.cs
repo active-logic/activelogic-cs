@@ -1,3 +1,7 @@
+#if !(UNITY_EDITOR || DEBUG)
+#define AL_OPTIMIZE
+#endif
+
 using Active.Core.Details;
 using InvOp = System.InvalidOperationException;
 
@@ -45,16 +49,22 @@ partial class Decorator{
 
          public StatusRef(status value) => x = value;
 
+       #if AL_OPTIMIZE
+         public static implicit operator status(StatusRef? self)
+         => ToStatus(self);
+       #else
          public static implicit operator status(StatusRef? self)
          => status.log ? ToStatusWithLog(self) : ToStatus(self);
+       #endif
 
          static status ToStatus(StatusRef? self) => self?.x ?? status.fail();
-
+      #if !AL_OPTIMIZE
          static status ToStatusWithLog(StatusRef? self){
              if(logData.scope == null) throw new InvOp("Log data is null");
              return (self?.x ?? status._fail)
                     .ViaDecorator(logData.scope, log && logData.Reason());
         }
+      #endif
 
      }
 

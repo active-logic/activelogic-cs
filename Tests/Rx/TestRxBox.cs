@@ -1,5 +1,3 @@
-// TODO: enable
-/*
 using NUnit.Framework;
 using Active.Rx;
 using static Active.Rx.status;
@@ -16,4 +14,3 @@ public class TestBox : TestBase {
     box<string> GetString() => done.With("Hello");
 
 }
-*/

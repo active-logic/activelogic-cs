@@ -3,13 +3,19 @@
 #define AL_OPTIMIZE
 #endif
 
-using UnityEngine;
 using Active.Core.Details;
 
 namespace Active.Core{
 public abstract partial class AbstractDecorator : IDecorator, Resettable{
 
-    protected virtual float time       => Time.time;
+    protected virtual float time{ get{
+      #if UNITY
+        return Time.time;
+      #else
+        return System.DateTime.Now.Second;
+      #endif
+    }}
+
     protected static  int   ID(int id) => id == 0 ? ++MaxId : id;
 
 }

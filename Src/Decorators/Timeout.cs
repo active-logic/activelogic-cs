@@ -34,14 +34,19 @@ public class Timeout : Decorator, Decorator.OptionalArguments{
 
 }
 
+// ----------------------------------------------------------------------------
+
 #if !AL_BEST_PERF
+#if UNITY
 partial class UTask{
 	public Decorator.Gate? Timeout(float duration, [Tag] int key = -1)
     => store.Decorator<Timeout>(key, Active.Core.Timeout.id)[duration];
-}partial class Task{
+}
+#endif
+partial class Task{
 	public Decorator.Gate? Timeout(float duration, [Tag] int key = -1)
     => store.Decorator<Timeout>(key, Active.Core.Timeout.id)[duration];
 }
 #endif
 
-}
+}  // Active.Core

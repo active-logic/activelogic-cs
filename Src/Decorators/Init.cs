@@ -30,7 +30,9 @@ public class Init : AbstractDecorator{
     public Gate? this[status x]{ get{
         if(current != null) throw new InvOp(INCOMPLETE);
         current = this;
+      #if !AL_OPTIMIZE
         logData = new Decorator.LogData(this, x.trace.scope, x.trace.reason);
+      #endif
         if(x.complete){
             passing = false;
             return new Gate(this);
@@ -44,12 +46,16 @@ public class Init : AbstractDecorator{
         if(current != null) throw new InvOp(INCOMPLETE);
         current = this;
         if(x != null){
+          #if !AL_OPTIMIZE
             logData = new Decorator.LogData(this, $"{x}: <{x.GetType().Name}>",
                                             null);
+          #endif
             passing = false;
             return new Gate(this);
         }else{
+          #if !AL_OPTIMIZE
             logData = new Decorator.LogData(this, "<null>", null);
+          #endif
             preconditionStatus = fail();
             return null;
         }
@@ -99,17 +105,24 @@ public class Init : AbstractDecorator{
 
         public StatusRef(status value) => x = value;
 
+      #if AL_OPTIMIZE
+        public static implicit operator status(StatusRef? self)
+        => ToStatus(self);
+      #else
         public static implicit operator status(StatusRef? self)
         => status.log ? ToStatusWithLog(self) : ToStatus(self);
+      #endif
 
         static status ToStatus(StatusRef? self)
         => self?.x ?? Init.PreconditionStatus();
 
+      #if !AL_OPTIMIZE
         static status ToStatusWithLog(StatusRef? self){
             if(logData.scope == null) throw new InvOp("Log data is null");
             return (self?.x ?? Init.PreconditionStatus())
                    .ViaDecorator(logData.scope, log && logData.Reason());
        }
+      #endif
 
    }  // StatusRef class
 
@@ -118,13 +131,16 @@ public class Init : AbstractDecorator{
 // ----------------------------------------------------------------------------
 
 #if !AL_BEST_PERF
+#if UNITY
 partial class UTask{
     public Init With([Tag] int key = -1)
     => store.Decorator<Init>(key, Active.Core.Init.id);
-}partial class Task{
+}
+#endif
+partial class Task{
     public Init With([Tag] int key = -1)
     => store.Decorator<Init>(key, Active.Core.Init.id);
 }
 #endif
 
-}  // end-Active.Core
+}  // Active.Core

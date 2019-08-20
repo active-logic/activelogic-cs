@@ -1,5 +1,7 @@
 :warning: **Github migration in progress**
 
+[![Build Status](https://travis-ci.com/active-logic/activelogic-cs.svg?branch=master)](https://travis-ci.com/active-logic/activelogic-cs)
+
 # Active Logic
 
 A library for everyday case logic, solving problems where *time* is an essential element - including game development, game AIs, interactive applications and control systems.

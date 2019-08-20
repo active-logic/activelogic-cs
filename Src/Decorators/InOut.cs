@@ -20,14 +20,19 @@ public class InOut : Decorator{
 
 }
 
+// ----------------------------------------------------------------------------
+
 #if !AL_BEST_PERF
+#if UNITY
 partial class UTask{
     public Decorator.Gate? InOut(bool @in, bool @out, [Tag] int key = -1)
     => store.Decorator<InOut>(key, Active.Core.InOut.id)[@in, @out];
-}partial class Task{
+}
+#endif
+partial class Task{
     public Decorator.Gate? InOut(bool @in, bool @out, [Tag] int key = -1)
     => store.Decorator<InOut>(key, Active.Core.InOut.id)[@in, @out];
 }
 #endif
 
-}
+}  // Active.Core
