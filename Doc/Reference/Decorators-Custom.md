@@ -6,7 +6,7 @@ Implementing your own decorators is done in a few steps. We'll rewrite the `Cust
 
 ## 1. Extend Decorator
 
-Under `Silver Bullet/User` or a sub-directory, create a file named `CustomCooldown.cs`:
+Create a file named `CustomCooldown.cs`:
 
 ```cs
 using System;
