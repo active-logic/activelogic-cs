@@ -1,8 +1,7 @@
 {
-    "name": "Performance",
+    "name": "ALTests",
     "references": [
-        "GUID:0ac1f3691e2014712a8da587ee61dc19",
-        "GUID:611a251e89dc247be84f3d6a1fcec4d5"
+        "ActiveLogic"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
