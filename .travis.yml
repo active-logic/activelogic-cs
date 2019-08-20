@@ -3,6 +3,7 @@ solution: main.csproj
 dotnet: 2.2.401
 mono: none
 env:
+    - defs=;
     - defs=AL_BEST_PERF;
     - defs=AL_OPTIMIZE;
     - defs=AL_THREAD_SAFE;
