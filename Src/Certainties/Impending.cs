@@ -29,18 +29,22 @@ public readonly partial struct impending{
     public static impending operator & (impending x, impending y) => y;
     public static impending operator | (impending x, impending y) => y;
 
-  #if AL_OPTIMIZE
-    public status undue => new status(ω);
-    public static pending operator ! (impending s) => new pending(-s.ω);
-  #endif
-
     public static bool operator true  (impending s) => s.ω == 0;
 
     public static bool operator false (impending s)
     => throw new InvalidOperationException("impending is always 'false'");
 
-  #if !AL_STRICT
-      public static implicit operator status(impending self) => self.undue;
-  #endif  // !AL_STRICT
+    #if AL_OPTIMIZE  // -------------------------------------------------------
+
+    public status undue => new status(ω);
+    public static pending operator ! (impending s) => new pending(-s.ω);
+    public static impending cont(ValidString reason = null) => impending._cont;
+    public static impending doom(ValidString reason = null) => impending._doom;
+
+    #endif
+    #if !AL_STRICT  // --------------------------------------------------------
+
+    public static implicit operator status(impending self) => self.undue;
+    #endif  // !AL_STRICT
 
 }}

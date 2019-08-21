@@ -31,19 +31,25 @@ public readonly partial struct pending{
 
     public static pending operator | (pending x, pending y) => y;
 
-  #if AL_OPTIMIZE
-    public status due => new status(ω);
-
-    public static impending operator !(pending s) => new impending(-s.ω);
-  #endif
-
     public static bool operator true  (pending s)
     => throw new InvalidOperationException("pending is always 'true'");
 
     public static bool operator false (pending s) => s.ω == 0;
 
-  #if !AL_STRICT
+    #if AL_OPTIMIZE  // -------------------------------------------------------
+
+    public status due => new status(ω);
+
+    public static impending operator !(pending s) => new impending(-s.ω);
+    public static pending cont(ValidString reason = null) => pending._cont;
+
+    public static pending done(ValidString reason = null) => pending._done;
+
+    #endif
+    #if !AL_STRICT  // --------------------------------------------------------
+
     public static implicit operator status(pending self) => self.due;
-  #endif  // !AL_STRICT
+
+    #endif
 
 }}
