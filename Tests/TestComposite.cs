@@ -17,7 +17,8 @@ public class TestComposite : CoreTest {
     [Test] public void TestReset()
     { x.index = 5; x.Reset(); o( x.index, 0 ); }
 
-    [Test] public void TestEnd(){ status s = x.end; }
+    [Test] public void TestEnd()
+    { status s = x.end; }
 
     [Test] public void TestLoop()
     { x.index = 5; status s = x.loop; o(x.index, 0); o( s.running ); }

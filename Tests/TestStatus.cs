@@ -26,7 +26,7 @@ public class TestStatus : CoreTest {
 
 	[Test] public void ConstructWithCI(){
 		status[] S = { done(), fail(), cont() };
-		foreach(var s in S) o(s.meta.trace.scope,
+		foreach(var s in S) o(s.trace.scope,
 			                $"{nameof(TestStatus)}.{nameof(ConstructWithCI)}");
 	}
 

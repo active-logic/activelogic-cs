@@ -1,6 +1,7 @@
 #if !(UNITY_EDITOR || DEBUG)
 #define AL_OPTIMIZE
 #endif
+
 using NUnit.Framework;
 using Active.Core;
 using Active.Core.Details;

@@ -40,7 +40,7 @@ public class LogPerf : CoreTest {
         }
     }
 
-  #if UNITY_2018_1_OR_NEWER
+    #if UNITY_EDITOR
     [Test] public void Bench_4_Vectors_280(){
         Setup();
         var u = new UnityEngine.Vector3(1, 2, 3);
@@ -49,6 +49,6 @@ public class LogPerf : CoreTest {
             var s = u + v;
         }
     }
-  #endif
+    #endif
 
 }

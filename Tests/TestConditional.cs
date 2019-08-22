@@ -66,30 +66,30 @@ public class TestDecorator : CoreTest {
 		status s = x[false]?[done(log && "Testing")];
 		// Question mark indicates we don't know the subtask managed by this
 		// decorator just yet
-		o (TraceFormat.LogTrace(s.meta.trace), "<D> Bear ?");
+		o (TraceFormat.LogTrace(s.trace), "<D> Bear ?");
 	}
 
 	[Test] public void LoggingOnSuccess(){
 		status s = x[true]?[done(log && "Testing")];
 		// Question mark drops because we just don't format the target object
 		// on success (since it gets evaluated, it has its own format phase)
-		o (TraceFormat.LogTrace(s.meta.trace),
+		o (TraceFormat.LogTrace(s.trace),
 		   "<D> Bug -> TestConditional.LoggingOnSuccess (Testing)");
 	}
-
 
 	[Test] public void ViaDecorator(){
 		o (status.log, true);
 		var s = cont().ViaDecorator(x, log && "SetPos");
-		o ( s.meta.trace != null );
+		o ( s.trace != null );
 	}
-	#endif
 
 	// Not much of a test, just basic screening
 	[Test] public void DecoratorIds(){
 		o ( Cooldown.id != Init.id     );
 		o ( Init.id     != Interval.id );
 	}
+
+  #endif
 
 	// ------------------------------------------------------------------------
 

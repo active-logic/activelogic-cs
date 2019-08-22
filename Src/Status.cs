@@ -51,23 +51,23 @@ public readonly partial struct status{
         return new impending(System.Math.Max(s.ω - 1, -1), s.meta);
     }
 
-    #else  // !AL_OPTIMIZE <> AL_OPTIMIZE
+  #else  // !AL_OPTIMIZE <> AL_OPTIMIZE
 
     public status Via(ValidString reason = null) => this;
 
-    public status ViaDecorator(IDecorator scope, ValidString reason=null)
-    => this;
+     public status ViaDecorator(IDecorator scope, ValidString reason=null)
+     => this;
 
-    public static status Eval(status s) => s;
+     public static status Eval(status s) => s;
 
-    public static status  done   (ValidString reason = null) => _done;
-    public static status  fail   (ValidString reason = null) => _fail;
-    public static status  cont   (ValidString reason = null) => _cont;
-    public static action  @void  (ValidString reason = null) => action._void;
-    public static failure flop (ValidString reason = null) => failure._flop;
-    public static loop    forever(ValidString reason = null) => loop._forever;
+     public static status  done   (ValidString reason = null) => _done;
+     public static status  fail   (ValidString reason = null) => _fail;
+     public static status  cont   (ValidString reason = null) => _cont;
+     public static action  @void  (ValidString reason = null) => action._void;
+     public static failure flop (ValidString reason = null) => failure._flop;
+     public static loop    forever(ValidString reason = null) => loop._forever;
 
-    #endif  // AL_OPTIMIZE
+  #endif  // AL_OPTIMIZE
 
 }
 
