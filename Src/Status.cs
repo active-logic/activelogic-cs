@@ -65,6 +65,10 @@ public readonly partial struct status{
     public static action  @void  (ValidString reason = null) => action._void;
     public static failure flop (ValidString reason = null) => failure._flop;
     public static loop    forever(ValidString reason = null) => loop._forever;
+    public status Via(ValidString reason = null) => this;
+
+    public status ViaDecorator(IDecorator scope, ValidString reason=null) 
+    => this;
 
   #endif  // AL_OPTIMIZE
 

@@ -4,7 +4,7 @@
 
 This section introduces decorators; builtin decorators are documented [here](Decorators-Builtin.md); also read [Custom Decorators](Decorators-Custom.md) if you wish to implement your own.
 
-A decorator modulates the behavior of a target task. Common decorators are implemented via the `status` class: unary operations let you invert (!), condone (~), promote (+, ++) and demote (-, --) statuses; if this is not enough, use `Status.Map()`.
+A decorator modulates the behavior of a target task. Common decorators are implemented Via the `status` class: unary operations let you invert (!), condone (~), promote (+, ++) and demote (-, --) statuses; if this is not enough, use `Status.Map()`.
 
 Besides, the API provides a set of powerful, yet easy to use constructs properly known as 'decorators'. Decorators mostly follow a common syntax:
 
@@ -24,7 +24,7 @@ Within a `Task/UTask`, you may use decorators inline. Let's apply a 0.1 seconds 
 status s = Cooldown(0.1f)?[ Fire() ];
 ```
 
-In the above example *Task* (or *UTask*) manage the underlying data (the timestamp) on your behalf. This is convenient, but comes with small memory/performance overheads. You also cannot reset the decorator on its own (but you can reset all decorators associated with a task via its `Reset()` method).
+In the above example *Task* (or *UTask*) manage the underlying data (the timestamp) on your behalf. This is convenient, but comes with small memory/performance overheads. You also cannot reset the decorator on its own (but you can reset all decorators associated with a task Via its `Reset()` method).
 
 ## Explicit storage
 
@@ -41,7 +41,7 @@ status s = overheat[0.2f]?[ Fire() ];  // (2)
 
 In the above example, (1) depicts the parameterless syntax; (2) depicts the parameterized syntax; decorators implementing the `OptionalArguments` interface support the parameterless syntax.
 
-Making the decorator public allows customization via the Unity inspector. You then manage the decorator's life cycle:
+Making the decorator public allows customization Via the Unity inspector. You then manage the decorator's life cycle:
 
 1) Manually, by invoking `overheat.Reset()` or `null`-ing the decorator.
 

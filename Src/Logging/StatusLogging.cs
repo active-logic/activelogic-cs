@@ -2,22 +2,19 @@
 #define AL_OPTIMIZE
 #endif
 
+#if !AL_OPTIMIZE
+
 using Active.Core.Details;
 using L  = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 using V  = Active.Core.Details.ValidString;
 using M  = System.Runtime.CompilerServices.CallerMemberNameAttribute;
 using P  = System.Runtime.CompilerServices.CallerFilePathAttribute;
 using S  = System.String;
-
-#if !AL_OPTIMIZE
 using Lg = Active.Core.Details.Logging;
-#endif
 
 namespace Active.Core{
 
 partial struct status{
-
-  #if !AL_OPTIMIZE
 
     public status this[ValidString reason]
     => log ? new status( this, new LogTrace(trace.scope, trace.next, reason))
@@ -55,14 +52,19 @@ partial struct status{
     public static loop forever(ValidString reason = null,
     [P] S p="", [M] S m="", [L] int l=0) => Lg.Forever(reason, p, m, l);
 
-  #else
+}
 
-    public status Via(ValidString reason = null,
-                     [P] string p="", [M] string m="", [L] int l=0) => this;
+public static class BoolExt{
 
-    public status ViaDecorator(IDecorator scope, ValidString reason=null)
-    => this;
+    public static Active.Core.status status(this bool self,
+         ValidString reason = null, [P]string p="", [M]string m="", [L]int l=0)
+    => Active.Core.status.log
+        ? Lg.Status(self ? Active.Core.status._done
+                         : Active.Core.status._fail, reason, p, m, l)
+        : self ? Active.Core.status._done : Active.Core.status._fail;
 
-  #endif
+}
 
-}}  // partial status
+}  // Active.Core
+
+#endif

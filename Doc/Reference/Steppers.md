@@ -16,7 +16,7 @@ A stepper updated every physics frame.
 
 ## Class Stepper : MonoBehaviour
 
-Use this class when you need to manually trigger updates via the `Step()` function (for example, to control the flow of a turn based game).
+Use this class when you need to manually trigger updates Via the `Step()` function (for example, to control the flow of a turn based game).
 
 ### Inspector
 

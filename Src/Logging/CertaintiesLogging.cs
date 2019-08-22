@@ -3,6 +3,8 @@
 #define AL_OPTIMIZE
 #endif
 
+#if !AL_OPTIMIZE
+
 using Active.Core;
 using Active.Core.Details;
 using F  = Active.Core.Details.StatusFormat;
@@ -12,12 +14,8 @@ using M  = System.Runtime.CompilerServices.CallerMemberNameAttribute;
 using P  = System.Runtime.CompilerServices.CallerFilePathAttribute;
 using S  = System.String;
 using X  = Active.Core.status;
-#if !AL_OPTIMIZE
 using Lg = Active.Core.Details.Logging;
-#endif
 using static Active.Core.status;
-
-#if !AL_OPTIMIZE
 
 namespace Active.Core{
 
@@ -105,45 +103,6 @@ partial struct impending{
 
 }
 
-public static class BoolExt{
-
-    public static X status(this bool self, ValidString reason = null,
-                          [P]string path="", [M]string member="", [L]int line=0)
-    => X.log ? Lg.Status(self ? X._done : X._fail, reason, path, member, line)
-             : self ? X._done : X._fail;
-
-}
-
 }  // Active.Core
-
-// ============================================================================
-
-namespace Active.Core.Details{
-public static class Logging{
-
-    internal static status Status(in status @base, V reason, S p, S m, int l)
-    => log ? ViaScope(@base, F.SysTrace(p, m, l), reason) : @base;
-
-    internal static action Action(V reason, S p, S m, int l) => log ?
-    new action(ViaScope(_done, F.SysTrace(p,m,l), reason).meta) : action._void;
-
-    internal static failure Failure(V reason, S p, S m, int l) => log ?
-    new failure(ViaScope(_fail, F.SysTrace(p,m,l), reason).meta):failure._flop;
-
-    internal static loop Forever(V reason, S p, S m, int l) => log ?
-    new loop(ViaScope(_cont, F.SysTrace(p,m,l), reason).meta):loop._forever;
-
-    internal static pending Pending(pending @base, V reason,
-       string p, string m, int l) => log ? new pending(
-         @base.ω, ViaScope(@base.due, F.SysTrace(p,m,l), reason).meta) : @base;
-
-    internal static impending Impending(impending @base, V reason,
-       string p, string m, int l) => log ? new impending(
-       @base.ω, ViaScope(@base.undue, F.SysTrace(p,m,l), reason).meta) : @base;
-
-    internal static status ViaScope(in status s, object scope, string reason)
-    => new status(s.ω, s.meta.ViaScope(s, scope, reason));
-
-}}  // Active.Core.Details
 
 #endif  // !AL_OPTIMIZE

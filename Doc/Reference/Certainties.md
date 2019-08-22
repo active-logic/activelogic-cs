@@ -23,7 +23,7 @@ Functions that return immediately should return `bool`; other cases are handled 
 ## Struct `action`
 
 `action` is the type of functions that always complete immediately; actions return `@void`.
-Promote `action` to `status` via the `now` attribute.
+Promote `action` to `status` Via the `now` attribute.
 Integrate `void` functions using `action F() => @void` instead of void `F() => {}`
 
 Combine actions using the neutral combinator `%`:
@@ -37,14 +37,14 @@ Inverting `action` using `!` returns `failure` (and vice-versa).
 ## Struct `failure`
 
 `failure` is the type of functions that always fail immediately; failures return `failure.broken`.
-Promote `failure` to `status` via the `fail` attribute.
+Promote `failure` to `status` Via the `fail` attribute.
 
 Combine failures using the neutral combinator `%`:
 
 ## Struct `pending`
 
 `pending` is the type of functions that never fail; said functions return either `pending.cont` or `pending.done`.
-Promote `pending` to `status` via the `due` attribute.
+Promote `pending` to `status` Via the `due` attribute.
 
 Combine `pending` expressions using `&&`.
 Inverted, `pending` returns `impending` (and vice-versa)
@@ -52,14 +52,14 @@ Inverted, `pending` returns `impending` (and vice-versa)
 ## Struct `impending`
 
 `impending` is the type of functions that will not ever succeed; said functions return `impending.cont` or `impending.doom`.
-Promote `impending` to `status` via the `never` attribute.
+Promote `impending` to `status` Via the `never` attribute.
 
 Combine `impending` expressions using `||`.
 
 ## Struct `loop`
 
 `loop` is the type of functions which never succeed or fail; loops return `forever`.
-Promote `forever` to `status` via the `ever` attribute.
+Promote `forever` to `status` Via the `ever` attribute.
 
 Combine loops using the neutral combinator `%`:
 

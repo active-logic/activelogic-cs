@@ -118,7 +118,7 @@ The above syntax is available in a `UTask` context. Once again, this is because 
 
 Ordered sequences and selectors may use or embed within, status expressions.
 
-As specified by the `end` keyword, once an ordered composite has fully evaluated, control skips over. To loop over, use the `loop` keyword - or re-init via `UTask.Reset()`.
+As specified by the `end` keyword, once an ordered composite has fully evaluated, control skips over. To loop over, use the `loop` keyword - or re-init Via `UTask.Reset()`.
 
 ## Tasks and frame agents
 

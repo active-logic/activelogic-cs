@@ -19,7 +19,7 @@ BT implementations available for general purpose languages typically involve:
 
 **Explicit data structures** - This approach is flexible but the resulting programs may be harder to read, slower, and definitely require more memory.
 
-**Visual programming** - This simply doesn't suit everybody's taste. Rather than a visual tool integrating existing code via complex interfaces and/or blackboards, some of us prefer writing computer programs.
+**Visual programming** - This simply doesn't suit everybody's taste. Rather than a visual tool integrating existing code Via complex interfaces and/or blackboards, some of us prefer writing computer programs.
 
 Active Logic seamlessly integrates with the host language:
 
