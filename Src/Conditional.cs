@@ -6,21 +6,7 @@
 using Active.Core.Details;
 
 namespace Active.Core{
-public abstract partial class AbstractDecorator : IDecorator, Resettable{
-
-    protected virtual float time{ get{
-      #if UNITY_2018_1_OR_NEWER_2018_1_OR_NEWER
-        return Time.time;
-      #else
-        return System.DateTime.Now.Second;
-      #endif
-    }}
-
-    protected static  int   ID(int id) => id == 0 ? ++MaxId : id;
-
-}
-
-public abstract partial class Decorator : AbstractDecorator{
+public abstract partial class Conditional : AbstractDecorator{
 
     public abstract void OnStatus(status s);
 
@@ -38,6 +24,6 @@ public abstract partial class Decorator : AbstractDecorator{
         return null;
     }
 
-    public interface OptionalArguments{ Decorator.Gate? pass{ get; } }
+    public interface OptionalArguments{ Conditional.Gate? pass{ get; } }
 
 }}  // Active.Core

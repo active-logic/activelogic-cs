@@ -3,7 +3,7 @@ using static Active.Core.status;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 
 namespace Active.Core{
-public class InOut : Decorator{
+public class InOut : Conditional{
 
     static int uid; internal static int id => uid = ID(uid);
 
@@ -20,13 +20,11 @@ public class InOut : Decorator{
 
 }
 
-// ----------------------------------------------------------------------------
-
 #if !AL_BEST_PERF
 partial class Task{
-    public Decorator.Gate? InOut(bool @in, bool @out, [Tag] int key = -1)
+    public Conditional.Gate? InOut(bool @in, bool @out, [Tag] int key = -1)
     => store.Decorator<InOut>(key, Active.Core.InOut.id)[@in, @out];
 }
 #endif
 
-}  // Active.Core
+}

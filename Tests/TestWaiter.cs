@@ -1,14 +1,15 @@
+// Doc/Reference/Status.md
 #if !(UNITY_EDITOR || DEBUG)
 #define AL_OPTIMIZE
 #endif
-//
+
 using System;
 using NUnit.Framework;
 using Active.Core;
 using Active.Core.Details;
 using static Active.Core.status;
 
-public class TestDecorator : CoreTest {
+public class TestWaiter : CoreTest {
 
 	protected static readonly LogString log = null;
 
@@ -28,11 +29,10 @@ public class TestDecorator : CoreTest {
 		o(s, z);
 	}
 
-	[Test] public void Fail([Range(-1, 1)] int val){
+	[Test] public void Cont([Range(-1, 1)] int val){
 		var z = status.@unchecked(val);
-		var f = status.@unchecked(-1);
 		status s = x[false]?[z];
-		o(s, f);
+		o(s, status._cont);
 	}
 
 	[Test] public void Construct(){}
@@ -43,11 +43,11 @@ public class TestDecorator : CoreTest {
 	}
 
 	[Test] public void ConstructGate(){
-		new Decorator.Gate(x);
+		new Waiter.Gate(x);
 	}
 
 	[Test] public void NewGate([Range(-1, 1)] int val){
-		var gate = new Decorator.Gate(x);
+		var gate = new Waiter.Gate(x);
 		var z    = status.@unchecked(val);
 		o ( (status)gate[z], z );
 		o ( x.note , z);
@@ -55,32 +55,34 @@ public class TestDecorator : CoreTest {
 
 	[Test] public void NewStatusRef([Range(-1, 1)] int val){
 		var z = status.@unchecked(val);
-		var w = new Decorator.StatusRef(z);
+		var w = new Waiter.StatusRef(z);
 		o ( (status)w, z );
 	}
 
-  #if !AL_OPTIMIZE
+    #if !AL_OPTIMIZE
 
 	[Test] public void LoggingOnFailure(){
 		status s = x[false]?[done(log && "Testing")];
 		// Question mark indicates we don't know the subtask managed by this
 		// decorator just yet
-		o (TraceFormat.LogTrace(s.trace), "<D> Bear ?");
+		o (TraceFormat.LogTrace(s.meta.trace), "<D> Bear ?");
 	}
 
 	[Test] public void LoggingOnSuccess(){
 		status s = x[true]?[done(log && "Testing")];
 		// Question mark drops because we just don't format the target object
 		// on success (since it gets evaluated, it has its own format phase)
-		o (TraceFormat.LogTrace(s.trace),
-		   "<D> Bug -> TestDecorator.LoggingOnSuccess (Testing)");
+		o (TraceFormat.LogTrace(s.meta.trace),
+		   "<D> Bug -> TestWaiter.LoggingOnSuccess (Testing)");
 	}
 
 	[Test] public void ViaDecorator(){
 		o (status.log, true);
 		var s = cont().ViaDecorator(x, log && "SetPos");
-		o ( s.trace != null );
+		o ( s.meta.trace != null );
 	}
+
+    #endif  // !AL_OPTIMIZE
 
 	// Not much of a test, just basic screening
 	[Test] public void DecoratorIds(){
@@ -88,17 +90,15 @@ public class TestDecorator : CoreTest {
 		o ( Init.id     != Interval.id );
 	}
 
-  #endif
-
 	// ------------------------------------------------------------------------
 
-	class Deco : Decorator{
+	class Deco : Waiter{
 
 		public status note;
 		override public void OnStatus(status s) => note = s;
 		override public action Reset() => @void();
 		public Gate? this[bool pass] => pass ? done(log && "Bug")
-											 : fail(log && "Bear");
+											 : cont(log && "Bear");
 	}
 
 }

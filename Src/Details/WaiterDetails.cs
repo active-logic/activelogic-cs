@@ -6,19 +6,7 @@ using Active.Core.Details;
 using InvOp = System.InvalidOperationException;
 
 namespace Active.Core{
-
-public interface IDecorator{}
-
-partial class AbstractDecorator{
-
-    protected static readonly LogString log = null;
-    static int MaxId = 0;
-    public abstract action Reset();
-    override public string ToString() => StatusFormat.Decorator(this);
-
-}
-
-partial class Decorator{
+partial class Waiter{
 
   #if !AL_OPTIMIZE
     internal static LogData logData;
@@ -27,7 +15,7 @@ partial class Decorator{
 
      public readonly struct Gate{
 
-         readonly Decorator o; public Gate(Decorator x) => o = x;
+         readonly Waiter o; public Gate(Waiter x) => o = x;
 
          public StatusRef this[status s]{ get{
            #if !AL_OPTIMIZE
@@ -57,30 +45,14 @@ partial class Decorator{
          => status.log ? ToStatusWithLog(self) : ToStatus(self);
        #endif
 
-         static status ToStatus(StatusRef? self) => self?.x ?? status.fail();
+         static status ToStatus(StatusRef? self) => self?.x ?? status.cont();
       #if !AL_OPTIMIZE
          static status ToStatusWithLog(StatusRef? self){
              if(logData.scope == null) throw new InvOp("Log data is null");
-             return (self?.x ?? status._fail)
+             return (self?.x ?? status._cont)
                     .ViaDecorator(logData.scope, log && logData.Reason());
         }
       #endif
-
-     }
-
-     // ------------------------------------------------------------------------
-
-     internal readonly struct LogData{
-
-         public readonly AbstractDecorator scope;
-         readonly object target;
-         readonly string reason;
-
-         public LogData(AbstractDecorator s, object tg, string r){
-             scope = s; target = tg; reason = r;
-         }
-
-         public string Reason() => TraceFormat.DecoratorReason(target, reason);
 
      }
 

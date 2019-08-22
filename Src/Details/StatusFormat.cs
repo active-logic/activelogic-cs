@@ -4,7 +4,6 @@
 
 using System.Text;
 using ArgEx = System.ArgumentException;
-//using UnityEngine;
 using S = Active.Core.Strings;
 
 namespace Active.Core.Details{
@@ -18,6 +17,10 @@ public class StatusFormat{
 	public static void UseASCII() => statusChars = new []{' ', '+', '*'};
 
 	public static string Decorator(object x) => $"<{x.GetType().Name[0]}>";
+
+	public static string LastPathComponent(string path) => path.Substring(
+		path.LastIndexOf(System.IO.Path.DirectorySeparatorChar) + 1
+	).Replace(".cs", null);
 
   #if !AL_OPTIMIZE
 
@@ -48,10 +51,6 @@ public class StatusFormat{
 		var C = s.meta.components;
 		if(C != null) foreach(var c in C) Hierarchy(c, @out, depth + 1, tabs);
 	}
-
-	public static string LastPathComponent(string path) => path.Substring(
-		path.LastIndexOf(System.IO.Path.DirectorySeparatorChar) + 1
-	).Replace(".cs", null);
 
 	static int RepIndex(int sval) => sval > 0 ? 2 : sval < 0 ? 0 : 1;
 

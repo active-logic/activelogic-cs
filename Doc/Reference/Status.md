@@ -1,4 +1,4 @@
-*Sources: Status.cs, BoolExt.cs - Last Updated: 2019.8.13*
+*Sources: Status.cs - Last Updated: 2019.8.13*
 
 # Status Reference
 

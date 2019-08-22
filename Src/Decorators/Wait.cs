@@ -29,8 +29,6 @@ public class Wait : AbstractDecorator{
 
 }
 
-// ----------------------------------------------------------------------------
-
 #if !AL_BEST_PERF
 partial class Task{
 	public status Wait(float duration, [Tag] int key = -1)
@@ -38,4 +36,4 @@ partial class Task{
 }
 #endif
 
-}  // Active.Core
+}

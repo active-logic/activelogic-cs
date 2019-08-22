@@ -27,12 +27,6 @@ public readonly partial struct status{
     public static implicit operator status(bool state)
     => state ? done() : fail();
 
-    public static implicit operator Active.Rx.status(in status self)
-    => new Active.Rx.status(self.ω);
-
-    public static implicit operator status(Active.Rx.status other)
-    => new status(other.running ? 0 : other.complete ? +1 : -1);
-
     // TODO: use raw
     public static status operator ++ (status s) => (+s).due;
     public static status operator -- (status s) => (-s).undue;

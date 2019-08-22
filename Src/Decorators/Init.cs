@@ -4,22 +4,17 @@
 #endif
 
 using static Active.Core.status;
+using static Active.Core.AbstractDecorator;  // for LogData
 using Active.Core.Details;
 using InvOp = System.InvalidOperationException;
 using Tag   = System.Runtime.CompilerServices.CallerLineNumberAttribute;
-
 namespace Active.Core{
-/*
-Syntax:
-with() ? [ exp  ] OP status_exp  // OP: +, % or -
-with() ? [ cond ] ? [ status_exp ]
-*/
 public class Init : AbstractDecorator{
 
     static int uid; internal static int id => uid = ID(uid);
     const string INCOMPLETE = "Incomplete 'with' pattern";
   #if !AL_OPTIMIZE
-    internal static Decorator.LogData logData;
+    internal static LogData logData;
     protected object target;
   #endif
     //
@@ -31,7 +26,7 @@ public class Init : AbstractDecorator{
         if(current != null) throw new InvOp(INCOMPLETE);
         current = this;
       #if !AL_OPTIMIZE
-        logData = new Decorator.LogData(this, x.trace.scope, x.trace.reason);
+        logData = new LogData(this, x.trace.scope, x.trace.reason);
       #endif
         if(x.complete){
             passing = false;
@@ -47,14 +42,13 @@ public class Init : AbstractDecorator{
         current = this;
         if(x != null){
           #if !AL_OPTIMIZE
-            logData = new Decorator.LogData(this, $"{x}: <{x.GetType().Name}>",
-                                            null);
+            logData = new LogData(this, $"{x}: <{x.GetType().Name}>", null);
           #endif
             passing = false;
             return new Gate(this);
         }else{
           #if !AL_OPTIMIZE
-            logData = new Decorator.LogData(this, "<null>", null);
+            logData = new LogData(this, "<null>", null);
           #endif
             preconditionStatus = fail();
             return null;
@@ -137,4 +131,4 @@ partial class Task{
 }
 #endif
 
-}  // Active.Core
+}  // end-Active.Core

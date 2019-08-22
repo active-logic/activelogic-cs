@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;  // used by Register
 using Active.Core.Details;
-using static Active.Core.Decorator;
+//using static Active.Core.Decorator;
 using static Active.Core.status;
 
 namespace Active.Core{

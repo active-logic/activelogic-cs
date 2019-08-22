@@ -8,7 +8,7 @@ using Active.Core.Details;
 namespace Active.Core{
 public readonly partial struct status{
 
-  #if !AL_OPTIMIZE
+    #if !AL_OPTIMIZE
 
     public   bool failing  => ω <= -1;
     public   bool running  => ω ==  0;
@@ -51,11 +51,12 @@ public readonly partial struct status{
         return new impending(System.Math.Max(s.ω - 1, -1), s.meta);
     }
 
-  #if !AL_STRICT
-    public static implicit operator status(bool that) => that?done():fail();
-  #endif
+    #else  // !AL_OPTIMIZE <> AL_OPTIMIZE
 
-  #else  // !AL_OPTIMIZE <> AL_OPTIMIZE
+    public status Via(ValidString reason = null) => this;
+
+    public status ViaDecorator(IDecorator scope, ValidString reason=null)
+    => this;
 
     public static status Eval(status s) => s;
 
@@ -65,12 +66,8 @@ public readonly partial struct status{
     public static action  @void  (ValidString reason = null) => action._void;
     public static failure flop (ValidString reason = null) => failure._flop;
     public static loop    forever(ValidString reason = null) => loop._forever;
-    public status Via(ValidString reason = null) => this;
 
-    public status ViaDecorator(IDecorator scope, ValidString reason=null) 
-    => this;
-
-  #endif  // AL_OPTIMIZE
+    #endif  // AL_OPTIMIZE
 
 }
 

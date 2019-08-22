@@ -3,7 +3,6 @@
 #endif
 
 #if !AL_OPTIMIZE
-
 using Active.Core.Details;
 using L  = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 using V  = Active.Core.Details.ValidString;
@@ -11,6 +10,7 @@ using M  = System.Runtime.CompilerServices.CallerMemberNameAttribute;
 using P  = System.Runtime.CompilerServices.CallerFilePathAttribute;
 using S  = System.String;
 using Lg = Active.Core.Details.Logging;
+using X  = Active.Core.status;
 
 namespace Active.Core{
 
@@ -52,19 +52,17 @@ partial struct status{
     public static loop forever(ValidString reason = null,
     [P] S p="", [M] S m="", [L] int l=0) => Lg.Forever(reason, p, m, l);
 
-}
+}  // partial status
 
 public static class BoolExt{
 
-    public static Active.Core.status status(this bool self,
-         ValidString reason = null, [P]string p="", [M]string m="", [L]int l=0)
-    => Active.Core.status.log
-        ? Lg.Status(self ? Active.Core.status._done
-                         : Active.Core.status._fail, reason, p, m, l)
-        : self ? Active.Core.status._done : Active.Core.status._fail;
+    public static X status(this bool self, ValidString reason = null,
+                          [P]string path="", [M]string member="", [L]int line=0)
+    => X.log ? Lg.Status(self ? X._done : X._fail, reason, path, member, line)
+             : self ? X._done : X._fail;
 
 }
 
 }  // Active.Core
 
-#endif
+#endif  // !AL_OPTIMIZE

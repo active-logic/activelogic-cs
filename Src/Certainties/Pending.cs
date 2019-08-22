@@ -36,14 +36,15 @@ public readonly partial struct pending{
 
     public static bool operator false (pending s) => s.ω == 0;
 
-    #if AL_OPTIMIZE  // -------------------------------------------------------
+    #if AL_OPTIMIZE   // ------------------------------------------------------
 
     public status due => new status(ω);
 
     public static impending operator !(pending s) => new impending(-s.ω);
-    public static pending cont(ValidString reason = null) => pending._cont;
 
-    public static pending done(ValidString reason = null) => pending._done;
+    public static pending cont(ValidString reason = null) => _cont;
+
+    public static pending done(ValidString reason = null) => _done;
 
     #endif
     #if !AL_STRICT  // --------------------------------------------------------

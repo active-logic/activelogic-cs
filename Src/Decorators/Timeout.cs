@@ -4,7 +4,7 @@ using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 
 namespace Active.Core{
 [System.Serializable]
-public class Timeout : Decorator, Decorator.OptionalArguments{
+public class Timeout : Conditional, Conditional.OptionalArguments{
 
     static int uid; internal static int id => uid = ID(uid);
 
@@ -34,13 +34,11 @@ public class Timeout : Decorator, Decorator.OptionalArguments{
 
 }
 
-// ----------------------------------------------------------------------------
-
 #if !AL_BEST_PERF
 partial class Task{
-	public Decorator.Gate? Timeout(float duration, [Tag] int key = -1)
+	public Conditional.Gate? Timeout(float duration, [Tag] int key = -1)
     => store.Decorator<Timeout>(key, Active.Core.Timeout.id)[duration];
 }
 #endif
 
-}  // Active.Core
+}

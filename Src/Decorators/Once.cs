@@ -3,7 +3,7 @@ using static Active.Core.status;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 
 namespace Active.Core{
-public class Once : Decorator, Decorator.OptionalArguments{
+public class Once : Conditional, Conditional.OptionalArguments{
 
     static int uid; internal static int id => uid = ID(uid);
 
@@ -17,13 +17,12 @@ public class Once : Decorator, Decorator.OptionalArguments{
 
 }
 
-// ----------------------------------------------------------------------------
-
 #if !AL_BEST_PERF
-partial class Task{
-	public Decorator.Gate? Once([Tag] int key = -1)
+partial class UTask{
+}partial class Task{
+	public Conditional.Gate? Once([Tag] int key = -1)
 	=> store.Decorator<Once>(key, Active.Core.Once.id)?.pass;
 }
 #endif
 
-}  // Active.Core
+}

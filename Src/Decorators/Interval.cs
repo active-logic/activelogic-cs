@@ -4,7 +4,7 @@ using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 
 namespace Active.Core{
 [System.Serializable]
-public class Interval : Decorator, Decorator.OptionalArguments{
+public class Interval : Waiter, Waiter.OptionalArguments{
 
     static int uid; internal static int id => uid = ID(uid);
 
@@ -31,7 +31,7 @@ public class Interval : Decorator, Decorator.OptionalArguments{
 		if(time >= stamp + s + offset){
 			stamp = (stamp == System.Single.MinValue) ? time : stamp + s;
 			return done(log && $"[@{stamp:0.0}]");
-		}else return fail(log && $"[{stamp + s - time:0.0}/{s:0.0}]");
+		}else return cont(log && $"[{stamp + s - time:0.0}/{s:0.0}]");
 	}}
 
 	override public action Reset(){ stamp = 0; return @void(); }
@@ -40,28 +40,12 @@ public class Interval : Decorator, Decorator.OptionalArguments{
 
 }
 
-#if UNITY_2018_1_OR_NEWER
-public class RTInterval : Interval{
-
-	public RTInterval(float period, float offset=0f, bool fireOnStart=true)
-	: base(period, offset, fireOnStart){}
-
-	override protected float time => UnityEngine.Time.realtimeSinceStartup;
-
-	public static implicit operator RTInterval(float val)
-    => new RTInterval(val);
-
-}
-#endif
-
-// ----------------------------------------------------------------------------
-
 #if !AL_BEST_PERF
 partial class Task{
-	public Decorator.Gate? Every(float delay, float offset = 0f,
-                                             [Tag] int key = -1)
+	public Waiter.Gate? Every(float delay, float offset = 0f,
+                                                            [Tag] int key = -1)
     => store.Decorator<Interval>(key, Active.Core.Interval.id)[delay];
 }
 #endif
 
-}  // Active.Core
+}

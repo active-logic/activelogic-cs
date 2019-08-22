@@ -4,7 +4,7 @@ using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 
 namespace Active.Core{
 [System.Serializable]
-public class Cooldown: Decorator, Decorator.OptionalArguments{
+public class Cooldown: Conditional, Conditional.OptionalArguments{
 
 	static int uid; internal static int id => uid = ID(uid);
 
@@ -31,9 +31,9 @@ public class Cooldown: Decorator, Decorator.OptionalArguments{
 
 #if !AL_BEST_PERF
 partial class Task{
-	public Decorator.Gate? Cooldown(float duration, [Tag] int key = -1)
+	public Conditional.Gate? Cooldown(float duration, [Tag] int key = -1)
 	=> store.Decorator<Cooldown>(key, Active.Core.Cooldown.id)[duration];
 }
 #endif
 
-}  // Active.Core
+}
