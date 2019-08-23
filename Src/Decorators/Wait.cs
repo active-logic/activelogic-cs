@@ -3,8 +3,8 @@ using static Active.Core.status;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 
 namespace Active.Core{
-[System.Serializable]
-public class Wait : AbstractDecorator{
+// DEPRECATED - USE DELAY INSTEAD
+[System.Serializable] public class Wait : AbstractDecorator{
 
     static int uid; internal static int id => uid = ID(uid);
 

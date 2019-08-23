@@ -4,6 +4,19 @@
 
 The API ships with several built-in decorators.
 
+**After/Delay** (Only available in Unity)
+
+Consume the specified delay before evaluating the subtask; after the subtask has completed or failed, reset.
+
+```cs
+status s = After(5f)?[ Idle() ];
+// or ..
+Delay delay = 5f;
+status s = delay.pass?[ Idle() ];
+````
+
+NOTE: a delay is consumed on a frame basis, whenever control traverses the decorator.
+
 **Cooldown**
 
 Prevents re-iterating a subtask for a specified duration after the subtask has executed or failed;
@@ -76,6 +89,8 @@ status s = t.pass?[ Idle() ];
 ````
 
 **Wait**
+
+**Deprecated: Use Delay/After instead**
 
 Wait for a set period of time, then return `failing` until reset.
 

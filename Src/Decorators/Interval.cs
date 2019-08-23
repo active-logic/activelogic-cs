@@ -30,8 +30,8 @@ public class Interval : Waiter, Waiter.OptionalArguments{
 	public Gate? this[float s]{get{
 		if(time >= stamp + s + offset){
 			stamp = (stamp == System.Single.MinValue) ? time : stamp + s;
-			return done(log && $"[@{stamp:0.0}]");
-		}else return cont(log && $"[{stamp + s - time:0.0}/{s:0.0}]");
+			return done(log && $"[○{stamp:0.00}]");
+		}else return cont(log && $"[{time:0.00}▻{stamp+s+offset:0.00}]");
 	}}
 
 	override public action Reset(){ stamp = 0; return @void(); }
