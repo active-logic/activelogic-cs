@@ -88,21 +88,6 @@ Timeout t = 5f;
 status s = t.pass?[ Idle() ];
 ````
 
-**Wait**
-
-**Deprecated: Use Delay/After instead**
-
-Wait for a set period of time, then return `failing` until reset.
-
-```cs
-status s = Wait(5f) && BeDone();
-// or ..
-Wait delay = 1f;
-status s = delay(5f) && BeDone();
-````
-
-*NOTE: `Wait` does not command a subtask.*
-
 **With** [DRAFT]
 
 Use `With` when data needs to be initialized, then re-initialized whenever an associate subtask has completed or failed; this decorator is not thread safe.
