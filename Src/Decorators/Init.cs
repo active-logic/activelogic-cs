@@ -26,7 +26,7 @@ public class Init : AbstractDecorator{
 
     override public action Reset(){ passing = true; return @void(); }
 
-    new public readonly struct Gate{
+    public readonly struct Gate{
 
         readonly Init owner;
 
