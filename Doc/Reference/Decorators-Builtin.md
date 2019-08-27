@@ -88,44 +88,9 @@ Timeout t = 5f;
 status s = t.pass?[ Idle() ];
 ````
 
-**With** [DRAFT]
+**With**
 
-Use `With` when data needs to be initialized, then re-initialized whenever an associate subtask has completed or failed; this decorator is not thread safe.
-
-Syntax:
-
-```
-With()?[ PREREQ ]?[ TASK ]            // (1)
-```
-
-Initially, PREREQ is evaluating; PREREQ may represent a status, or an object.
-TASK does not evaluate until PREREQ (through repeated invocations) becomes *complete* or non null. Subsequently, only the TASK is evaluated; when TASK status becomes *complete* or *failing* the decorator reverts to its initial state.
-
-Example 1:
-
-```cs
-status Move => With()?[ PathFind() ]?[ FollowPath() ];
-```
-
-In this example, *Move* alternates between path-finding and path-following.
-
-Example 2:
-
-```cs
-status Attack => With()?[ target = DiscoverThreat() ]?[ Shoot(target) ];
-```
-
-In this example, a target is acquired. Thereafter, the `Shoot` subtask is executed. Let's compare the above with a similar pattern:
-
-```cs
-status Attack => Do(target = DiscoverThreat()) && [ Shoot(target) ];
-```
-
-As above, `Shoot(target)` will not execute until a target has been found; using *With*, however, the target will not re-evaluate until *Shoot* has completed or failed.
-
-Use the above syntax when PREREQ represents a time consuming or potentially failing step. Otherwise, use the alternative syntax (below).
-
-Alternative syntax:
+Use `With` when data needs to be initialized, then re-initialized whenever an associate subtask has completed or failed.
 
 ```
 With()?[ EXP ] % TASK
@@ -133,10 +98,10 @@ With()?[ EXP ] + TASK
 With()?[ EXP ] - TASK
 ```
 
-Through the alternative syntax, 'With' always evaluates TASK. Initially, `EXP` is evaluated; subsequently, do not evaluate EXP, unless:
+Initially, `EXP` is evaluated; subsequently, do not evaluate EXP, unless:
 
 - `%` is used and TASK is complete or failing (re-init on end)
 - `+` is used and TASK is complete (re-init on complete)
 - `-` is used and TASK is failing (re-init on fail)
 
-*NOTE: This decorator has been drafted; this means that the decorator is not fully tested, and may not behave as expected; use this caution.*
+`TASK` is always evaluated.

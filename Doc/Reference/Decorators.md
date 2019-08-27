@@ -2,11 +2,11 @@
 
 # Decorators
 
-This section introduces decorators; builtin decorators are documented [here](Decorators-Builtin.md); also read [Custom Decorators](Decorators-Custom.md) if you wish to implement your own.
+This section introduces decorators; builtin decorators are documented [here](Decorators-Builtin.md); read [Custom Decorators](Decorators-Custom.md) if you wish to implement your own.
 
 A decorator modulates the behavior of a target task. Common decorators are implemented Via the `status` class: unary operations let you invert (!), condone (~), promote (+, ++) and demote (-, --) statuses; if this is not enough, use `Status.Map()`.
 
-Besides, the API provides a set of powerful, yet easy to use constructs properly known as 'decorators'. Decorators mostly follow a common syntax:
+Beyond, the API provides a set of powerful, easy to use constructs properly known as 'decorators'. Mostly, these decorators follow a common syntax:
 
 ```
 Decorator( Params ) ? [ StatusExp ]
@@ -15,6 +15,15 @@ Decorator( Params ) ? [ StatusExp ]
 Under the hood, most decorators are *stateful conditionals*:
 - They require data storage - be it a cooldown or latch, data is stored to keep track of the current state; for this reason, syntax does vary a little depending on whether you inline decorators (and let the API manage the data on your behalf) or declare it first.
 - Depending on how `Decorator( Params )` evaluates, `[ StatusExp ]` may be evaluated, or skip.
+
+## Life cycle
+
+Since decorators are stateful, on occasion it is appropriate to reset their state. In order to reset a decorator, invoke `Reset()`. Oftentimes, however, a decorator's life-cycle is managed on your behalf, and `Reset()` is called implicitly:
+
+- Inline decorators are automatically reset when the underlying task is reset.
+- Many decorators automatically reset 'on resume'. A resume occurs when control returns to a previously active execution path.
+
+If you are not using Unity, reset-on-resume requires a time manager; to provide your own time manager, implement `TimeManager` and assign `AbstractDecorator.timeManager`.
 
 ## Inline decorators
 
