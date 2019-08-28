@@ -49,15 +49,14 @@ Active Logic programs look mundane: no callbacks, lambdas or co-routines. The te
 - **Simplicity**: Active Logic programs have a clear and concise, inductive structure.
 - **Resilience**: statelessness ensures that, confronted with changing conditions, active logic programs respond in a timely, predictable manner.
 
+## Installation
+
+The library is self-contained. As such no particular install steps are required. Checkout the repo (or just the `Src` directory) inside your source tree.
+
 ## Language support
 
-While Active Logic programs do look simple, offering a clean, concise syntax without compromising performance and thread safety is not.
-
-The library requires C# 7.2; uniquely (if indirectly), C# permits overloading the short-circuit operators. Other languages (Notably: C, C++, Python, Rust, Swift) may not have this (or leave shorting behind).
-
-C++ and Swift versions are being worked on. For some languages, direct support (upgrade the language) is considered.
-
-C# back-ports are considered; no ETA.
+- The library requires C# 7.2; C# backports are considered.
+- C++ and Swift versions are being worked on.
 
 Whether you're hoping for a C# back-port, or would like support for another language, scratch an itch:
 - Open/upvote an issue, and motivate your request
