@@ -2,7 +2,7 @@
 
 A library for everyday case logic, solving problems where *time* is an essential element: game development, game AIs, interactive applications and control systems.
 
-Active Logic implements discrete, iterative control. It is grounded in [Behavior trees](https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control)) (BT) and many-valued logic.
+Active Logic implements discrete, iterative control. It is grounded in [Behavior trees](https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control)) (BT) and three-valued logic.
 
 [![Build Status](https://travis-ci.com/active-logic/activelogic-cs.svg?branch=master)](https://travis-ci.com/active-logic/activelogic-cs)
 
