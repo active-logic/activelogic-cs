@@ -64,7 +64,6 @@ Whether you're hoping for a C# back-port, or would like support for another lang
 
 ## Where next?
 
-- Download the library - **Pending verify compat with .NET Core, Mono**
 - Read the [Quick start Guide](Doc/QuickStart.md)
 - Check the [API reference](Doc/Reference/Overview.md)
 - For questions pertaining game development, reach the [discord forum](https://discord.gg/Jn9TQRR).
