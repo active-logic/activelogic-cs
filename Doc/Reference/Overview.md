@@ -13,6 +13,7 @@
 8. [Ordered composites](OrderedComposites.md)
 9. [Mutable composites](MutableComposites.md)
 10. [Memory and performance](MemoryAndPerformance.md)
+11. [Extending the API](Extensions.md)
 
 ## Engine & Language support
 

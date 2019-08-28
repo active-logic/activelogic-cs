@@ -92,10 +92,14 @@ status s = t.pass?[ Idle() ];
 
 Use `With` when data needs to be initialized, then re-initialized whenever an associate subtask has completed or failed.
 
-```
-With()?[ EXP ] % TASK
-With()?[ EXP ] + TASK
-With()?[ EXP ] - TASK
+
+```cs
+var s = With()?[ EXP ] % TASK;
+var s = With()?[ EXP ] + TASK;
+var s = With()?[ EXP ] - TASK;
+// or...
+Init cond = new Init();
+status s = cond.pass?[ EXP ] % TASK;  // or replace '%' with '+/-'
 ```
 
 Initially, `EXP` is evaluated; subsequently, do not evaluate EXP, unless:
