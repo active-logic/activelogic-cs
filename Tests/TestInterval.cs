@@ -8,6 +8,10 @@ public class TestInterval : DecoratorTest<TestInterval.Interval> {
 		o ( x.period, 1 );
 	}
 
+	[Test] public void NoCatchupDefault() => o( x.catchup, false);
+
+	[Test] public void PeriodOneDefault() => o( x.period, 1);
+
 	[Test] public void DurationConstructor(){
 		x = new Interval(5);
 		o ( x.period, 5 );
@@ -36,6 +40,23 @@ public class TestInterval : DecoratorTest<TestInterval.Interval> {
 	[Test] public void DontFireOnStart(){
 		x = new Interval(fireOnStart: false);
 		t = 0; o(x?.pass, null);
+	}
+
+	[Test] public void DontCatchup(){
+		x = new Interval(3);
+		x.stamp = 2;
+		t = 11;
+		o( x?.pass != null );
+		o( x.stamp, 14 );
+	}
+
+	[Test] public void DoCatchup(){
+		x = new Interval(3);
+		x.catchup = true;
+		x.stamp = 2;
+		t = 11;
+		o( x?.pass != null );
+		o( x.stamp, 5 );
 	}
 
     [Test] public void Bypass(){

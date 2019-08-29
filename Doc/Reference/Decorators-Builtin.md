@@ -1,6 +1,6 @@
 *Source: Active Logic/Decorators - Last Updated: 2019.7.30*
 
-## Built-in decorators
+# Built-in decorators
 
 The API ships with several built-in decorators.
 
@@ -28,7 +28,7 @@ Cooldown c = 0.1f;
 status s = c.pass?[ Strike() ];
 ```
 
-**Interval**
+**Every/Interval**
 
 Evaluates periodically; use as a scheduler.
 
@@ -38,6 +38,18 @@ status s =  Every(2.5f)?[ Beep() ];
 Interval i = 2.5f;
 status s = i.pass?[ Beep() ];
 ````
+
+*Other constructors*
+
+`Interval()` - Create an interval with period 1 (seconds); fire on start.
+`Interval(bool fireOnStart)` - Create an interval with period 1.
+`Interval(float period, float offset=0f, bool fireOnStart=true)` - Create an interval
+
+*Parameters*
+
+`bool catchup` - When the time gap is large, apply the subtask repeatedly to catchup (default: disabled)
+`float offset` - Time offset to effect the subtask (default: 0)
+`period` - The period (default: 1)
 
 **InOut**
 

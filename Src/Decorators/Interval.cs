@@ -1,4 +1,5 @@
 // Doc/Reference/Decorators.md
+using System;
 using static Active.Core.status;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 
@@ -8,8 +9,9 @@ public class Interval : Waiter, Waiter.OptionalArguments{
 
     static int uid; internal static int id => uid = ID(uid);
 
+    public bool catchup = false;
     public float offset = 0, period = 1;
-	float stamp = System.Single.MinValue;
+	internal float stamp = System.Single.MinValue;
 
 	public Interval(){}
 
@@ -29,7 +31,13 @@ public class Interval : Waiter, Waiter.OptionalArguments{
 
 	public Gate? this[float s]{get{
 		if(time >= stamp + s + offset){
-			stamp = (stamp == System.Single.MinValue) ? time : stamp + s;
+            if(stamp == System.Single.MinValue || s == 0) stamp = time;
+            else if(catchup){
+                stamp += s;
+            }else{
+                int n = (int)Math.Floor((time - stamp) / s) + 1;
+                stamp += s * n;
+            }
 			return done(log && $"[○{stamp:0.00}]");
 		}else return cont(log && $"[{time:0.00}▻{stamp+s+offset:0.00}]");
 	}}
