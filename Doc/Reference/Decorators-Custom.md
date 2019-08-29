@@ -90,4 +90,4 @@ If you want to support inlining, there's a little code that needs to be added to
 
 ## All done!
 
-All said, implementing decorators isn't hard! You may view the complete example [here](../../User/CustomCooldown.cs)
+All said, implementing decorators isn't hard! You may view the complete example [here](https://gist.github.com/eelstork/0e8b68cd8b645ee221ca3c15c24e9442)
