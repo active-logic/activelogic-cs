@@ -28,6 +28,8 @@ public readonly struct Meta{
         if(prev != null) this.prev       = prev;
     }
 
+    // Note: 'owner' is the owner of this Meta field; it is the status that we
+    // are wrapping, and possibly unwinding.
     internal Meta ViaScope(in status owner, object scope, string reason=null){
         if(prev == null){
             if(trace?.Matches(scope, reason) ?? false){
@@ -38,7 +40,7 @@ public readonly struct Meta{
                 );
             }
         }else{
-            return new Meta(this, new LogTrace(scope, reason), Unwind(owner));
+            return new Meta(new LogTrace(scope, reason), Unwind(owner));
         }
     }
 
