@@ -9,9 +9,8 @@ Active Logic implements discrete, iterative control. It is grounded in [Behavior
 ## License information
 
 - GNU Affero GPL v3.0. TLDR, use the software freely, *provided derivative works are free, open source*.
-- Will be free for: personal and educational uses, indies and early stage startups - pending license.
 - Business licenses (non free) - pending license.
-- An augmented version of the library will be sold through the Unity Asset Store; pending submission.
+- An augmented version of the library has been submitted to the Unity Asset Store (pending review).
 
 ## Introduction
 
@@ -43,6 +42,7 @@ class Duelist : UTask{
 
 }
 ```
+[> View complete sample](https://gist.github.com/eelstork/08b8fff3b776e8a9faa262a60a9a183b)
 
 Active Logic programs look mundane: no callbacks, lambdas or co-routines. The temporal dimension is factored into the `status` type; benefits:
 
