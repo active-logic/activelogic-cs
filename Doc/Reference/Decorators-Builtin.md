@@ -42,13 +42,17 @@ status s = i.pass?[ Beep() ];
 *Other constructors*
 
 `Interval()` - Create an interval with period 1 (seconds); fire on start.
+
 `Interval(bool fireOnStart)` - Create an interval with period 1.
+
 `Interval(float period, float offset=0f, bool fireOnStart=true)` - Create an interval
 
 *Parameters*
 
 `bool catchup` - When the time gap is large, apply the subtask repeatedly to catchup (default: disabled)
+
 `float offset` - Time offset to effect the subtask (default: 0)
+
 `period` - The period (default: 1)
 
 **InOut**
