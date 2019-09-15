@@ -2,7 +2,7 @@
 
 # Mutable Composites
 
-Status expressions and ordered composites are designed to handle static decision trees, where the number of nodes, and their nature, are known before runtime. Mutable composites let you build and modify logic graphs at runtime.
+Status expressions and ordered composites are designed to handle static graphs, where the number of nodes, and their nature, are known before runtime. Mutable composites let you build and modify logic graphs at runtime.
 
 ## Class MComposite
 
