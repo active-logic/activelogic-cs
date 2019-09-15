@@ -55,16 +55,16 @@ The library is self-contained. As such no particular install steps are required.
 
 ## Language support
 
-- The library requires C# 7.2; C# backports are considered.
+- The library requires C# 7.2
 - C++ and Swift versions are being worked on.
 
-Whether you're hoping for a C# back-port, or would like support for another language, scratch an itch:
+Whether you're hoping for a back-port, or would like support for another language, scratch an itch:
 - Open/upvote an issue, and motivate your request
-- Submit a diff (an incomplete diff is better than just asking for help)
+- Submit a diff
 
 ## Where next?
 
-- Read the [Quick start Guide](Doc/QuickStart.md)
+- Read the [Quick start Guide](Doc/QuickStart.md) and the [FAQ](Doc/FAQ.md)
 - Check the [API reference](Doc/Reference/Overview.md)
 - For questions pertaining game development, reach the [discord forum](https://discord.gg/Jn9TQRR).
 - For other inquiries, open an issue and we'll be in touch.

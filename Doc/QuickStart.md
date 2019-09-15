@@ -158,12 +158,6 @@ Active Logic offers a log-tree feature; this is helpful, in that the behavior of
 
 In Unity, access the Log-Tree window from the Window menu; then, enable logging from the Frame Agent inspector.
 
-Running the `Soldier` script, the Log-Tree window may look like this:
-
-```
-IMAGE OR MOCK
-```
-
 For useful output, annotate the soldier script:
 
 ```cs
@@ -200,17 +194,17 @@ public class Soldier : UTask{
 }
 ```
 
-The above example illustrates everything you need to know to get started with logging.
+With the above annotations, the log tree window may look as follows:
 
-- The API requires `log && message` everywhere; this ensures that no formatting is done in log-less mode (performance).
-- String interpolation is recommended.
-- Most places a keyword is followed by '()' a custom log message is allowed.
+![Active Logic logger output](Images/activeLogicTreeView.png)
+
+This example illustrates everything you need to know to get started with logging.
+
 - Wherever a status is returned, use `Eval()`.
+- `done()`, `cont()` and `fail()` may receive a custom log message as argument
 - You can attach a custom message to any status, like this: `status[log && $"Custom"]`
-
-Running the sample again, you should now see something like this:
-
-MOCK OUTPUT
+- String interpolation is recommended.
+- The `log && message` idiom ensures no formatting in production builds (performance); if you wish to strictly enforce this, enable `AL_STRICT`.
 
 ## Going further
 
