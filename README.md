@@ -6,11 +6,11 @@ Active Logic implements discrete, iterative control. It is grounded in [Behavior
 
 [![Build Status](https://travis-ci.com/active-logic/activelogic-cs.svg?branch=master)](https://travis-ci.com/active-logic/activelogic-cs)
 
-## License information
+## License options
 
 - GNU Affero GPL v3.0. TLDR, use the software freely, *provided derivative works are free, open source*.
-- Business licenses (non free) - pending license.
-- An augmented version of the library has been submitted to the Unity Asset Store (pending review).
+- [Fair source one](Doc/Commercial.md) (for commercial uses)
+- Unity integration [via the Asset Store](https://www.assetstore.unity3d.com/#!/content/151850)
 
 ## Patches
 
