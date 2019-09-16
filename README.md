@@ -12,6 +12,10 @@ Active Logic implements discrete, iterative control. It is grounded in [Behavior
 - Business licenses (non free) - pending license.
 - An augmented version of the library has been submitted to the Unity Asset Store (pending review).
 
+## Patches
+
+If you are using **Unity** and experience issues, you may find patches [here](Patches/); only uses patches for a matching asset version.
+
 ## Introduction
 
 BT implementations available for general purpose languages typically involve:
