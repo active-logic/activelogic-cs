@@ -4,12 +4,13 @@ A library for everyday case logic, solving problems where *time* is an essential
 
 Active Logic implements discrete, iterative control. It is grounded in [Behavior trees](https://en.wikipedia.org/wiki/Behavior_tree_(artificial_intelligence,_robotics_and_control)) (BT) and three-valued logic.
 
+
 [![Build Status](https://travis-ci.com/active-logic/activelogic-cs.svg?branch=master)](https://travis-ci.com/active-logic/activelogic-cs)
 
 ## License options
 
 - GNU Affero GPL v3.0. TLDR, use the software freely, *provided derivative works are free, open source*.
-- [Fair source one](Doc/Commercial.md) (for commercial uses)
+- [Fair source one](Doc/Commercial.md) (for commercial use)
 - Unity integration [via the Asset Store](https://www.assetstore.unity3d.com/#!/content/151850)
 
 ## Patches
