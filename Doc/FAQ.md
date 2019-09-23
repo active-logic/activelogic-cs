@@ -28,23 +28,19 @@ In Active Logic you do not need a component or objectified task to form a behavi
 
 ## What is the difference between Active Logic's logger/debugger and Prolog?
 
-[Prolog](https://github.com/active-logic/prolog) is a general purpose, automated logger for C# and Unity. As such it relies on Mono.Cecil, and has dependencies on Unity's build system. Prolog visualizes function calls chronologically, either globally, or on a game object basis.
+[Prolog](https://github.com/active-logic/prolog) is a general purpose, automated logger for C# and Unity. This tool depends on Mono.Cecil, and Unity's build system. Prolog visualizes function calls chronologically, either globally, or on a game object basis. As such its usefulness goes well beyond the Active Logic library.
 
 ![Prolog output](Images/prologOutput.png)
 
-In contrast the integrated logger/debugger requires annotating your code. This approach means that it is less reliant on details of the build system, or external libraries. The integrated logger also lets you visualize behavior trees as hierarchies of tasks and subtasks.
+The integrated logger/debugger relies on explicit annotations in your code. As such it does not have any dependencies; tree view visualizes AIs and controllers as hierarchies of tasks and subtasks. Currently, tree view generates output that is more suitable for analyzing behavior trees and supports breakpoints.
 
 ![Active Logic logger output](Images/activeLogicTreeView.png)
 
-In the near future, Prolog will support debugging (breakpoints, stepper, visual history) features similar to the integrated logger. Depending on demand and community support, hierarchic views (stack-trees) may also be provided (hopefully, early 2020).
+The AL debugger has more features which aren't available in prolog just yet:
 
-Eventually, I expect that most Unity developers will prefer Prolog over the integrated logging/debugging feature.
-
-I developed these tools because I believe that providing dedicated feedback is integral to the workflow when working with behavior trees; in the forseeable future there is no plan to deprecate either.
-
-## What are `GigLogging.cs` and the Active Console?
-
-GigLogging and the Active Console provide support for a logging method which later proved redundant with and lesser than, Prolog. This will be removed from a future release.
+- Crosses game object boundaries; if you have squad AIs or other coordinated behaviors, tree view provides a unified view.
+- Breakpoints
+- Custom annotations
 
 ## What are plans for future development?
 
