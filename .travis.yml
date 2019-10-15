@@ -2,12 +2,12 @@ language: csharp
 solution: main.csproj
 dotnet: 2.2.401
 mono: none
-env:
-    - defs=
-    - defs=AL_BEST_PERF
-    - defs=AL_OPTIMIZE
-    - defs=AL_STRICT
-    - defs=AL_THREAD_SAFE
+#env:
+#    - defs=
+#    - defs=AL_BEST_PERF
+#    - defs=AL_OPTIMIZE
+#    - defs=AL_STRICT
+#    - defs=AL_THREAD_SAFE
 script:
     - dotnet test -c Release -p:DefineConstants=$defs
     - dotnet test -c Debug -p:DefineConstants=$defs
