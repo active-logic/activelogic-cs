@@ -6,14 +6,14 @@
 using Active.Core.Details;
 
 namespace Active.Core{
-public abstract partial class AbstractDecorator : IDecorator, Resettable{
+public abstract partial class AbstractDecorator : IDecorator,
+                                                  Resettable{
 
     protected virtual float time{ get{
       #if UNITY_2018_1_OR_NEWER
         return UnityEngine.Time.time;
       #else
-        // This is incorrect as it will only return with second accuracy
-        return System.DateTime.Now.Second;
+        return System.DateTime.Now.Millisecond/1000f;
       #endif
     }}
 
