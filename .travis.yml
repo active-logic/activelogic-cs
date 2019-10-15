@@ -11,3 +11,6 @@ env:
 script:
     - dotnet test -c Release -p:DefineConstants=$defs
     - dotnet test -c Debug -p:DefineConstants=$defs
+after_script:
+    - dotnet test -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=opencover
+    - bash <(curl -s https://codecov.io/bash)

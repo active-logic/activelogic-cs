@@ -6,6 +6,8 @@ Active Logic implements discrete, iterative control. It is grounded in [Behavior
 
 [![Build Status](https://travis-ci.com/active-logic/activelogic-cs.svg?branch=master)](https://travis-ci.com/active-logic/activelogic-cs)
 
+[![codecov](https://codecov.io/gh/active-logic/activelogic-cs/branch/master/graph/badge.svg)](https://codecov.io/gh/active-logic/activelogic-cs)
+
 ## License
 
 - GNU Affero GPL v3.0. TLDR, use the software freely, *provided derivative works are free, open source*.
