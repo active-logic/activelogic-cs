@@ -2,7 +2,6 @@
 #define AL_OPTIMIZE
 #endif
 
-//using System;
 using static System.Math;
 
 namespace Active.Rx{
