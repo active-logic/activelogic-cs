@@ -2,3 +2,4 @@ obj
 bin
 *.meta
 CoverageReport
+coverage.opencover.xml
