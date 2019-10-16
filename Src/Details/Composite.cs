@@ -36,15 +36,15 @@ partial class Task{
       protected Iterator or  => iterator;
 
       protected status end
-      {get{ var i = iterator; iterator = null; return i.end; }}
+      { get{ var i = iterator; iterator = null; return i.end; }}
 
       protected status loop
       { get{ var i = iterator; iterator = null; return i.loop; }}
 
-      protected Iterator Sequence([Tag] int key = -1)
+      public Iterator Sequence([Tag] int key = -1)
       => iterator = store.Composite<Sequence>(key).iterator;
 
-      protected Iterator Selector([Tag] int key = -1)
+      public Iterator Selector([Tag] int key = -1)
       => iterator = store.Composite<Selector>(key).iterator;
 
     #endif  // end !AL_THREAD_SAFE
