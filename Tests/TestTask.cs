@@ -18,7 +18,9 @@ public class TestTaskUnit : CoreTest{
     [Test] public void Init()     => o( x.With(0)       != null);
     [Test] public void Latch()    => o( x.Latch(false)  == null);
     [Test] public void Once()     => o( x.Once(0)       != null);
+    #if (DEBUG || !AL_OPTIMIZE)
     [Test] public void Undef()    => o( x.undef(0)      != null);
+    #endif
 
     class C : Task{}
 
