@@ -13,9 +13,11 @@ Active Logic implements discrete, iterative control. It is grounded in [Behavior
 - Unity integration [via the Asset Store](https://www.assetstore.unity3d.com/#!/content/151850)
 - Pending a standalone commercial license, read [here](Doc/Commercial.md)
 
+<!---
 ## Patches
 
 If you are using **Unity** and experience issues, you may find patches [here](Patches/); only uses patches for a matching asset version.
+--->
 
 ## Introduction
 
