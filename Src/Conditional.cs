@@ -11,16 +11,13 @@ public abstract partial class Conditional : AbstractDecorator{
     public abstract void OnStatus(status s);
 
     protected Gate done(ValidString reason=null){
-      #if !AL_OPTIMIZE
-        logData = new LogData(this, ".", reason);
-      #endif
-        return new Gate(this);
+        return new Gate(this, new LogData(this, ".", reason));
     }
 
     protected Gate? fail(ValidString reason=null){
-      #if !AL_OPTIMIZE
+        #if !AL_OPTIMIZE
         logData = new LogData(this, target, reason);
-      #endif
+        #endif
         return null;
     }
 

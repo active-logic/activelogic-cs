@@ -21,6 +21,10 @@ partial struct status{
     => log ? new status( this, new LogTrace(trace.scope, trace.next, reason))
            : this;
 
+    public static status ε(status s,
+                             [P] S path="", [M] S member="", [L] int line=0)
+    => Eval(s, path, member, line);
+
     public static status Eval(status s,
                              [P] S path="", [M] S member="", [L] int line=0)
     => log ? Lg.Status(s, null, path, member, line) : s;

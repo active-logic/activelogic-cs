@@ -12,6 +12,8 @@ public readonly partial struct action{
 
     public static action operator % (action x, action y) => _void;
 
+    public static loop operator - (action x) => loop._forever;
+
   #if AL_OPTIMIZE
     public status now => status._done;
 

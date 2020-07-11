@@ -12,7 +12,14 @@ public class TestBase {
     protected const int NormTestIters = BaseIters * (int)1e2;
     protected const int SlowTestIters = BaseIters * (int)1e1;
 
-    public TestBase() => StatusFormat.UseASCII();
+    public TestBase(){
+        StatusFormat.UseASCII();
+        // TODO - since all decorators require an RoR context,
+        // unit tests break down when RoR is enabled. This should be
+        // relatively safe. Alternatively consider managing the
+        // context on setup/teardown
+        RoR.enabled = false;
+    }
 
     protected void o (bool arg) { Assert.That(arg); }
     protected void o (object x, object y) { Assert.That(x, Is.EqualTo(y)); }

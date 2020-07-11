@@ -3,11 +3,14 @@ using System;
 using System.Collections.Generic;
 using static Active.Core.status;
 using Ex = System.Exception;
+using Active.Core.Details;
 
 namespace Active.Core{
 public partial class MComposite{
 
     public bool loop = true;
+    public bool resetOnResume = true;
+    int frame;
 
     public status current { get; private set; }
 
@@ -35,7 +38,11 @@ public partial class MComposite{
     public static implicit operator status (MComposite self) => self.Step();
     public static implicit operator Func<status>(MComposite self) => self.Step;
 
-    public status Step() => flow();
+    // TODO RoR untested for mutable composites
+    public status Step(){
+        if(resetOnResume) RoR.OnResume(ref frame, Reset);
+        return flow();
+    }
 
     public action Reset(){
         if(flow==Ordered) ι.Reset();

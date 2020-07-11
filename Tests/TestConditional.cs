@@ -9,7 +9,7 @@ using Active.Core;
 using Active.Core.Details;
 using static Active.Core.status;
 
-public class TestDecorator : CoreTest {
+public class TestConditional : CoreTest {
 
 	protected static readonly LogString log = null;
 
@@ -44,11 +44,11 @@ public class TestDecorator : CoreTest {
 	}
 
 	[Test] public void ConstructGate(){
-		new Conditional.Gate(x);
+		new Conditional.Gate(x, newLogData);
 	}
 
 	[Test] public void NewGate([Range(-1, 1)] int val){
-		var gate = new Conditional.Gate(x);
+		var gate = new Conditional.Gate(x, newLogData);
 		var z    = status.@unchecked(val);
 		o ( (status)gate[z], z );
 		o ( x.note , z);
@@ -56,7 +56,7 @@ public class TestDecorator : CoreTest {
 
 	[Test] public void NewStatusRef([Range(-1, 1)] int val){
 		var z = status.@unchecked(val);
-		var w = new Conditional.StatusRef(z);
+		var w = new Conditional.StatusRef(z, newLogData);
 		o ( (status)w, z );
 	}
 
@@ -83,23 +83,62 @@ public class TestDecorator : CoreTest {
 		o ( s.trace != null );
 	}
 
+	[Test] public void ToStatusWithLog(){
+		var @ref = new Conditional.StatusRef(done(), newLogData);
+		var s = (status)@ref;
+	}
+
+	[Test] public void NestedLogs(){
+		var x = new Deco(_done: "+Out", _fail: "-Out");
+		var y = new Deco(_done: "+In" , _fail: "-In" );
+		bool z = false;
+		var s = x[true]?[ y[true]?[z=true] ];
+		o(z, true);
+		o(StatusFormat.Status(s),
+		  "* <D> +Out -> <D> +In -> StatusDetails.op_Implicit");
+	}
+
+	// NOTE: static scope only used when Gate/StatusRef is null
+	[Test] public void ToStatusWithLog_badStaticScope(){
+		Conditional.logData
+			= new AbstractDecorator.LogData(null, null, null);
+		Assert.Throws<System.InvalidOperationException>(()=>{
+			Conditional.StatusRef? @ref = null;
+			var s = (status)@ref;
+		});
+	}
+
 	// Not much of a test, just basic screening
 	[Test] public void DecoratorIds(){
 		o ( Cooldown.id != Init.id     );
 		o ( Init.id     != Interval.id );
 	}
 
-  #endif
+  #endif  // !AL_OPTIMIZE
 
-	// ------------------------------------------------------------------------
+    // ..............................................................
+
+  	// Pushing 'x' here is only because an instance is needed
+  	Conditional.LogData newLogData
+  	=> new Conditional.LogData(x, null, null);
+
+	// --------------------------------------------------------------
 
 	class Deco : Conditional{
 
+		public string doneMsg, failMsg;
 		public status note;
+
+		public Deco(string _done="Bug", string _fail="Bear"){
+			doneMsg = _done; failMsg = _fail;
+		}
+
 		override public void OnStatus(status s) => note = s;
+
 		override public action Reset() => @void();
-		public Gate? this[bool pass] => pass ? done(log && "Bug")
-											 : fail(log && "Bear");
+
+		public Gate? this[bool pass] => pass ? done(log && doneMsg)
+											 : fail(log && failMsg);
 	}
 
 }

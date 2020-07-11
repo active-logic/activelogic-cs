@@ -63,14 +63,8 @@ public readonly partial struct status{
     public static status operator | (status x, status y)
     => (x.ω > -1) ? throw new ArgEx(S.UnexpectedValue) : new status(y, x);
 
-    // TODO put back for lenient
-    //public static implicit operator status(bool state) => state?done():fail();
-
-    //public static implicit operator Active.Rx.status(in status self)
-    //=> new Active.Rx.status(self.ω);
-
-    //public static implicit operator status(Active.Rx.status other)
-    //=> new status(other.running ? 0 : other.complete ? +1 : -1);
+    public static implicit operator status(bool state)
+    => state ? done() : fail();
 
     public static status operator ++ (status s) => (+s).due;
 

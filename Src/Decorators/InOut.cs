@@ -1,16 +1,19 @@
 // Doc/Reference/Decorators.md
 using static Active.Core.status;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
+using Active.Core.Details;
 
 namespace Active.Core{
 public class InOut : Conditional{
 
     static int uid; internal static int id => uid = ID(uid);
-
     bool passing;
+    int frame;
 
-    public Gate? this[bool @in, bool @out]
-    => (passing = passing ? !@out : @in) ? done() : fail();
+    public Gate? this[bool @in, bool @out]{ get{
+        RoR.OnResume(ref frame, Reset);
+        return (passing = passing ? !@out : @in) ? done() : fail();
+    }}
 
     override public void OnStatus(status s) => OnStatus(s.running);
 

@@ -36,7 +36,7 @@ public class FT_OrderedSequence : CoreTest {
             s = i[ i? to(4)  :
                    i? to(10) :
                    i? to(15) : i.end];
-           if( j>= MaxIter) throw new Ex("Too many iterations");
+           if(j >= MaxIter) throw new Ex("Too many iterations");
         }
         o(foo, 15);
     }

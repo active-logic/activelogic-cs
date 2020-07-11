@@ -42,12 +42,11 @@ public class TestWaiter : CoreTest {
 		o (x.note.complete);
 	}
 
-	[Test] public void ConstructGate(){
-		new Waiter.Gate(x);
-	}
+	[Test] public void ConstructGate()
+	=> new Waiter.Gate(x, newLogData);
 
 	[Test] public void NewGate([Range(-1, 1)] int val){
-		var gate = new Waiter.Gate(x);
+		var gate = new Waiter.Gate(x, newLogData);
 		var z    = status.@unchecked(val);
 		o ( (status)gate[z], z );
 		o ( x.note , z);
@@ -55,7 +54,7 @@ public class TestWaiter : CoreTest {
 
 	[Test] public void NewStatusRef([Range(-1, 1)] int val){
 		var z = status.@unchecked(val);
-		var w = new Waiter.StatusRef(z);
+		var w = new Waiter.StatusRef(z, newLogData);
 		o ( (status)w, z );
 	}
 
@@ -63,8 +62,8 @@ public class TestWaiter : CoreTest {
 
 	[Test] public void LoggingOnFailure(){
 		status s = x[false]?[done(log && "Testing")];
-		// Question mark indicates we don't know the subtask managed by this
-		// decorator just yet
+		// Question mark indicates we don't know the subtask managed
+		// by this decorator just yet
 		o (TraceFormat.LogTrace(s.trace), "<D> Bear ?");
 	}
 
@@ -88,17 +87,56 @@ public class TestWaiter : CoreTest {
 		o ( Init.id     != Interval.id );
 	}
 
+	[Test] public void NestedLogs(){
+		var x = new Deco(_done: "+Out", _fail: "-Out");
+		var y = new Deco(_done: "+In" , _fail: "-In" );
+		bool z = false;
+		var s = x[true]?[ y[true]?[z=true] ];
+		o(z, true);
+		o(StatusFormat.Status(s),
+		  "* <D> +Out -> <D> +In -> StatusDetails.op_Implicit");
+	}
+
+	[Test] public void ToStatusWithLog(){
+		var @ref = new Waiter.StatusRef(done(), newLogData);
+		var s = (status)@ref;
+	}
+
+	// NOTE: static scope only used when Gate/StatusRef is null
+	[Test] public void ToStatusWithLog_badStaticScope(){
+		Waiter.logData
+			= new AbstractDecorator.LogData(null, null, null);
+		Assert.Throws<System.InvalidOperationException>(()=>{
+			Waiter.StatusRef? @ref = null;
+			var s = (status)@ref;
+		});
+	}
+
   #endif
 
-	// ------------------------------------------------------------------------
+    // ..............................................................
+
+    // Pushing 'x' here is only because an instance is needed
+    Waiter.LogData newLogData
+    => new Waiter.LogData(x, null, null);
+
+	// --------------------------------------------------------------
 
 	class Deco : Waiter{
 
+		public string doneMsg, failMsg;
 		public status note;
+
+		public Deco(string _done="Bug", string _fail="Bear"){
+			doneMsg = _done; failMsg = _fail;
+		}
+
 		override public void OnStatus(status s) => note = s;
+
 		override public action Reset() => @void();
-		public Gate? this[bool pass] => pass ? done(log && "Bug")
-											 : cont(log && "Bear");
+
+		public Gate? this[bool pass] => pass ? done(log && doneMsg)
+											 : cont(log && failMsg);
 	}
 
 }

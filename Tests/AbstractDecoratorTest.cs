@@ -14,4 +14,8 @@ public class AbstractDecoratorTest
         public float GetTime() => time;
     }
 
+    [Test] public void ConstructLogData(){
+        var x = new AbstractDecorator.LogData(new C(), null, null);
+    }
+
 }

@@ -16,9 +16,9 @@ public readonly partial struct status{
 
     public static bool log = true;
 
-    internal bool failing  => ω <= -1;
-    internal bool running  => ω ==  0;
-    internal bool complete => ω >=  1;
+    public bool failing  => ω <= -1;
+    public bool running  => ω ==  0;
+    public bool complete => ω >=  1;
     internal int  raw      => ω;
 
     public status this[ValidString reason] => this;

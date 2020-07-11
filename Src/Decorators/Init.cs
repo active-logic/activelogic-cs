@@ -6,23 +6,33 @@
 using static Active.Core.status;
 using InvOp = System.InvalidOperationException;
 using Tag   = System.Runtime.CompilerServices.CallerLineNumberAttribute;
+using Active.Core.Details;
 
 namespace Active.Core{
 public class Init : AbstractDecorator{
 
     static int uid; internal static int id => uid = ID(uid);
-
     static Init current;
     public bool passing = true;
+    int frame;
 
+    // TODO: RoR needs testing
+    // NOTE: unlike other decorators, it appears that the entry
+    // point for Init is the `pass` getter. Notice how this[]
+    // returns Gate vs Gate? (check cPatrol.cs for an example)
     public Init pass{ get{
-        if(current != null)
-        { current = null; throw new InvOp("Unclosed init detected"); }
+        RoR.OnResume(ref frame, Reset);
+        if(current != null){
+            current = null;
+            throw new InvOp("Unclosed init detected");
+        }
         current = this; return passing ? this : null;
     }}
 
-    public Gate this[object x]
-    { get{ passing = false; return new Gate(this); }}
+    public Gate this[object x]{ get{
+        passing = false;
+        return new Gate(this);
+    }}
 
     override public action Reset(){ passing = true; return @void(); }
 

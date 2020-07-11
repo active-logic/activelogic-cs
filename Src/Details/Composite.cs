@@ -2,13 +2,21 @@ using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 using Active.Core.Details;
 
 namespace Active.Core.Details{
-public abstract class Composite{
+public abstract class Composite : Resettable{
 
-    internal int index = 0;
+    int i, frame;
+
+    internal int index{
+        get{
+            RoR.OnResume(ref frame, Reset);
+            return i;
+        }
+        set => i = value;
+    }
 
     public static implicit operator int(Composite self) => self.index;
 
-    public void Reset() => index = 0;
+    public action Reset(){ index = 0; return status.@void(); }
 
     // A complete sequence succeeds, whereas a complete selector fails;
     public abstract status end{ get; }
@@ -36,15 +44,15 @@ partial class Task{
       protected Iterator or  => iterator;
 
       protected status end
-      { get{ var i = iterator; iterator = null; return i.end; }}
+      {get{ var i = iterator; iterator = null; return i.end; }}
 
       protected status loop
       { get{ var i = iterator; iterator = null; return i.loop; }}
 
-      public Iterator Sequence([Tag] int key = -1)
+      protected Iterator Sequence([Tag] int key = -1)
       => iterator = store.Composite<Sequence>(key).iterator;
 
-      public Iterator Selector([Tag] int key = -1)
+      protected Iterator Selector([Tag] int key = -1)
       => iterator = store.Composite<Selector>(key).iterator;
 
     #endif  // end !AL_THREAD_SAFE

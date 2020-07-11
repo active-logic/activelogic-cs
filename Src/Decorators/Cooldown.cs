@@ -9,12 +9,13 @@ public class Cooldown: Conditional, Conditional.OptionalArguments{
 	static int uid; internal static int id => uid = ID(uid);
 
 	public float duration = 1f;
-	float stamp = System.Single.MinValue;
+	internal float stamp = System.Single.MinValue;
 
 	public Cooldown(){}
 	public Cooldown(float duration){ this.duration = duration; }
 
-	public static implicit operator Cooldown(float val) => new Cooldown(val);
+	public static implicit operator Cooldown(float val)
+	=> new Cooldown(val);
 
 	public Gate? pass => this[duration];
 

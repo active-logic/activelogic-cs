@@ -13,6 +13,8 @@ public readonly partial struct failure{
 
     public static failure operator % (failure x, failure y) => _flop;
 
+    public static loop operator + (failure x) => loop._forever;
+
   #if AL_OPTIMIZE
     public status fail => status._fail;
 

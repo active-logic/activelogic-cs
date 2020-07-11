@@ -5,11 +5,27 @@ using Active.Core;
 /* Timeout limits the duration of the target task */
 public class TestTimeout : DecoratorTest<TestTimeout.Timeout> {
 
-	[Test] public void Constructor()
-	=> o ( new Timeout(5).duration, 5 );
+	static float t;  // Replaces Time.time (see derived class at end)
 
-	[Test] public void Initializer()
-	=> o ( new Timeout(){ duration = 5 }.duration, 5 );
+	[SetUp] override public void Setup(){ t = 0; base.Setup(); }
+
+	[Test] public void NoArgConstructor([Values(0f, 3f)] float st){
+		t = st;
+		var dec = new Timeout();
+		o(dec.due, 1 + st); o(dec.duration, 1);
+	}
+
+	[Test] public void Constructor([Values(0f, 3f)] float st){
+		t = st;
+		var dec = new Timeout(5);
+		o(dec.due, 5 + st); o(dec.duration, 5);
+	}
+
+	[Test] public void Initializer([Values(0f, 3f)] float st){
+		t = st;
+		var dec = new Timeout(){ duration = 5 };
+		o(dec.due, 5 + st); o(dec.duration, 5);
+	}
 
 	[Test] public void NoArgsForm([Range(-1, +1)] int val)
 	{ status s = x.pass?[status.@unchecked(val)]; }
@@ -46,10 +62,10 @@ public class TestTimeout : DecoratorTest<TestTimeout.Timeout> {
 	}
 
 	public class Timeout : Active.Core.Timeout{
-		public int time_;
+		public float time_ => TestTimeout.t;
 		public Timeout() : base(){}
 		public Timeout(float duration) : base(duration){}
 		override protected float time => time_;
-	} int t{ set => x.time_ = value; }
+	}
 
 }

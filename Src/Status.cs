@@ -15,7 +15,8 @@ public readonly partial struct status{
     public   bool complete => ω >=  1;
     internal int  raw      => ω;
 
-    public status Map(in status failTo, in status contTo, in status doneTo){
+    public status Map(in status failTo, in status contTo,
+                                        in status doneTo){
         switch(ω){
             case -1: return new status(this, failTo.ω);
             case  0: return new status(this, contTo.ω);
@@ -38,8 +39,10 @@ public readonly partial struct status{
     public static status operator ! (in status s)
     { if(log) s.trace?.Prefix('!'); return new status(s, -s.ω); }
 
-    public static pending operator ~ (in status s)
-    { if(log) s.trace?.Prefix('~'); return new pending(s.ω * s.ω, s.meta); }
+    public static pending operator ~ (in status s){
+        if(log) s.trace?.Prefix('~');
+        return new pending(s.ω * s.ω, s.meta);
+    }
 
     public static pending operator + (in status s){
         if(log) s.trace?.Prefix('+');

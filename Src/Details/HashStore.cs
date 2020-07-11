@@ -4,8 +4,8 @@ using Active.Core;
 namespace Active.Core.Details{
 class HashStore : Store{
 
-    Dictionary<int, Composite> cmap;             // Stores composites
-    Dictionary<int, AbstractDecorator> dmap;     // Decorators map
+    Dictionary<int, Composite> cmap;            // Stores composites
+    Dictionary<int, AbstractDecorator> dmap;    // Decorators map
 
     Dictionary<int, AbstractDecorator> decs
     => (dmap = dmap ?? new Dictionary<int, AbstractDecorator>());
@@ -21,7 +21,6 @@ class HashStore : Store{
         T newt = new T();
         composites[key] = newt;
         return newt;
-
     }
 
     T Store.Decorator<T>(int key, int decoratorId){

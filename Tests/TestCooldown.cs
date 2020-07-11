@@ -10,13 +10,38 @@ using F = Active.Core.Details.StatusFormat;
 public class TestCooldown : DecoratorTest<TestCooldown.Cooldown> {
 
 	[Test] public void Constructor()
-		=> o ( new Cooldown(5).duration, 5 );
+	=> o ( new Cooldown(5).duration, 5 );
 
 	[Test] public void Initializer()
-		=> o ( new Cooldown(){ duration = 5 }.duration, 5 );
+	=> o ( new Cooldown(){ duration = 5 }.duration, 5 );
+
+	[Test] public void FromFloat(){
+		Active.Core.Cooldown c = 5f;
+		o(c.duration, 5f);
+	}
+
+	[Test] public void Reset(){
+		var c = new Cooldown();
+		c.stamp = 10f;
+		o(c.stamp, 10f);
+		c.Reset();
+		o(c.stamp, 0f);
+	}
+
+	[Test] public void Indexer([Values(false, true)]bool log){
+		status.log = log;
+		float s = 1f;
+		x.stamp = 0;
+		//
+		t = (int)(x.stamp + s);
+		o(x[1f] != null);
+		//o(t >= x.stamp + s);
+		t = (int)x.stamp;
+		o(x[1f] == null);
+	}
 
 	[Test] public void NoArgsForm([Range(-1, +1)] int val){
-        status s = x.pass?[status.@unchecked(val)];
+        status s0 = x.pass?[status.@unchecked(val)];
     }
 
 	[Test] public void InitiallyPassing(){
@@ -71,6 +96,11 @@ public class TestCooldown : DecoratorTest<TestCooldown.Cooldown> {
 		public Cooldown() : base(){}
 		public Cooldown(float duration) : base(duration){}
 		override protected float time => time_;
-	} int t{ set => x.time_ = value; }
+	}
+
+	int t{
+		set => x.time_ = value;
+		get => x.time_;
+	}
 
 }

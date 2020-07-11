@@ -3,7 +3,6 @@
 #endif
 
 using Active.Core.Details;
-//using InvOp = System.InvalidOperationException;
 
 namespace Active.Core{
 
@@ -13,8 +12,11 @@ partial class AbstractDecorator{
 
     protected static readonly LogString log = null;
     static int MaxId = 0;
+
     public abstract action Reset();
-    override public string ToString() => StatusFormat.Decorator(this);
+
+    override public string ToString()
+    => StatusFormat.Decorator(this);
 
     internal readonly struct LogData{
 
@@ -22,11 +24,13 @@ partial class AbstractDecorator{
         readonly object target;
         readonly string reason;
 
+        // NOTE: s == null allowed only for testing purposes
         public LogData(AbstractDecorator s, object tg, string r){
             scope = s; target = tg; reason = r;
         }
 
-        public string Reason() => TraceFormat.DecoratorReason(target, reason);
+        public string Reason()
+        => TraceFormat.DecoratorReason(target, reason);
 
     }
 
