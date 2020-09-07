@@ -8,7 +8,9 @@ public class TestInit : CoreTest {
 
     Init init;
 
-    [SetUp] public void Setup() => init = new Init();
+    [SetUp] public void Setup(){
+        init = new Init();
+    }
 
     [Test] public void TestFirstPass(){
         string str = "";
@@ -52,12 +54,12 @@ public class TestInit : CoreTest {
         x = init.pass?[ noop ] % cont(); o( !init.passing );
     }
 
-    [Test] public void TestDetectUnclosedInitExp(){
-        string str = "";
-        Init.Gate? x = init.pass?[ str = "boo" ];
-        Assert.Throws<InvalidOperationException>( () => {
-            var s = init.pass?[ str = "boo" ] + Substr(ref str, 1);
-        });
+    [Test] public void TestNestedInit(){
+        Init x = new Init(), y = new Init();
+        int a = 0, b = 0;
+        status s = x.pass?[ a = (a == 0 ? 1 : 2) ] % (
+            y.pass?[ b = (b == 0 ? 1 : 2) ] % cont()
+        );
     }
 
     object noop => 0;

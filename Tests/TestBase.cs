@@ -21,8 +21,11 @@ public class TestBase {
         RoR.enabled = false;
     }
 
-    protected void o (bool arg) { Assert.That(arg); }
-    protected void o (object x, object y) { Assert.That(x, Is.EqualTo(y)); }
+    protected bool o (bool arg) { Assert.That(arg); return true; }
+
+    protected bool o (object x, object y)
+    { Assert.That(x, Is.EqualTo(y)); return true; }
+
     #if UNITY_EDITOR
     protected void print(string msg){
         UnityEngine.Debug.Log(msg);

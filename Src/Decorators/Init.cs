@@ -12,7 +12,8 @@ namespace Active.Core{
 public class Init : AbstractDecorator{
 
     static int uid; internal static int id => uid = ID(uid);
-    static Init current;
+    internal static Init[] stack = new Init[128];
+    internal static int stackIndex = -1;
     public bool passing = true;
     int frame;
 
@@ -22,36 +23,35 @@ public class Init : AbstractDecorator{
     // returns Gate vs Gate? (check cPatrol.cs for an example)
     public Init pass{ get{
         RoR.OnResume(ref frame, Reset);
-        if(current != null){
-            current = null;
-            throw new InvOp("Unclosed init detected");
-        }
-        current = this; return passing ? this : null;
+        Init.Push(this);
+        return passing ? this : null;
     }}
 
     public Gate this[object x]{ get{
         passing = false;
-        return new Gate(this);
+        return new Gate();
     }}
 
     override public action Reset(){ passing = true; return @void(); }
 
+    static void Push (Init x) => stack[++stackIndex] = x;
+
+    static Init Pop(){
+        var @out = stack[stackIndex];
+        stack[stackIndex--] = null;
+        return @out;
+    }
+
     public readonly struct Gate{
 
-        readonly Init owner;
-
-        public Gate(Init self) => owner = self;
-
-        static Init Owner(Gate? self) => self?.owner ?? Init.current;
-
         public static status operator % (Gate? self, status s)
-        { Owner(self).passing = !s.running; Init.current = null; return s; }
+        { Init.Pop().passing = !s.running; return s; }
 
         public static status operator + (Gate? self, status s)
-        { Owner(self).passing = s.complete; Init.current = null; return s; }
+        { Init.Pop().passing = s.complete; return s; }
 
         public static status operator - (Gate? self, status s)
-        { Owner(self).passing = s.failing; Init.current = null; return s; }
+        { Init.Pop().passing = s.failing; return s; }
 
     }  // Gate class
 
