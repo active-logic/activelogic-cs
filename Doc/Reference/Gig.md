@@ -25,20 +25,23 @@ status x = Strike() && myTask[params];
 ### Methods
 
 `public virtual status Step()`
-/ Stub for your step method
+Stub for your step method
 
 `protected action Do(object arg) (params object[] args)`
-/ Convert the result of a non void expression to `done`.
+Convert the result of a non void expression to `done`.
 Example: `status Step() => Do( myVar = 34 )`
 
+`protected status Do<T>() where T : UGig`
+Retrieve/create and evaluate a component task of type T; performance note: depends on `GetComponent<T>` (provisional)
+
 `protected status Pause(float duration)`
-/ Pause the underlying stepper for a specified duration (seconds)
+Pause the underlying stepper for a specified duration (seconds)
 
 `protected status Resume()`
-/ Resume execution while paused or suspended
+Resume execution while paused or suspended
 
 `protected status Suspend()`
-/ Suspend the underlying stepper indefinitely
+Suspend the underlying stepper indefinitely
 
 ### Type Conversions
 

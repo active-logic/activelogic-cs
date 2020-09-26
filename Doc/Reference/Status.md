@@ -13,7 +13,7 @@ Avoid status constructors; use `done()`, `fail()` or `cont()` instead.
 ## Fields & Properties
 
 `failing`, `running` and `complete`
-Indicates whether a status is failing, running, or complete.
+Indicate whether a status is failing, running, or complete.
 
 ## Methods
 

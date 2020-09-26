@@ -2,9 +2,9 @@
 
 # Steppers, Agents and Tickers Reference
 
-Tasks and status functions are intended to run *frequently*; `Agent`, `PhysicsAgent`, `Ticker` and `Stepper` help you integrate tasks by controlling these updates.
+Tasks and status functions are intended to run *frequently*; `Agent`, `PhysicsAgent`, `Ticker` and `Stepper` help you integrate tasks by controlling these updates; agents and tickers also benefit history, logging and debugging features.
 
-All agents and tickers also benefit history, logging and debugging features.
+A stepper runs a root task. If no root task is initially assigned the stepper will attempt to retrieve and root a `UTask` instance via `GetComponent`. If you added several tasks to the game object, assign the root in the stepper inspector.
 
 ## Class Agent : Stepper
 
@@ -55,7 +55,19 @@ The gig or task controlled by this agent.
 `bool loop`
 Unset if you don't want the agent to loop over (default is `true`)
 
+`status state`
+Returning state after `Step()`
+
 ### Methods
+
+`T Do<T>() where T : UGig`
+Create and root a task of type T; also enable the agent, if currently disabled (`Agent` only; provisional).
+
+`void Push(Func<status> φ)`
+Override the current task/behavior tree with a task φ. The argument task will then execute until completing or failing. After φ has stopped, the overriden task resumes normally.
+
+`void Run(Func<status> φ)`
+Run the specified task, wrapped via an adapter. Mainly for testing purposes.
 
 `status Step()`
 Iterate the stepper.

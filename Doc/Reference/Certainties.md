@@ -34,12 +34,16 @@ action BunnyHop() => Jump() % Shoot();`
 
 Inverting `action` using `!` returns `failure` (and vice-versa).
 
+Like `status`, action supports the `-` operator.
+
 ## Struct `failure`
 
 `failure` is the type of functions that always fail immediately; failures return `failure.broken`.
 Promote `failure` to `status` Via the `fail` attribute.
 
 Combine failures using the neutral combinator `%`:
+
+Like `status`, action supports the `+` operator.
 
 ## Struct `pending`
 

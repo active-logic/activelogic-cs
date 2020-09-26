@@ -18,12 +18,12 @@ Under the hood, most decorators are *stateful conditionals*:
 
 ## Life cycle
 
-Since decorators are stateful, on occasion it is appropriate to reset their state. In order to reset a decorator, invoke `Reset()`. Oftentimes, however, a decorator's life-cycle is managed on your behalf, and `Reset()` is called implicitly:
+Since decorators are stateful, on occasion it may be appropriate to reset their state. In order to reset a decorator, invoke `Reset()`. Usually, however, a decorator's life-cycle is managed on your behalf, and `Reset()` is called implicitly:
 
 - Inline decorators are automatically reset when the underlying task is reset.
 - Many decorators automatically reset 'on resume'. A resume occurs when control returns to a previously active execution path.
 
-If you are not using Unity, reset-on-resume requires a time manager; to provide your own time manager, implement `TimeManager` and assign `AbstractDecorator.timeManager`.
+The reset-on-resume feature is detailed [here](RoR.md)
 
 ## Inline decorators
 
