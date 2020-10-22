@@ -15,7 +15,7 @@ public class Drive : AbstractDecorator{
     static int uid; internal static int id => uid = ID(uid);
     //
     static status hold;
-    
+
     #if !AL_OPTIMIZE
     internal static LogData logData;
     protected object target;
@@ -23,6 +23,11 @@ public class Drive : AbstractDecorator{
 
     public Gate? this[status @in, bool crit]{ get{
         hold = @in;
+        return @in.running ? Eval(crit) : Bypass();
+    }}
+
+    public Gate? this[bool @in, bool crit]{ get{
+        hold = @in ? status.cont() : status.fail();
         return @in.running ? Eval(crit) : Bypass();
     }}
 
@@ -108,6 +113,10 @@ partial class Task{
 	public Self.Gate? While(status @in, [Tag] int key = -1)
 	=> store.Decorator<Self>(key, Self.id)[@in, crit: false];
     public Self.Gate? Tie(status @in, [Tag] int key = -1)
+	=> store.Decorator<Self>(key, Self.id)[@in, crit: true];
+    public Self.Gate? While(bool @in, [Tag] int key = -1)
+	=> store.Decorator<Self>(key, Self.id)[@in, crit: false];
+    public Self.Gate? Tie(bool @in, [Tag] int key = -1)
 	=> store.Decorator<Self>(key, Self.id)[@in, crit: true];
 }
 #endif

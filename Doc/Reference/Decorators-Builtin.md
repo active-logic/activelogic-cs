@@ -84,7 +84,7 @@ NOTE: with *Latch*, the condition evaluates at every iteration, even if the latc
 
 **Once**
 
-Evaluates the subtask until it completes or fails. Subsequent evaluations are blocked until `Reset()`.
+Evaluate the subtask until it completes or fails. Thereafter, skip evaluation and return the final status (stateful, RoR, thread unsafe).
 
 ```cs
 status s =  Once()?[ animator.SetTrigger("Strike") ];
@@ -92,6 +92,26 @@ status s =  Once()?[ animator.SetTrigger("Strike") ];
 Once once = new Once();
 status s = once.pass?[ animator.SetTrigger("Strike") ];
 ````
+
+Use the *Once* decorator when re-iterating a task after it has completed is not desired. For example, in order to give an item, an agent first should be holding the item. However this action must not reiterate (or the agent won't ever let go of said item).
+
+Where you have a mostly stateless composite, and wish only a couple of tasks to not re-iterate, prefer this decorator to using an  [ordered composite](OrderedComposites.md); as an example, this:
+
+```cs
+public status Throw(Transform item, Vector3 dir) => Sequence()[
+    and ? Hold(item) :
+    and ? Face(dir) && Play("Throw")
+                     + After(0.5f)?[ Impel(that, dir) ] : end];
+```
+
+May be written as:
+
+```cs
+public status Throw(Transform that, Vector3 dir)
+    => Once()?[Hold(that)]
+    && Face(dir) && this["Throw"]
+                  + After(0.5f)?[ Impel(that, dir) ];
+```
 
 **Timeout**
 
@@ -103,6 +123,66 @@ status s = Timeout(5f)?[ Idle() ];
 Timeout t = 5f;
 status s = t.pass?[ Idle() ];
 ````
+
+**While and Tie (Drive)**
+
+*While* drives a subtask while a control task is running. With `While`, the subtask is treated as a side effect, and its return state is ignored.
+
+```cs
+While( x )?[ y ]
+// or ...
+Drive @while = new Drive();
+status s = @while[ x, crit: false ]?[ y ];
+```
+
+Similar to *While*, *Tie* also drives a subtask while a control task is running; however, while the driving task is running, `Tie` returns the value of the subtask.
+
+```cs
+Tie( x )?[ y ]
+// or ...
+Drive @tie = new Drive();
+status s = @tie[ x, crit: true ]?[ y ];
+```
+
+An example using both:
+
+```cs
+// Inside "Vehicle class"
+status Navigate => Tie( engine.Run() )?[ Move() ];
+
+// Inside "Engine class"
+status Run => Drive( Burn().never )?[ Play("Noise") ];
+
+impending Burn(){
+    if(oil > 0){
+        oil--; return cont();
+    }else{
+        return fail(log && "Out of oil");
+    }
+}
+```
+
+In this case:
+- While the engine is running, moving is enabled; `Tie` is used because moving may fail whether the engine is running or not.
+- Since the engine noise is a side effect, `Drive` is used.
+- `Burn` is impending because it never returns the "done" status.
+
+`While` and `Tie` allow a boolean argument as left hand. Often the left hand represents consuming a resource, or refers to a binary state. In the above example, the `Burn()` function may be written as:
+
+```cs
+bool Burn(){
+    if(oil > 0){
+        oil--; return true;
+    }else{
+        return false;
+    }
+}
+```
+
+Notes:
+
+- The *Tie* decorator (eval rh while running) naturally complements the && (eval rh while succeeding) and || (eval rh while failing) operators. Since C# does not allow yet another short-circuiting operator, tie is implemented as a decorator.
+- Although `Drive` is stateless, decorator semantics require an object. Reusing this decorator should be safe and (unlike stateful decorators), placing several `Tie` / `Drive` invocations on the same line of code should be safe.
 
 **With**
 
