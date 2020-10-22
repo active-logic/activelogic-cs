@@ -7,58 +7,57 @@ using static Active.Core.status;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 using InvOp = System.InvalidOperationException;
 using Active.Core.Details;
-using Self = Active.Core.Once;
+using Self = Active.Core.Drive;
 
 namespace Active.Core{
-public class Once : AbstractDecorator{
+public class Drive : AbstractDecorator{
 
     static int uid; internal static int id => uid = ID(uid);
     //
     static status hold;
-    //
-	status state = cont();
-    int frame = 0;
-
+    
     #if !AL_OPTIMIZE
     internal static LogData logData;
     protected object target;
     #endif
 
-	public Gate? pass{ get{
-        RoR.OnResume(ref frame, Reset);
-        return state.running ? Eval() : Bypass();
+    public Gate? this[status @in, bool crit]{ get{
+        hold = @in;
+        return @in.running ? Eval(crit) : Bypass();
     }}
 
-    protected Gate Eval(ValidString reason=null)
-    => new Gate(this, new LogData(this, ".", reason));
+    protected Gate Eval(bool crit, ValidString reason=null)
+    => new Gate(this, crit, new LogData(this, ".", reason));
 
     protected Gate? Bypass(ValidString reason=null){
         #if !AL_OPTIMIZE
         logData = new LogData(this, target, reason);
         #endif
-        hold = state;
         return null;
     }
 
-    public void OnStatus(status s) => state = s;
-
-    override public action Reset(){ state = cont(); return @void(); }
+    // We don't have state, so ideally do not need a reset
+    override public action Reset() => @void();
 
     // ==============================================================
 
     public readonly struct Gate{
 
-        readonly Self owner; readonly LogData logData;
+        readonly Self owner;
+        readonly LogData logData;
+        readonly bool crit;
 
-        internal Gate(Self owner, LogData logData)
-        { this.owner = owner; this.logData = logData; }
+        internal Gate(Self owner, bool crit, LogData logData){
+            this.owner = owner;
+            this.crit = crit;
+            this.logData = logData;
+        }
 
         public StatusRef this[status s]{ get{
             #if !AL_OPTIMIZE
             owner.target = s.targetScope;
             #endif
-            owner.OnStatus(s);
-            return new StatusRef(s, logData);
+            return new StatusRef(crit ? s : hold, logData);
         }}
 
     }
@@ -82,7 +81,7 @@ public class Once : AbstractDecorator{
          #endif
 
          static status ToStatus(StatusRef? self)
-         => self?.x ?? Once.hold;
+         => self?.x ?? Self.hold;
 
          #if !AL_OPTIMIZE
          static status ToStatusWithLog(StatusRef? self){
@@ -106,8 +105,10 @@ public class Once : AbstractDecorator{
 
 #if !AL_BEST_PERF
 partial class Task{
-	public Self.Gate? Once([Tag] int key = -1)
-	=> store.Decorator<Self>(key, Self.id)?.pass;
+	public Self.Gate? While(status @in, [Tag] int key = -1)
+	=> store.Decorator<Self>(key, Self.id)[@in, crit: false];
+    public Self.Gate? Tie(status @in, [Tag] int key = -1)
+	=> store.Decorator<Self>(key, Self.id)[@in, crit: true];
 }
 #endif
 
