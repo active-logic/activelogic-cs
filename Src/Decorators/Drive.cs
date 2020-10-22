@@ -28,7 +28,7 @@ public class Drive : AbstractDecorator{
 
     public Gate? this[bool @in, bool crit]{ get{
         hold = @in ? status.cont() : status.fail();
-        return @in.running ? Eval(crit) : Bypass();
+        return @in ? Eval(crit) : Bypass();
     }}
 
     protected Gate Eval(bool crit, ValidString reason=null)
@@ -115,9 +115,9 @@ partial class Task{
     public Self.Gate? Tie(status @in, [Tag] int key = -1)
 	=> store.Decorator<Self>(key, Self.id)[@in, crit: true];
     public Self.Gate? While(bool @in, [Tag] int key = -1)
-	=> store.Decorator<Self>(key, Self.id)[@in, crit: false];
+    => store.Decorator<Self>(key, Self.id)[@in, crit: false];
     public Self.Gate? Tie(bool @in, [Tag] int key = -1)
-	=> store.Decorator<Self>(key, Self.id)[@in, crit: true];
+    => store.Decorator<Self>(key, Self.id)[@in, crit: true];
 }
 #endif
 
