@@ -2,18 +2,18 @@
 
 ## Content
 
-2. [Status and status expressions](Status.md)
-3. [Certainties](Certainties.md)
-4. [Gigs](Gig.md) and [Tasks](Task.md)
-5. [Steppers, agents and tickers](Steppers.md)
-6. [Logging](Logging.md)
-7. [Decorators](Decorators.md)
+1. [Status and status expressions](Status.md)
+2. [Certainties](Certainties.md)
+3. [Gigs](Gig.md) and [Tasks](Task.md)
+4. [Steppers, agents and tickers](Steppers.md)
+5. [Logging](Logging.md)
+6. [Decorators](Decorators.md)
     - [Built-in decorators](Decorators-Builtin.md)
     - [Custom decorators](Decorators-Custom.md)
-8. [Ordered composites](OrderedComposites.md)
-9. [Mutable composites](MutableComposites.md)
-10. [Memory and performance](MemoryAndPerformance.md)
-11. [Extending the API](Extensions.md)
+7. [Ordered composites](OrderedComposites.md)
+8. [Mutable composites](MutableComposites.md)
+9. [Memory and performance](MemoryAndPerformance.md)
+10. [Extending the API](Extensions.md)
 
 ## Engine & Language support
 
