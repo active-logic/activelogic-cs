@@ -124,6 +124,18 @@ Timeout t = 5f;
 status s = t.pass?[ Idle() ];
 ````
 
+**Wait**
+
+*Wait* delays execution.
+Initially, and until the delay has expired, return `cont`; thereafter, return `done` until reset (RoR).
+
+```cs
+Wait(0.5f); // wait 0.5 seconds
+// or...
+Wait wait = 0.5f;
+wait(0.5f);
+```
+
 **While and Tie (Drive)**
 
 *While* drives a subtask while a control task is running. With `While`, the subtask is treated as a side effect, and its return state is ignored.

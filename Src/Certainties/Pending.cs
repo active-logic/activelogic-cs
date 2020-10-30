@@ -36,6 +36,9 @@ public readonly partial struct pending{
 
     public static bool operator false (pending s) => s.ω == 0;
 
+    public override string ToString()
+    => ω == 0 ? "pending.cont" : "pending.done";
+
     #if AL_OPTIMIZE   // ------------------------------------------------------
 
     public status due => new status(ω);

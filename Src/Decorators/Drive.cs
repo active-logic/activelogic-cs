@@ -93,13 +93,14 @@ public class Drive : AbstractDecorator{
              if(self.HasValue){
                  var ι = self.Value;
                  return ι.x.ViaDecorator(
-                             ι.logData.scope, ι.logData.Reason());
+                             ι.logData.scope,
+                             log && ι.logData.Reason());
              }else{
                  if(Self.logData.scope == null) throw
                     new InvOp("Log data is null");
                  return hold.ViaDecorator(
                              Self.logData.scope,
-                             Self.logData.Reason());
+                             log && Self.logData.Reason());
              }
         }
         #endif
