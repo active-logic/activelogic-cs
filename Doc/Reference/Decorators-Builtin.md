@@ -6,6 +6,8 @@ The API ships with several built-in decorators.
 
 **After/Delay** (Only available in Unity)
 
+**NOTE: considered for deprecation; use `Wait(float)` instead**
+
 Consume the specified delay before evaluating the subtask; after the subtask has completed or failed, reset.
 
 ```cs
@@ -101,7 +103,7 @@ Where you have a mostly stateless composite, and wish only a couple of tasks to 
 public status Throw(Transform item, Vector3 dir) => Sequence()[
     and ? Hold(item) :
     and ? Face(dir) && Play("Throw")
-                     + After(0.5f)?[ Impel(that, dir) ] : end];
+                     * (Wait(0.5) && Impel(that, dir)) : end];
 ```
 
 May be written as:
@@ -109,8 +111,8 @@ May be written as:
 ```cs
 public status Throw(Transform that, Vector3 dir)
     => Once()?[Hold(that)]
-    && Face(dir) && this["Throw"]
-                  + After(0.5f)?[ Impel(that, dir) ];
+    && Face(dir) && Play("Throw")
+                  * (Wait(0.5) && Impel(that, dir));
 ```
 
 **Timeout**
