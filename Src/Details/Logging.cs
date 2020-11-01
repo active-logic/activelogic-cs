@@ -20,27 +20,36 @@ using static Active.Core.status;
 namespace Active.Core.Details{
 public static class Logging{
 
-    internal static status Status(in status @base, V reason, S p, S m, int l)
+    internal static status Status(in status @base, V reason,
+                                  S p, S m, int l)
     => log ? ViaScope(@base, F.SysTrace(p, m, l), reason) : @base;
 
-    internal static action Action(V reason, S p, S m, int l) => log ?
-    new action(ViaScope(_done, F.SysTrace(p,m,l), reason).meta) : action._void;
+    internal static action Action(V reason, S p, S m, int l) => log
+    ? new action(ViaScope(_done, F.SysTrace(p,m,l), reason).meta)
+    : action._void;
 
-    internal static failure Failure(V reason, S p, S m, int l) => log ?
-    new failure(ViaScope(_fail, F.SysTrace(p,m,l), reason).meta):failure._flop;
+    internal static failure Failure(V reason, S p, S m, int l) => log
+    ? new failure(ViaScope(_fail, F.SysTrace(p,m,l), reason).meta)
+    : failure._false;
 
-    internal static loop Forever(V reason, S p, S m, int l) => log ?
-    new loop(ViaScope(_cont, F.SysTrace(p,m,l), reason).meta):loop._forever;
+    internal static loop Forever(V reason, S p, S m, int l) => log
+    ? new loop(ViaScope(_cont, F.SysTrace(p,m,l), reason).meta)
+    : loop._cont;
 
     internal static pending Pending(pending @base, V reason,
-       string p, string m, int l) => log ? new pending(
-         @base.ω, ViaScope(@base.due, F.SysTrace(p,m,l), reason).meta) : @base;
+                                    string p, string m, int l) => log
+    ? new pending(@base.ω, ViaScope(@base.due,
+                                    F.SysTrace(p,m,l), reason).meta)
+    : @base;
 
     internal static impending Impending(impending @base, V reason,
-       string p, string m, int l) => log ? new impending(
-       @base.ω, ViaScope(@base.undue, F.SysTrace(p,m,l), reason).meta) : @base;
+                                        string p, string m, int l) => log
+    ? new impending(@base.ω, ViaScope(@base.undue,
+                                      F.SysTrace(p,m,l), reason).meta)
+    : @base;
 
-    internal static status ViaScope(in status s, object scope, string reason)
+    internal static status ViaScope(in status s, object scope,
+                                                 string reason)
     => new status(s.ω, s.meta.ViaScope(s, scope, reason));
 
 }}  // Active.Core.Details

@@ -3,7 +3,9 @@
 #define AL_OPTIMIZE
 #endif
 
+using System;
 using Active.Core.Details;
+using S = Active.Core.Details.ValidString;
 
 namespace Active.Core{
 public readonly partial struct status{
@@ -54,23 +56,32 @@ public readonly partial struct status{
         return new impending(System.Math.Max(s.ω - 1, -1), s.meta);
     }
 
-  #else  // !AL_OPTIMIZE <> AL_OPTIMIZE
+    #else  // !AL_OPTIMIZE <> AL_OPTIMIZE
 
-    public status Via(ValidString reason = null) => this;
+    public status Via(S reason = null) => this;
 
-     public status ViaDecorator(IDecorator scope, ValidString reason=null)
-     => this;
+    public status ViaDecorator(IDecorator scope, S reason=null)
+    => this;
 
-     public static status Eval(status s) => s;
+    public static status Eval(status s) => s;
 
-     public static status  done   (ValidString reason = null) => _done;
-     public static status  fail   (ValidString reason = null) => _fail;
-     public static status  cont   (ValidString reason = null) => _cont;
-     public static action  @void  (ValidString reason = null) => action._void;
-     public static failure flop (ValidString reason = null) => failure._flop;
-     public static loop    forever(ValidString reason = null) => loop._forever;
+    public static status done(S reason = null) => _done;
+    public static status fail(S reason = null) => _fail;
+    public static status cont(S reason = null) => _cont;
 
-  #endif  // AL_OPTIMIZE
+    public static status Impending (impending s) => s.undue;
+    public static status Pending   (pending   s) => s.due;
+
+    public static action  @void  (S reason = null) => action._void;
+    public static failure @false (S reason = null) => failure._false;
+
+    [Obsolete("Use '@false' instead", false)]
+    public static failure flop (S reason = null) => failure._false;
+
+    [Obsolete("Use loop.cont instead", false)]
+    public static loop forever(S reason = null) => loop._forever;
+
+    #endif  // AL_OPTIMIZE
 
 }
 
@@ -79,7 +90,7 @@ public readonly partial struct status{
 public static class BoolExt{
 
     public static Active.Core.status status(this bool self,
-                                            ValidString reason = null)
+                                            S reason = null)
     => self ? Active.Core.status._done : Active.Core.status._fail;
 
 }

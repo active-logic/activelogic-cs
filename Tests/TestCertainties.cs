@@ -7,60 +7,82 @@ public class TestCertainties{
 
 public class TestAction : CoreTest{
 
-    [Test] public void Action()       => o ( action._void.now.complete );
+    [Test] public void Action()
+    => o ( (status)action._void, status._done );
 
-    [Test] public void InvertAction() => o( !action._void, failure._flop );
+    [Test] public void InvertAction()
+    => o( !action._void, failure._false );
 
     [Test] public void CombineActions()
-    { action x = action._void%action._void; }
+    { action x = action._void % action._void; }
 
-    #if !AL_STRICT
+    [Test] public void And_Action_Action()
+    => o(action._void && action._void, action._void);
+
+    [Test] public void Action_and_Status()
+    => o(action._void & status._done, status._done);
+
+    [Test] public void Status_and_Action()
+    => o(status._done && action._void, status._done);
+
+    [Test] public void And_Action_Failure()
+    => o(action._void & failure._false, failure._false);
+
     [Test] public void ToStatus(){
         status s = action._void;
         o( s, status._done );
     }
-    #endif
 
 }
 
 public class TestFailure : CoreTest{
 
-    [Test] public void Failure() => o ( failure._flop.fail.failing  );
-    [Test] public void InvertFailure() => o( !failure._flop, action._void );
-    [Test] public void CombineFailures()
-    { failure x = failure._flop % failure._flop; }
+    [Test] public void Failure_internal()
+    => o ( (status)failure._false, status._fail  );
 
-    #if !AL_STRICT
-    [Test] public void ToStatus(){
-        status s = failure._flop;
-        o( s, status._fail );
-    }
-    #endif
+    [Test] public void Failure()
+    => o ( (status)failure._false, status._fail  );
+
+    [Test] public void InvertFailure()
+    => o( !failure._false, action._void );
+
+    [Test] public void CombineFailures()
+    { failure x = failure._false % failure._false; }
+
+    [Test] public void OrFailures()
+    => o(failure._false || failure._false, failure._false);
 
 }
 
 public class TestLoop : CoreTest{
 
-    [Test] public void Loop() => o ( loop._forever.ever.running  );
-    [Test] public void CombineLoops() { loop x = loop._forever%loop._forever; }
+    [Test] public void Loop()
+    => o ( loop._cont.ever, status._cont);
 
-    #if !AL_STRICT
-    [Test] public void ToStatus(){
-        status s = loop._forever;
-        o( s, status._cont );
-    }
-    #endif
+    [Test] public void CombineLoops()
+    { loop x = loop._cont % loop._cont; }
 
 }
 
 public class TestPending : CoreTest{
 
-    [Test] public void PendingDone()     => o ( pending.done().due.complete);
-    [Test] public void PendingCont()     => o ( pending.cont().due.running);
-    [Test] public void Pending_Done()    => o ( pending._done.due.complete);
-    [Test] public void Pending_Cont()    => o ( pending._cont.due.running);
-    [Test] public void InvPending_Done() => o (!pending._done, impending._doom);
-    [Test] public void InvPending_Cont() => o (!pending._cont, impending._cont);
+    [Test] public void PendingDone()
+    => o ( pending.done().due.complete);
+
+    [Test] public void PendingCont()
+    => o ( pending.cont().due.running);
+
+    [Test] public void Pending_Done()
+    => o ( pending._done.due.complete);
+
+    [Test] public void Pending_Cont()
+    => o ( pending._cont.due.running);
+
+    [Test] public void InvPending_Done()
+    => o (!pending._done, impending._fail);
+
+    [Test] public void InvPending_Cont()
+    => o (!pending._cont, impending._cont);
 
     [Test] public void AndPending(){
         o(pending._cont && pending._cont, pending._cont);
@@ -69,45 +91,35 @@ public class TestPending : CoreTest{
         o(pending._done && pending._done, pending._done);
     }
 
-    [Test] public void OrPending([Values(0, +1)] int a, [Values(0, +1)] int b)
-    => Assert.Throws<InvOp>( () =>
-    { var s = new pending(a) || new pending(b); } );
-
-    #if !AL_STRICT
-    [Test] public void ToStatus(){
-        status s = pending._cont;
-        o( s, status._cont );
-    }
-    #endif
-
 }
 
 public class TestImpending : CoreTest{
 
-    [Test] public void ImpendingDoom()   => o( impending.doom().undue.failing );
-    [Test] public void ImpendingCont()   => o( impending.cont().undue.running );
-    [Test] public void Impending_Doom()   => o( impending._doom.undue.failing );
-    [Test] public void Impending_Cont()   => o( impending._cont.undue.running );
-    [Test] public void InvImpendingDoom() => o(!impending._doom, pending._done);
-    [Test] public void InvImpendingCont() => o(!impending._cont, pending._cont);
+    [Test] public void ImpendingFail()
+    => o( impending.fail().undue.failing );
 
-    [Test] public void AndImpending([Values(-1, 0)]int a, [Values(-1, 0)]int b)
-    => Assert.Throws<InvOp>( () =>
-        { var s = new impending(a) && new impending(b); } );
+    [Test] public void ImpendingCont()
+    => o( impending.cont().undue.running );
+
+    [Test] public void Impending_Fail()
+    => o( impending._fail.undue.failing );
+
+    [Test] public void Impending_Cont()
+    => o( impending._cont.undue.running );
+
+    [Test] public void InvImpendingFail()
+    => o(!impending._fail, pending._done);
+
+    [Test] public void InvImpendingCont()
+    => o(!impending._cont, pending._cont);
+
     [Test] public void OrImpending(){
         o(impending._cont || impending._cont, impending._cont);
-        o(impending._cont || impending._doom, impending._cont);
-        o(impending._doom || impending._cont, impending._cont);
-        o(impending._doom || impending._doom, impending._doom);
+        o(impending._cont || impending._fail, impending._cont);
+        o(impending._fail || impending._cont, impending._cont);
+        o(impending._fail || impending._fail, impending._fail);
     }
-
-    #if !AL_STRICT
-    [Test] public void ToStatus(){
-        status s = impending._cont;
-        o( s, status._cont );
-    }
-    #endif
 
 }
 
-}
+} // TestCertainties

@@ -40,11 +40,5 @@ This flag does not perform any optimizations; it is intended for performance con
 Run in optimized mode.
 In deployment, optimizations are performed, resulting in better performance at the cost of type safety and runtime error checks; set this flag to preview these optimizations. NOTE: logging is inactive in optimized mode.
 
-`AL_STRICT`
-Disable implicit conversions; recommended for collaborative workflows.
-- From certainties to status
-- From bool to status
-- From string to ValidString
-
 `AL_THREAD_SAFE`
 Disable non thread-safe APIs, except logging support.

@@ -14,9 +14,4 @@ public class ValidString{
 
     public static implicit operator string(ValidString s) => s?.value;
 
-    #if !AL_STRICT
-      public static implicit operator ValidString(string that)
-      => new ValidString(that);
-    #endif
-
 }}

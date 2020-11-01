@@ -13,7 +13,7 @@ public class GigTest : TestBase{
 
     [Test] public void Step() => o( x.Step().failing );
 
-    [Test] public void Do() => o( x.DoAction(1).now.complete );
+    //[Test] public void Do() => o( x.DoAction(1).now.complete );
 
     [Test] public void ToStatusFunc(){
         System.Func<status> f = x;

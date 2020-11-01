@@ -170,8 +170,8 @@ public class TestStatus : CoreTest {
 	}
 
 	[Test] public void Demoter(){
-		o(-fail , impending._doom);
-		o(-cont , impending._doom);
+		o(-fail , impending._fail);
+		o(-cont , impending._fail);
 		o(-done , impending._cont);
 	}
 
