@@ -26,7 +26,7 @@ Note: Until #42 is solved, exercise caution when using ordered composites in tur
 
 ## Caveats and workarounds
 
-RoR does not handle repeating tasks. If a task seamlessly cycles, RoR-enabled decorators will not reset.
+RoR does not handle repeating tasks. If a task seamlessly cycles, RoR-enabled decorators will not reset (see #37).
 
 A common case is this:
 
