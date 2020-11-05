@@ -18,6 +18,7 @@ public class TestIterator : CoreTest{
         override public status this[in status x] => throw new Ex();
         override public status end               => throw new Ex();
         override public status loop              => throw new Ex();
+        override public status repeat            => throw new Ex();
 
     }
 
