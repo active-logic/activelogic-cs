@@ -20,6 +20,7 @@ public readonly partial struct action{
     public static loop      operator & (action x, loop      y) => y;
     public static pending   operator & (action x, pending   y) => y;
     public static impending operator & (action x, impending y) => y;
+    public static bool      operator & (action x, bool      y) => y;
 
     public static loop operator - (action x) => loop._cont;
 
@@ -30,6 +31,9 @@ public readonly partial struct action{
 
     public static failure operator ! (action s) => failure._false;
     #endif
+
+    public static implicit operator bool(action self)
+    => true;
 
     public static implicit operator status(action self)
     => status._done;
