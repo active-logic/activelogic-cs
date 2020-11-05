@@ -164,21 +164,21 @@ public class TestStatus : CoreTest {
 	}
 
 	[Test] public void Promoter(){
-		o(+fail, pending._cont);
-		o(+cont, pending._done);
-		o(+done, pending._done);
+		o(+fail, status._cont);
+		o(+cont, status._done);
+		o(+done, status._done);
 	}
 
 	[Test] public void Demoter(){
-		o(-fail , impending._fail);
-		o(-cont , impending._fail);
-		o(-done , impending._cont);
+		o(-fail , status._fail);
+		o(-cont , status._fail);
+		o(-done , status._cont);
 	}
 
 	[Test] public void Condoner(){
-		o(~fail, pending._done);
-		o(~cont, pending._cont);
-		o(~done, pending._done);
+		o(~fail, status._done);
+		o(~cont, status._cont);
+		o(~done, status._done);
 	}
 
 	[Test] public void PassByValue(){

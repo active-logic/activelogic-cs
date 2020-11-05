@@ -5,12 +5,24 @@ public class SeqIterator : Iterator{
 
     public SeqIterator Reset(){ i = 0; return this; }
 
-    override public status this[in status x]  // Faster than forwarding to κ[x]
-    { get{ if(x.complete){ κ.index++; return (-x).undue; } return x; }}
+    // Faster than forwarding to κ[x]
+    override public status this[in status x]{ get{
+        if(x.complete){
+            κ.index++;
+            return -x;
+        }
+        return x;
+    }}
 
     override public status end => status.@unchecked(+2).Via();
 
-    override public status loop
-    { get{ κ.index = -1; return status.done(); }}
+    override public status repeat{ get{
+        κ.index = -1;
+        return status.@unchecked(+2).Via();
+    }}
+
+    override public status loop{ get{
+        κ.index = -1; return status.done();
+    }}
 
 }}

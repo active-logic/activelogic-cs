@@ -23,7 +23,8 @@ public readonly partial struct status{
 
     public status this[ValidString reason] => this;
 
-    public status Map(in status failTo, in status contTo, in status doneTo){
+    public status Map(in status failTo, in status contTo,
+                                        in status doneTo){
         switch(ω){
             case -1: return new status(this, failTo.ω);
             case  0: return new status(this, contTo.ω);
@@ -44,15 +45,20 @@ public readonly partial struct status{
     public static status operator % (in status x, in status y)
     => new status(x.ω);
 
-    public static status  operator % (status x, ValidString reason) => x;
-    public static status  operator ! (in status s) => new status(-s.ω);
-    public static pending operator ~ (in status s) => new pending(s.ω * s.ω);
+    public static status  operator % (status x, ValidString reason)
+    => x;
 
-    public static pending operator + (in status s)
-    => new pending(System.Math.Min(s.ω + 1, +1));
+    public static status  operator ! (in status s)
+    => new status(-s.ω);
 
-    public static impending operator - (in status s)
-    => new impending(System.Math.Max(s.ω - 1, -1));
+    public static status operator ~ (in status s)
+    => new status(s.ω * s.ω);
+
+    public static status operator + (in status s)
+    => new status(System.Math.Min(s.ω + 1, +1));
+
+    public static status operator - (in status s)
+    => new status(System.Math.Max(s.ω - 1, -1));
 
 }}
 

@@ -58,13 +58,13 @@ public class StatusPerf : TestBase {
     => Run((in status x) => !x);
 
     [Test] public void Condoner()
-    => Run((in status x) => (~x).due);
+    => Run((in status x) => ~x);
 
     [Test] public void Promoter()
-    => Run((in status x) => (+x).due);
+    => Run((in status x) => +x);
 
     [Test] public void Demoter()
-    => Run((in status x) => (-x).undue);
+    => Run((in status x) => -x);
 
     public void Run(UnaryOp op){
         for(int i = 0; i < unary_iters; i++){

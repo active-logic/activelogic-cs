@@ -6,11 +6,18 @@ public class SelIterator : Iterator{
     public SelIterator Reset(){ i = 0; return this; }
 
     override public status this[in status x]  // Faster than forwarding to κ[x]
-    { get{ if(x.failing) { κ.index++; return (+x).due; } return x; }}
+    { get{ if(x.failing) { κ.index++; return +x; } return x; }}
 
     override public status end => status.@unchecked(-2).Via();
 
-    override public status loop
-    { get{ κ.index = -1; return status.fail(); }}
+    override public status repeat{ get{
+        κ.index = -1;
+        return status.@unchecked(-2).Via();
+    }}
+
+    override public status loop{ get{
+        κ.index = -1;
+        return status.fail();
+    }}
 
 }}

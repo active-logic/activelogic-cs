@@ -28,11 +28,15 @@ public readonly partial struct status{
     => state ? done() : fail();
 
     // TODO: use raw
-    public static status operator ++ (status s) => (+s).due;
-    public static status operator -- (status s) => (-s).undue;
+    public static status operator ++ (status s) => +s;
+    public static status operator -- (status s) => -s;
 
-    public static bool   operator == (in status x, in status y) =>  x.Equals(y);
-    public static bool   operator != (in status x, in status y) => !x.Equals(y);
+    public static bool   operator == (in status x, in status y)
+    => x.Equals(y);
+
+    public static bool   operator != (in status x, in status y)
+    => !x.Equals(y);
+
     public static bool operator true (status s) => s.ω != -1;
     public static bool operator false(status s) => s.ω !=  1;
 

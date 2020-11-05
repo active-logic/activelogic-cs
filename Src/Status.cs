@@ -41,19 +41,19 @@ public readonly partial struct status{
     public static status operator ! (in status s)
     { if(log) s.trace?.Prefix('!'); return new status(s, -s.ω); }
 
-    public static pending operator ~ (in status s){
+    public static status operator ~ (in status s){
         if(log) s.trace?.Prefix('~');
-        return new pending(s.ω * s.ω, s.meta);
+        return new status(s.ω * s.ω, s.meta);
     }
 
-    public static pending operator + (in status s){
+    public static status operator + (in status s){
         if(log) s.trace?.Prefix('+');
-        return new pending(System.Math.Min(s.ω + 1, +1), s.meta);
+        return new status(System.Math.Min(s.ω + 1, +1), s.meta);
     }
 
-    public static impending operator - (in status s){
+    public static status operator - (in status s){
         if(log) s.trace?.Prefix('-');
-        return new impending(System.Math.Max(s.ω - 1, -1), s.meta);
+        return new status(System.Math.Max(s.ω - 1, -1), s.meta);
     }
 
     #else  // !AL_OPTIMIZE <> AL_OPTIMIZE
@@ -68,9 +68,6 @@ public readonly partial struct status{
     public static status done(S reason = null) => _done;
     public static status fail(S reason = null) => _fail;
     public static status cont(S reason = null) => _cont;
-
-    public static status Impending (impending s) => s.undue;
-    public static status Pending   (pending   s) => s.due;
 
     public static action  @void  (S reason = null) => action._void;
     public static failure @false (S reason = null) => failure._false;

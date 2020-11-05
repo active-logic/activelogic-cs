@@ -10,7 +10,7 @@ public class Sequence : Composite{
     => (it ?? (it = new SeqIterator(this))).Reset();
 
     public status this[in status x]
-    { get{ if(x.complete){ index++; return (-x).undue; } return x; }}
+    { get{ if(x.complete){ index++; return -x; } return x; }}
 
     override public status end => status.done();
 

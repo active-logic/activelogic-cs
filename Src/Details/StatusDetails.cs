@@ -74,9 +74,9 @@ public readonly partial struct status{
     public static implicit operator status(bool state)
     => state ? done() : fail();
 
-    public static status operator ++ (status s) => (+s).due;
+    public static status operator ++ (status s) => +s;
 
-    public static status operator -- (status s) => (-s).undue;
+    public static status operator -- (status s) => -s;
 
     public static bool operator == (in status x, in status y)
     => x.Equals(y);

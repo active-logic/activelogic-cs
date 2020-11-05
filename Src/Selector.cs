@@ -10,7 +10,7 @@ public class Selector : Composite{
     => (it ?? (it = new SelIterator(this))).Reset();
 
     public status this[in status x]
-    { get{ if(x.failing) { index++; return (+x).due; } return x; }}
+    { get{ if(x.failing) { index++; return +x; } return x; }}
 
     override public status end => status.fail();
 
