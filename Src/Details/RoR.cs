@@ -1,17 +1,18 @@
 using System; using InvOp = System.InvalidOperationException;
-//using UnityEngine;
 using self = Active.Core.Details.RoR;
 
-// TODO tests
 namespace Active.Core.Details{
 public static class RoR{
 
     public static bool enabled = true;
     internal static object owner;
     internal static int frame;
+    public static int leniency = 1;
 
-    public static void Enter(object @in, int frame){
+    // Keep leniency within 1~10
+    public static void Enter(object @in, int frame, int leniency){
         if(!enabled) return;
+        RoR.leniency = leniency;
         if(owner != null) throw
             new InvOp($"Exit {owner} before entering {@in}");
         if(@in == null) throw
@@ -34,7 +35,7 @@ public static class RoR{
         if(!enabled) return;
         if(self.owner == null) throw
             new InvOp("Enter a frame context (RoR)");
-		if(self.frame > frame + 1) Reset();
+		if(self.frame > frame + leniency) Reset();
 		frame = self.frame;
     }
 

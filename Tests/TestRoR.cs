@@ -12,22 +12,22 @@ public class TestRoR : TestBase{
     // enabled mode ------------------------------------------------
 
     [Test] public void Enter(){
-        RoR.Enter(this, 10);
+        RoR.Enter(this, 10, leniency: 1);
         o(RoR.owner, this);
         o(RoR.frame, 10);
     }
 
     [Test] public void Enter_no_reassign(){
         RoR.owner = "Nemo";
-        Assert.Throws<InvOp>( () => RoR.Enter("Foo", 0) );
+        Assert.Throws<InvOp>( () => RoR.Enter("Foo", 0, leniency: 1) );
     }
 
     [Test] public void Enter_reject_null_context()
-    => Assert.Throws<InvOp>( () => RoR.Enter(null, 0) );
+    => Assert.Throws<InvOp>( () => RoR.Enter(null, 0, leniency: 1) );
 
     [Test] public void Exit(){
         int φ = 10;
-        RoR.Enter(this, φ);
+        RoR.Enter(this, φ, leniency: 1);
         RoR.Exit(this, ref φ);
         o(RoR.owner, null);
         o(φ, 11);
@@ -35,13 +35,13 @@ public class TestRoR : TestBase{
 
     [Test] public void Exit_match_context(){
         int φ = 10;
-        RoR.Enter("Nemo", φ);
+        RoR.Enter("Nemo", φ, leniency: 1);
         Assert.Throws<InvOp>(() => RoR.Exit("Foo", ref φ));
     }
 
     [Test] public void Exit_match_frame(){
         int φ = 10;
-        RoR.Enter("Nemo", 8);
+        RoR.Enter("Nemo", 8, leniency: 1);
         Assert.Throws<InvOp>(() => RoR.Exit("Nemo", ref φ));
     }
 
@@ -49,20 +49,21 @@ public class TestRoR : TestBase{
         int φ = 10;
         int γ = 9;
         bool flag = true;
-        RoR.Enter("Nemo", φ);
+        RoR.Enter("Nemo", φ, leniency: 1);
         RoR.OnResume(ref γ,
             () => { flag = false; return status.@void(); });
         o(flag, true);
     }
 
-    [Test] public void OnResume_reset(){
+    [Test] public void OnResume_reset([Values(0, 1)] int offset,
+                                      [Range (1, 5)] int leniency){
         int φ = 15;
-        int γ = 10;
+        int γ = φ - (leniency + offset);
         bool flag = true;
-        RoR.Enter("Nemo", φ);
+        RoR.Enter("Nemo", φ, leniency);
         RoR.OnResume(ref γ,
             () => { flag = false; return status.@void(); });
-        o(flag, false);
+        o(flag, offset == 0 ? true : false);
     }
 
     [Test] public void OnResume_reject_null_context(){
@@ -74,7 +75,7 @@ public class TestRoR : TestBase{
 
     [Test] public void Enter_disabled(){
         RoR.enabled = false;
-        RoR.Enter(this, 0);
+        RoR.Enter(this, 0, leniency: 1);
         o(RoR.owner, null);
         o(RoR.frame, 0);
     }
