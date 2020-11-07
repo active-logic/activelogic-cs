@@ -1,5 +1,7 @@
 # The Reset-on-Resume (RoR) feature
 
+**NOTE: RoR is planned for deprecation; will be replaced with a Reset-on-Exit (RoE) feature**
+
 Reset-on-Resume (RoR) simplifies the management of stateful decorators and composites. While RoR is automated, understanding how it works is useful.
 
 Most decorators manage state. For example the `Once` decorator runs a task, then stores the resulting status. After the subtask has completed or failed, further invocations return the previously stored value without re-iterating the task.
