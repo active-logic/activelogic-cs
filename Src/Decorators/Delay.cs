@@ -27,7 +27,7 @@ public class Delay: Waiter, Waiter.OptionalArguments{
 	}
 
 	public Gate? this[float duration]{ get{
-		RoR.OnResume(ref frame, Reset);
+		Notices.OnEnter(ref frame, this);
 	    return ((elapsed += UnityEngine.Time.deltaTime) >= duration)
        	 	   ? done(log && $"[0.0]")
 	   		   : cont(log && $"[{duration-elapsed:0.0}]");

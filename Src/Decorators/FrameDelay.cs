@@ -28,7 +28,7 @@ public class FrameDelay: Waiter, Waiter.OptionalArguments{
     }
 
 	public Gate? this[int duration]{ get{
-		RoR.OnResume(ref frame, Reset);
+		Notices.OnEnter(ref frame, this);
 		return ( ++elapsed > duration) ? done(log && $"[0]")
        		   : cont(log && $"[{duration-elapsed}]");
     }}

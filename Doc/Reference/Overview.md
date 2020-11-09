@@ -10,6 +10,7 @@
 6. [Decorators](Decorators.md)
     - [Built-in decorators](Decorators-Builtin.md)
     - [Custom decorators](Decorators-Custom.md)
+    - [Auto-reset features](AutoReset.md) [beta]
 7. [Ordered composites](OrderedComposites.md)
 8. [Mutable composites](MutableComposites.md)
 9. [Memory and performance](MemoryAndPerformance.md)

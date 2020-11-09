@@ -8,7 +8,7 @@ public abstract class Composite : Resettable{
 
     internal int index{
         get{
-            RoR.OnResume(ref frame, Reset);
+            Notices.OnEnter(ref frame, this);
             return i;
         }
         set => i = value;

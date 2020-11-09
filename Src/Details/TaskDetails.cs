@@ -10,17 +10,16 @@ partial class Task{
 
     List<Resettable> _context;
 
-  #if !AL_THREAD_SAFE
-
+    #if !AL_THREAD_SAFE
+    public bool globalRoE = false;
     internal static Iterator iterator;
+    #endif
 
-  #endif
-  #if !AL_BEST_PERF
+    ReCon _rox;
 
+    #if !AL_BEST_PERF
     Store _store;
-
     Store store => _store ?? (_store = new HashStore());
-
-  #endif
+    #endif
 
 }}

@@ -25,7 +25,7 @@ public class Once : AbstractDecorator{
     #endif
 
 	public Gate? pass{ get{
-        RoR.OnResume(ref frame, Reset);
+        Notices.OnEnter(ref frame, this);
         return state.running ? Eval() : Bypass();
     }}
 

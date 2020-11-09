@@ -6,7 +6,7 @@ using Ex = System.Exception;
 using Active.Core.Details;
 
 namespace Active.Core{
-public partial class MComposite{
+public partial class MComposite : Resettable{
 
     public bool loop = true;
     public bool resetOnResume = true;
@@ -40,7 +40,7 @@ public partial class MComposite{
 
     // TODO RoR untested for mutable composites
     public status Step(){
-        if(resetOnResume) RoR.OnResume(ref frame, Reset);
+        Notices.OnEnter(ref frame, this);
         return flow();
     }
 

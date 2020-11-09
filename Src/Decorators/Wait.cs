@@ -23,7 +23,7 @@ public class Wait : AbstractDecorator{
     => self[self.delay];
 
     public status this[float duration]{ get{
-        RoR.OnResume(ref frame, Reset);
+        Notices.OnEnter(ref frame, this);
         stamp = stamp ?? time;
         var elapsed = time - stamp.Value;
         return elapsed > delay

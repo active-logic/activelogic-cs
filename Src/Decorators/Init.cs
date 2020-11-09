@@ -17,12 +17,11 @@ public class Init : AbstractDecorator{
     public bool passing = true;
     int frame;
 
-    // TODO: RoR needs testing
     // NOTE: unlike other decorators, it appears that the entry
     // point for Init is the `pass` getter. Notice how this[]
     // returns Gate vs Gate? (check cPatrol.cs for an example)
     public Init pass{ get{
-        RoR.OnResume(ref frame, Reset);
+        Notices.OnEnter(ref frame, this);
         Init.Push(this);
         return passing ? this : null;
     }}

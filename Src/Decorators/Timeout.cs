@@ -26,9 +26,8 @@ public class Timeout : Conditional, Conditional.OptionalArguments{
 
 	public Gate? pass => this[duration];
 
-    // TODO RoR untested
 	public Gate? this[float s]{ get{
-        RoR.OnResume(ref frame, Reset);
+        Notices.OnEnter(ref frame, this);
 	    return enabled ? time < stamp + s
                            ? done(log && $"[{s + stamp - time:0.#}]")
 			               : fail(log && $"timed out ({s}s)")

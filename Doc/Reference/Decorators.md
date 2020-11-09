@@ -4,7 +4,7 @@
 
 This section introduces decorators; builtin decorators are documented [here](Decorators-Builtin.md); read [Custom Decorators](Decorators-Custom.md) if you wish to implement your own.
 
-A decorator modulates the behavior of a target task. Common decorators are implemented Via the `status` class: unary operations let you invert (!), condone (~), promote (+, ++) and demote (-, --) statuses; if this is not enough, use `Status.Map()`.
+A decorator modulates the behavior of a target task. Common decorators are implemented via the `status` class: unary operations let you invert (!), condone (~), promote (+, ++) and demote (-, --) statuses; if this is not enough, use `Status.Map()`.
 
 Beyond, the API provides a set of powerful, easy to use constructs properly known as 'decorators'. Mostly, these decorators follow a common syntax:
 
@@ -13,17 +13,17 @@ Decorator( Params ) ? [ StatusExp ]
 ```
 
 Under the hood, most decorators are *stateful conditionals*:
-- They require data storage - be it a cooldown or latch, data is stored to keep track of the current state; for this reason, syntax does vary a little depending on whether you inline decorators (and let the API manage the data on your behalf) or declare it first.
+- Decorators require storage - be it a cooldown or latch, data is stored to keep track of the current state; for this reason, syntax does vares depending on whether you inline decorators (and let the API manage storage on your behalf) or manually declare the decorator. 
 - Depending on how `Decorator( Params )` evaluates, `[ StatusExp ]` may be evaluated, or skip.
 
 ## Life cycle
 
-Since decorators are stateful, on occasion it may be appropriate to reset their state. In order to reset a decorator, invoke `Reset()`. Usually, however, a decorator's life-cycle is managed on your behalf, and `Reset()` is called implicitly:
+Since decorators are stateful, on occasion their state must reset. While you may explicitly `Reset()` a stateful decorator, several features help you manage the decorator life cycle.
 
-- Inline decorators are automatically reset when the underlying task is reset.
-- Many decorators automatically reset 'on resume'. A resume occurs when control returns to a previously active execution path.
+- Inline decorators automatically reset when the associate `Task`/`UTask` is reset.
+- Decorators enclosed within a `with(arg)[ exp ]` or `roe[ exp ]` block reset when an argument changes state (`with`) or the enclosed expression returns `done` or `fail` (reset-on-exit / `roe`); read more about reset management [here](AutoReset.md).
 
-The reset-on-resume feature is detailed [here](RoR.md)
+Auto-reset features (RoE, RoR) are detailed [here](AutoReset.md)
 
 ## Inline decorators
 

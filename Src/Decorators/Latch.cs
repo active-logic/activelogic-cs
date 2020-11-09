@@ -11,7 +11,7 @@ public class Latch : Conditional{
     int frame;
 
 	public Gate? this[bool cond]{ get{
-        RoR.OnResume(ref frame, Reset);
+        Notices.OnEnter(ref frame, this);
         return (passing |= cond) ? done() : fail();
     }}
 

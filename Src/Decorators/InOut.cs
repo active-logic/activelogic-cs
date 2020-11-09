@@ -11,7 +11,7 @@ public class InOut : Conditional{
     int frame;
 
     public Gate? this[bool @in, bool @out]{ get{
-        RoR.OnResume(ref frame, Reset);
+        Notices.OnEnter(ref frame, this);
         return (passing = passing ? !@out : @in) ? done() : fail();
     }}
 
