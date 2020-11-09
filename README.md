@@ -5,10 +5,10 @@
 
 Easy to use, comprehensive Behavior Tree (BT) library built from the ground up for C# programmers:
 
-- Game AI (intelligent agents)
-- Simplify, fix and condense your game logic
+- Game logic, game AI (autonomous agents)
+- Asynchronous control applications
 - No DSL/builder pattern (tight integration)
-- Use standalone, or borrow the "ticker" from a visual BT solution
+- Use standalone or borrow the "ticker" from a visual BT solution
 
 [Quick start Guide](Doc/QuickStart.md) || [API reference](Doc/Reference/Overview.md) || [FAQ](Doc/FAQ.md)
 
