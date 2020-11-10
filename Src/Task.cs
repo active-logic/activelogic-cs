@@ -11,14 +11,18 @@ using static Active.Core.status;
 namespace Active.Core{
 public abstract partial class Task : Gig, Context {
 
-    #if AL_THREAD_SAFE
-    public ReCon rox => _rox ?? (_rox = new ReCon());
-    #else
-    public ReCon rox
-    => globalRoE ? ReCon.instance : _rox ?? (_rox = new ReCon());
-    #endif
+    public ReCon rox{ get{
+        #if AL_THREAD_SAFE
+        return _rox ?? (_rox = new ReCon());
+        #else
+        return staticRecon ? ReCon.instance
+                           : _rox ?? (_rox = new ReCon());
+        #endif
+    }}
 
-    public ReCon.Context roe => rox.Enter();
+    public ReCon.Context roe => rox.Enter(forward: false);
+
+    public Reckoning reckon(bool arg) => new Reckoning(arg, rox);
 
     public void Register(Resettable rsc)
     => (_context ?? (_context = new List<Resettable>())).Add(rsc);

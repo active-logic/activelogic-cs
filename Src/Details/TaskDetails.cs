@@ -11,7 +11,7 @@ partial class Task{
     List<Resettable> _context;
 
     #if !AL_THREAD_SAFE
-    public bool globalRoE = false;
+    public bool staticRecon = false;
     internal static Iterator iterator;
     #endif
 

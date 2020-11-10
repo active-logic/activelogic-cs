@@ -11,13 +11,13 @@ public class TestReCon : TestBase{
     [SetUp] public void Setup() => rec = new ReCon();
 
     [Test] public void Enter(){
-        var z = rec.Enter();
+        var z = rec.Enter(forward: false);
         o( rec.Count, 1 );
         o( z is ReCon.Context );
     }
 
     [Test] public void Add(){
-        rec.Enter();
+        rec.Enter(forward: false);
         var dec = new Dec();
         rec.Add(dec);
         o( rec.Peek()[0], dec);
@@ -28,24 +28,24 @@ public class TestReCon : TestBase{
     }
 
     [Test] public void NewContext(){
-        var cx = new ReCon.Context(rec);
+        var cx = new ReCon.Context(rec, forward: false);
     }
 
     [Test] public void NewCx_noRoE(){
         ReCon.Context cx;
         Assert.Throws<NullReferenceException>(
-                                    () => cx = new ReCon.Context(null));
+                  () => cx = new ReCon.Context(null, forward: false));
     }
 
     [Test] public void CxIndexer_noDecs([Range(-1, 1)] int val){
-        var cx = rec.Enter();
+        var cx = rec.Enter(forward: false);
         status s = status.@unchecked(val);
         s = cx[s];
         o(rec.Count, 0);
     }
 
     [Test] public void CxIndexer_didReset([Range(-1, 1)] int val){
-        var cx = rec.Enter();
+        var cx = rec.Enter(forward: false);
         var dec = new Dec();
         rec.Add( dec );
         status s = status.@unchecked(val);
@@ -55,20 +55,10 @@ public class TestReCon : TestBase{
     }
 
     [Test] public void CxIndexer_stackEmpty([Range(-1, 1)] int val){
-        var cx = new ReCon.Context(rec);
+        var cx = new ReCon.Context(rec, forward: false);
         status s = status.@unchecked(val);
         Assert.Throws<InvOp>(
             () => s = cx[s] );
-    }
-
-    // ==============================================================
-
-    public class Dec: Resettable{
-        public bool didReset = false;
-        public action Reset(){
-            didReset = true;
-            return status.@void();
-        }
     }
 
 }

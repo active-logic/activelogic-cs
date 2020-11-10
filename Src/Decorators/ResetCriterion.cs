@@ -7,13 +7,14 @@ namespace Active.Core{
 public class ResetCriterion : AbstractDecorator{
 
     static int uid; internal static int id => uid = ID(uid);
-    object hold;
-    ReCon.Context context;
+    internal object hold;
+    internal ReCon.Context context;
 
     public ResetCriterion Check(object arg, ReCon stack){
-        if(!arg.Equals(hold)){
-            context = stack.Enter();
-            context.forward = true;
+        bool equals = (arg==null) ? (hold == null)
+                                  : arg.Equals(hold);
+        if(!equals){
+            context = stack.Enter(forward: true);
             hold = arg;
         }
         return this;
@@ -25,7 +26,9 @@ public class ResetCriterion : AbstractDecorator{
         return s;
     }}
 
-    override public action Reset(){ hold = null; return @void(); }
+    override public action Reset(){
+        hold = null; return @void();
+    }
 
 }
 

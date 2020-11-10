@@ -21,9 +21,9 @@ Under the hood, most decorators are *stateful conditionals*:
 Since decorators are stateful, on occasion their state must reset. While you may explicitly `Reset()` a stateful decorator, several features help you manage the decorator life cycle.
 
 - Inline decorators automatically reset when the associate `Task`/`UTask` is reset.
-- Decorators enclosed within a `with(arg)[ exp ]` or `roe[ exp ]` block reset when an argument changes state (`with`) or the enclosed expression returns `done` or `fail` (reset-on-exit / `roe`); read more about reset management [here](AutoReset.md).
+- Decorators enclosed within a `with(arg)[ exp ]` or `roe[ exp ]` block reset when an argument changes state (`with`) or the enclosed expression returns `done` or `fail` (reset-on-exit / `roe`); read more about reset management [here](Reset-Management.md).
 
-Auto-reset features (RoE, RoR) are detailed [here](AutoReset.md)
+Auto-reset features (RoE, RoR) are detailed [here](Reset-Management.md)
 
 ## Inline decorators
 

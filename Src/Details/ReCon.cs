@@ -10,8 +10,8 @@ public class ReCon : Stack<ReCon.Context>{
     => _instance ?? (_instance = new ReCon());
     #endif
 
-    public ReCon.Context Enter(){
-        var cx = new ReCon.Context(this);
+    public ReCon.Context Enter(bool forward){
+        var cx = new ReCon.Context(this, forward);
         Push(cx);
         return cx;
     }
@@ -25,10 +25,13 @@ public class ReCon : Stack<ReCon.Context>{
     public class Context : List<Resettable>{
 
         ReCon owner;
-        public bool forward;
+        bool forward;
 
-        public Context(ReCon x)
-        => owner = x != null ? x : throw new Nul("ReCon stack is null");
+        public Context(ReCon stack, bool forward){
+            if(stack == null) throw new Nul("ReCon stack is null");
+            owner = stack;
+            this.forward = forward;
+        }
 
         public void Traverse(Resettable x){
             if(forward) x.Reset(); else Add(x);
