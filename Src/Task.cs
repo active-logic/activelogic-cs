@@ -7,6 +7,10 @@ using System;
 using System.Collections.Generic;  // used by Register
 using Active.Core.Details;
 using static Active.Core.status;
+using P  = System.Runtime.CompilerServices.CallerFilePathAttribute;
+using M  = System.Runtime.CompilerServices.CallerMemberNameAttribute;
+using L  = System.Runtime.CompilerServices.CallerLineNumberAttribute;
+using S  = System.String;
 
 namespace Active.Core{
 public abstract partial class Task : Gig, Context {
@@ -22,7 +26,13 @@ public abstract partial class Task : Gig, Context {
 
     public ReCon.Context roe => rox.Enter(forward: false);
 
+    #if AL_OPTIMIZE
     public Reckoning reckon(bool arg) => new Reckoning(arg, rox);
+    #else
+    public Reckoning reckon(bool arg, [P] S p="", [M] S m="",
+                                                  [L] int l=-1)
+    => new Reckoning(arg, rox, (p, m, l));
+    #endif
 
     public void Register(Resettable rsc)
     => (_context ?? (_context = new List<Resettable>())).Add(rsc);

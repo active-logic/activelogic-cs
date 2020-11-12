@@ -19,7 +19,8 @@ public class TestReckoning : TestBase{
     [Test] public void Indexer([Range(-1, 1)]        int val,
                                [Values(true, false)] bool arg){
         var dec = new Dec();
-        x = new Reckoning(arg, stack);    // init. with condition
+                                          // init. with condition
+        x = new Reckoning(arg, stack);
         x.context?.Traverse( dec );       // traverse a decorator
         var s0 = status.@unchecked(val);
         var s1 = x[ s0 ];                 // exit the context

@@ -4,6 +4,9 @@ using Active.Core;
 namespace Active.Core.Details{
 class HashStore : Store{
 
+    Dictionary<int, Seq> seqmap;          // Stores new seq
+    Dictionary<int, Sel> selmap;          // Stores new seq
+
     Dictionary<int, Composite> cmap;            // Stores composites
     Dictionary<int, AbstractDecorator> dmap;    // Decorators map
 
@@ -12,6 +15,35 @@ class HashStore : Store{
 
     Dictionary<int, Composite> composites
     => (cmap = cmap ?? new Dictionary<int, Composite>());
+
+    Dictionary<int, Seq> seqs
+    => (seqmap = seqmap ?? new Dictionary<int, Seq>());
+
+    Dictionary<int, Sel> sels
+    => (selmap = selmap ?? new Dictionary<int, Sel>());
+
+    Seq Store.Seq(int key){
+        Seq @out;
+        seqs.TryGetValue(key, out @out);
+        if(@out!=null){
+            //nityEngine.Debug.Log("Ret seq "+@out);
+            return @out;
+        }
+        Seq _new = new Seq();
+        seqs[key] = _new;
+        //nityEngine.Debug.Log("Ret new seq "+_new);
+        return _new;
+    }
+
+    Sel Store.Sel(int key){
+        Sel @out;
+        sels.TryGetValue(key, out @out);
+        if(@out!=null)
+            return @out;
+        Sel _new = new Sel();
+        sels[key] = _new;
+        return _new;
+    }
 
     T Store.Composite<T>(int key){
         Composite @out;
@@ -32,6 +64,11 @@ class HashStore : Store{
         } return @out as T;
     }
 
-    void Store.Reset(){ cmap?.Clear(); dmap?.Clear(); }
+    void Store.Reset(){
+        cmap?.Clear();
+        dmap?.Clear();
+        seqmap?.Clear();
+        selmap?.Clear();
+    }
 
 }}
