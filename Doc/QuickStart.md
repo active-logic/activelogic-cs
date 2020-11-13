@@ -69,9 +69,9 @@ public class Soldier{
 }
 ```
 
-The update manager will then invoke `Step()` at every frame, perhaps using also using a policy to determine whether a failing/complete agent should either repeat execution or stop.
+The update manager will then invoke `Step()` at every frame, perhaps with a policy to determine whether a failing/complete agent should repeat execution or stop.
 
-In AL, `Gig` and `Task` are engine-agnostic base classes you may use to implement this approach. `Gig` provides basic logging support while `Task` benefits additional features covered later in this guide.
+In AL, `Gig` and `Task` are engine-agnostic base classes you may use to implement this approach. `Gig` only provides basic logging support while `Task` benefits additional features covered later in the guide.
 
 ```cs
 public class Soldier : Gig{
@@ -269,6 +269,8 @@ The above example illustrates designing complex agents by assembling ever larger
 ## Logging
 
 While the Active Logic logging/history tracing APIs are available in the Github repository, visual logging typically requires engine/editor integration. For an overview of how visual logging works in Unity, refer to the [Unity Quick Start Guide](QuickStart-Unity.md).
+
+**NOTE**: *AL is debugger friendly. Getting productive without visual logging is possible, notably if you are using unit/functional tests.*
 
 ## Going further
 
