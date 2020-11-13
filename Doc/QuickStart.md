@@ -134,7 +134,7 @@ status DoSomething(){
 
 While perhaps surprising, *over-exercising* (ticking a done task) and *over-checking* (ticking a failing task) are integral to BT, ensuring *responsiveness*.
 
-Let's say a soldier dropped their sword. In BT, how would the following sequence handle this?
+Let's say a soldier dropped their sword. In BT, how would the following selector handle the situation?
 
 ```cs
 status Attack() => Strike() || EquipWeapon() || PickupWeapon();
@@ -142,7 +142,7 @@ status Attack() => Strike() || EquipWeapon() || PickupWeapon();
 
 Gotcha! They will pick up their sword again (or perhaps unsheath a dagger).
 
-If guard conditions are not correctly implemented, pseudo-concurrency may arise, with your BT agent doing several things at once.
+If guard conditions are not correctly implemented, pseudo-concurrency may arise, with your BT agents doing several things at once.
 
 *TIP*: *If this seems like a lot of work, do notice that, provided the component tasks (strike, equip, pickup) are correctly implemented, the `Attack()` function itself does not require guard conditions.*
 
