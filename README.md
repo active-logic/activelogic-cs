@@ -10,7 +10,7 @@ Easy to use, comprehensive Behavior Tree (BT) library built from the ground up f
 - No DSL/builder pattern (tight integration)
 - Use standalone or borrow the "ticker" from a visual BT solution
 
-[Quick start Guide](Doc/QuickStart.md) || [API reference](Doc/Reference/Overview.md) || [FAQ](Doc/FAQ.md)
+=> [Quick-start guide](Doc/QuickStart.md) || [Unity quick-start guide](Doc/QuickStart-Unity.md) || [API reference](Doc/Reference/Overview.md) || [FAQ](Doc/FAQ.md)
 
 ## Introduction
 
@@ -43,7 +43,7 @@ class Duelist : UTask{
 ```
 [> Complete sample](https://gist.github.com/eelstork/08b8fff3b776e8a9faa262a60a9a183b)
 
-Active logic is the first BT library providing tight integration with the host language 
+Active logic is the first BT library providing tight integration with the host language
 (no DSL, no builder pattern, no lambdas or coroutines, no blackboard).
 This means better performance (low/no GC), cleaner syntax and the freedom to structure your code as you wish.
 
