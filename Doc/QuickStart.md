@@ -164,7 +164,7 @@ Expressions of the form `EXP_1 && ... && EXP_n` are known as *sequences*; use a 
 
 More generally, selectors and sequences are known as *composites*.
 
-In AL, status expressions and the [status calculus](Reference/status.md) implement *stateless* control. Status expressions and status functions are combine to form the behavior tree.
+In AL, status expressions and the [status calculus](Reference/status.md) implement *stateless* control. Status expressions and status functions combine to form the behavior tree.
 
 With regard to BT as an established paradigm, **the AL calculus constitutes an orthodox, concise and correct implementation**.
 
