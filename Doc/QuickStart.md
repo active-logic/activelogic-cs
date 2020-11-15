@@ -9,7 +9,7 @@ This introduction is engine agnostic; if you are using Unity, read the [Unity Qu
 
 ## Status expressions and the update loop
 
-Throughout this guide we'll consider the example of a basic 'soldier' AI or agent. A soldier may attack, defend or retreat; in AL this is modeled using a *status expression*:
+Throughout this guide we consider the example of a basic 'soldier' AI or agent. A soldier may attack, defend or retreat; in AL this is modeled using a *status expression*:
 
 ```cs
 status s = Attack() || Defend() || Retreat();
@@ -23,19 +23,19 @@ otherwise, defend;
 otherwise, retreat.
 ```
 
-`status` may be `complete`, `failing` or `running`; a value of *running* causes execution to *yield* until the next iteration.
+Status constants are defined as `done`, `fail` and `cont`; a status, therefore, is either `.complete`, `.failing` or `.running` with a running status causing execution to *yield* until the next iteration.
+
+**NOTE**: *While similar to coroutines in some ways, a yielding selector does not store the stack. BTs always evaluate top down and (to ensure responsiveness) there is no guarrantee that an interrupted sequence or selector will resume at the next iteration.*
 
 Status expressions are invoked *frequently* - usually, within update loops. As an example, the above may (for testing or simulation purposes) simply run within a `while()` loop:
 
 ```cs
-using Active.Core;                // Core API.
-using static Active.Core.status;  // Static import for 'done()'
-                                  // instead of 'status.done()', and
-                                  // so forth.
+using Active.Core;        // Core API
+using static Active.Raw;  // Status constants
 
 public static class Soldier{
 
-    static status state = cont();
+    static status state = cont;
 
     static void Main(){
         while(state.running){
