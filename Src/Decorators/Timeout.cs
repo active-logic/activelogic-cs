@@ -1,5 +1,5 @@
 // Doc/Reference/Decorators.md
-using static Active.Core.status;
+using static Active.Status;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 using Active.Core.Details;
 

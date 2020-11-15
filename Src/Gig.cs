@@ -5,7 +5,7 @@
 
 using System;
 using Active.Core.Details;
-using static Active.Core.status;
+using static Active.Status;
 
 namespace Active.Core{
 public abstract partial class Gig {

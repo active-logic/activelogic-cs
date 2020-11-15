@@ -8,9 +8,9 @@ using System; using Active.Core.Details;
 namespace Active.Core{
 public readonly partial struct failure{
 
-    [Obsolete("Use _false instead", true)]
+    [Obsolete("Use _fail instead", true)]
     internal static readonly failure _flop = new failure();
-    internal static readonly failure _false = new failure();
+    internal static readonly failure _fail = new failure();
 
     public static failure   operator | (failure x, failure   y) => y;
     public static status    operator | (failure x, status    y) => y;
@@ -19,7 +19,7 @@ public readonly partial struct failure{
     public static pending   operator | (failure x, pending   y) => y;
     public static impending operator | (failure x, impending y) => y;
 
-    public static failure operator % (failure x, failure y) => _false;
+    public static failure operator % (failure x, failure y) => _fail;
 
     public static loop operator + (failure x) => loop._cont;
 
@@ -28,7 +28,9 @@ public readonly partial struct failure{
 
     #if AL_OPTIMIZE   // --------------------------------------------
 
-    public static action operator ! (failure s) => action._void;
+    public static failure fail(ValidString reason = null) => _fail;
+
+    public static action operator ! (failure s) => action._done;
 
     #endif
 

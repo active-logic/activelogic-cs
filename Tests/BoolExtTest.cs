@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using Active.Core;
-using static Active.Core.status;
+using static Active.Status;
 
 public class BoolExtTest : TestBase{
 

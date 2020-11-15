@@ -4,12 +4,13 @@
 #endif
 
 #if !AL_OPTIMIZE
-using Active.Core.Details;
-using V  = Active.Core.Details.ValidString;
+using System;
+using S  = System.String;
 using P  = System.Runtime.CompilerServices.CallerFilePathAttribute;
 using M  = System.Runtime.CompilerServices.CallerMemberNameAttribute;
 using L  = System.Runtime.CompilerServices.CallerLineNumberAttribute;
-using S  = System.String;
+using Active.Core.Details;
+using V  = Active.Core.Details.ValidString;
 using Lg = Active.Core.Details.Logging;
 using X  = Active.Core.status;
 
@@ -53,10 +54,12 @@ partial struct status{
                                [P] S p="", [M] S m="", [L] int l=0)
     => Lg.Action(reason, p, m, l);
 
+    [Obsolete("Use '@false' instead", false)]
     public static failure flop(ValidString reason = null,
                                [P] S p="", [M] S m="", [L] int l=0)
     => Lg.Failure(reason, p, m, l);
 
+    [Obsolete("Use 'loop.cont' instead", false)]
     public static loop forever(ValidString reason = null,
                                [P] S p="", [M] S m="", [L] int l=0)
     => Lg.Forever(reason, p, m, l);

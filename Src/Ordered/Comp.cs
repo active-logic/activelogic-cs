@@ -4,7 +4,7 @@
 #endif
 
 using System.Collections.Generic;
-using static Active.Core.status; using Active.Core.Details;
+using static Active.Status; using Active.Core.Details;
 using T = Active.Core.Comp;
 
 namespace Active.Core{

@@ -4,30 +4,30 @@
 
 1. [Status and status expressions](Status.md)
 2. [Certainties](Certainties.md)
-3. [Gigs](Gig.md) and [Tasks](Task.md)
-4. [Steppers, agents and tickers](Steppers.md)
-5. [Logging](Logging.md)
-6. [Decorators](Decorators.md)
+3. [Status keywords and logging calls](Constants-and-logging)
+4. [Gigs](Gig.md) and [Tasks](Task.md)
+5. [Steppers, agents and tickers](Steppers.md)
+6. [Logging](Logging.md)
+7. [Decorators](Decorators.md)
     - [Built-in decorators](Decorators-Builtin.md)
     - [Custom decorators](Decorators-Custom.md)
     - [Reset blocks](Reset-Management.md) [beta]
-7. [Ordered composites](OrderedComposites.md)
-8. [Mutable composites](MutableComposites.md)
-9. [Memory and performance](MemoryAndPerformance.md)
-10. [Extending the API](Extensions.md)
+8. [Ordered composites](OrderedComposites.md)
+9. [Mutable composites](MutableComposites.md)
+10. [Memory and performance](MemoryAndPerformance.md)
+11. [Extending the API](Extensions.md)
 
 ## Engine & Language support
 
-The C# implementation requires C# 7.2.
-Active Behaviors is compatible with the following Unity Versions:
-- Unity 2019 (tested: 2019.1.9f1)
+The C# implementation requires C# 7.2 or later
+The library is tested against the following Unity Versions:
+- Unity 2019 and later (tested: 2019.1.9f1)
 - Unity 2018 LTS (tested: 2018.4.4f1)
+- Verified with Mono and IL2CPP backends
 
 Configuration (under Project Settings > Player)
 - Scripting Runtime Version: `.NET 4.x Equivalent`
 - API Compatibility Level: `.NET 4.x`
-
-Verified with both Mono and IL2CPP backends (2019.7.21)
 
 ## Macros
 

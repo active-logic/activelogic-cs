@@ -9,8 +9,6 @@ using Active.Core.Details;
 namespace Active.Core{
 public readonly partial struct loop{
 
-    [Obsolete("Use cont instead", true)]
-    internal static readonly loop _forever = new loop();
     internal static readonly loop _cont    = new loop();
 
     #if AL_OPTIMIZE

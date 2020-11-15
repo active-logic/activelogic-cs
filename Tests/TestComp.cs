@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using Active.Core; using static Active.Core.status;
+using Active.Core; using static Active.Status;
 using T = Active.Core.Comp;
 
 public class TestComp : TestBase{

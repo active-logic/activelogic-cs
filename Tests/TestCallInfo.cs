@@ -6,7 +6,7 @@
 
 using NUnit.Framework;
 using Active.Core;
-using static Active.Core.status; using Active.Core.Details;
+using static Active.Status; using Active.Core.Details;
 
 #pragma warning disable 649
 

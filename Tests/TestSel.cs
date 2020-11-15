@@ -1,7 +1,7 @@
 using System;
 using InvOp = System.InvalidOperationException;
 using NUnit.Framework;
-using Active.Core; using static Active.Core.status;
+using Active.Core; using static Active.Status;
 using T = Active.Core.Sel;
 
 public class TestSel : TestBase{

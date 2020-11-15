@@ -5,7 +5,7 @@ using NullRef = System.NullReferenceException;
 using NUnit.Framework;
 using Active.Core;
 using static Active.Core.MComposite;
-using static Active.Core.status;
+using static Active.Status;
 
 public class TestMutableComposite : CoreTest{
 

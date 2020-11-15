@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using static Active.Core.status;
+using static Active.Raw;
 
 namespace Active.Core{
 partial class MComposite{
 
-    status key   = _cont;
+    status key = cont;
     IEnumerable<Func<status>> tasks;
     IEnumerator<Func<status>> ι;
     Func<status> task, flow;
@@ -33,7 +33,7 @@ partial class MComposite{
         }
         current = task();
         if(current == key){
-            if(ι.MoveNext()) { task = ι.Current; return _cont; }
+            if(ι.MoveNext()) { task = ι.Current; return cont; }
             else             { task = null;                   }
         }
         return current;

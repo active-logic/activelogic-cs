@@ -3,7 +3,7 @@
 #define AL_OPTIMIZE
 #endif
 
-using static Active.Core.status;
+using static Active.Status;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 using InvOp = System.InvalidOperationException;
 using Active.Core.Details;

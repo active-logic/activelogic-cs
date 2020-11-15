@@ -1,10 +1,10 @@
-*Source: Certainties.cs - Last Updated: 2020.10.31*
+*Source: Certainties.cs - Last Updated: 2020.11.15*
 
 # Certainties
 
 When the output of a status function is restricted to a subset of values, use certainties.
 
-Below, the `Strike` function would always return true; in lieu of a status, an `action` is used:
+Below, the `Strike` function would always return `done`; in lieu of a status, an `action` is used:
 
 ```cs
 action Strike() => @void;
@@ -23,9 +23,9 @@ action  a;  status b;  status c = a & b;
 failure a;  status b;  status c = a | b;
 ```
 
-Functions that return immediately (always `done` or `fail`) should return `bool`.
+Return a boolean if a would-be status function will always complete immediately (`true` for `done`, `false` for `failing`).
 
-`loop` is used for tasks that are always `running`. Widening conversions to `status` are not allowed here, but you may extract a status via the `.ever` property.
+`loop` represents unending tasks. Widening conversions to `status` are not allowed here, but you may extract a status via the `.ever` property.
 
 Likewise, `pending` is used for tasks that never fail and `impending` is used for tasks that never succeed.
 
@@ -33,23 +33,39 @@ The following table summarizes the semantics API:
 
 ```
 + --------- + ---------------- + ------------ +
-| TYPE      | status constants | Conversions  |
+| TYPE      | constants        | Conversions  |
 + --------- + ---------------- + ------------ +
-| action    | @void()          | implicit     |
+| action    | @void            | implicit     |
 + --------- + ---------------- + ------------ +
-| failure   | @false()         | implicit     |
+| failure   | @false           | implicit     |
 + --------- + ---------------- + ------------ +
-| loop      | loop.cont()      | .ever        |
+| loop      | forever          | .ever        |
 + --------- + ---------------- + ------------ +
-| pending   | pending.cont()   | .due         |
-|           | pending.done()   |              |
+| pending   | pending_cont     | .due         |
+|           | pending_done     |              |
 + --------- + ---------------- + ------------ +
-| impending | impending.cont() | .undue       |
-|           | impending.fail() |              |
+| impending | impending_cont   | .undue       |
+|           | impending_fail   |              |
 + --------- + ---------------- + ------------ +
 ```
 
-Certainties support the active logic calculus. For example, you may invert (`!`) or compose certainties (`&&`, `||`).
+The above constants are available via `static Active.Raw`; without static import, similar to status constants, use `action.done()`, `failure.fail()`, `loop.cont()`, ... and so forth.
+
+Via `static Active.Status` you may *motivate* the use of a constant as illustrated below (see [Logging](Logging.md) for more information).
+
+```cs
+using static Active.Raw;
+// Unmotivated use, no logging support (faster)
+status Promptly => @void;
+
+using static Active.Status;
+// Motivated use of the `@void` constant.
+status Promptly() => @void("Done in no time");
+// Unmotivated but information is recorded for logging purposes.
+status Promptly() => @void();
+```
+
+Certainties support the active logic calculus. As an example, you may invert (`!`) or compose certainties (`&&`, `||`).
 
 Not all types support all operations. For example, you may AND actions but you cannot OR them, because an action is always *done*.
 

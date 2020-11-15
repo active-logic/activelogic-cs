@@ -1,4 +1,4 @@
-*Sources: Status.cs - Last Updated: 2019.8.13*
+*Sources: Status.cs - Last Updated: 2020.11.15*
 
 # Status Reference
 
@@ -8,12 +8,17 @@ Repeated invocations of a status function return varying statuses over time.
 
 ## Constructors
 
-Avoid status constructors; use `done()`, `fail()` or `cont()` instead.
+Avoid status constructors.
+
+- Import `static Active.Raw` and use `done`, `fail` or `cont` instead.
+- For logging purposes import `static Active.Status` and use `done(..)`, `fail(..)`, `cont(..)`.
+- Where static import is undesirable, use `status.done(..)`, `status.fail(..)`, `status.cont(..)`
+
+For more information about status constants and logging calls, read [Status keywords and logging calls](Constants-and-logging.md).
 
 ## Fields & Properties
 
-`failing`, `running` and `complete`
-Indicate whether a status is failing, running, or complete.
+`failing`, `running` and `complete` indicate whether a status is failing, running, or complete.
 
 ## Methods
 
@@ -59,8 +64,6 @@ LHS evaluates first.
 
 ## Conversions
 
+`bool` is implicitly convertible to `status`.
+
 You cannot directly obtain a boolean from status (narrowing conversion), however you may obtain a `bool` by querying the `running`, `failing` and `complete` properties of a status.
-
-Conversely, you cannot directly obtain a status from a `bool`, however you may generate a status by invoking `bool.status()`.
-
-*Note: Although converting `bool` to status may be allowed as a widening conversion, `bool.status()` records caller information, which is necessary for logging purposes.*

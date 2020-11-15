@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using Active.Core;
 using Active.Core.Details;
-using static Active.Core.status;
+using static Active.Status;
 
 public class GigTest : TestBase{
 

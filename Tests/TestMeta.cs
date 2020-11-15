@@ -6,7 +6,7 @@
 
 using Active.Core;
 using Active.Core.Details;
-using static Active.Core.status;
+using static Active.Status;
 
 using NUnit.Framework;
 public class TestMeta : CoreTest {

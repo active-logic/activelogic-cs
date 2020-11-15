@@ -15,7 +15,7 @@ using P  = System.Runtime.CompilerServices.CallerFilePathAttribute;
 using S  = System.String;
 using X  = Active.Core.status;
 using Lg = Active.Core.Details.Logging;
-using static Active.Core.status;
+using static Active.Status;
 
 namespace Active.Core.Details{
 public static class Logging{
@@ -25,15 +25,17 @@ public static class Logging{
     => log ? ViaScope(@base, F.SysTrace(p, m, l), reason) : @base;
 
     internal static action Action(V reason, S p, S m, int l) => log
-    ? new action(ViaScope(_done, F.SysTrace(p,m,l), reason).meta)
-    : action._void;
+    ? new action(ViaScope(status._done,
+                          F.SysTrace(p,m,l), reason).meta)
+    : action._done;
 
     internal static failure Failure(V reason, S p, S m, int l) => log
-    ? new failure(ViaScope(_fail, F.SysTrace(p,m,l), reason).meta)
-    : failure._false;
+    ? new failure(ViaScope(status._fail,
+                           F.SysTrace(p,m,l), reason).meta)
+    : failure._fail;
 
     internal static loop Forever(V reason, S p, S m, int l) => log
-    ? new loop(ViaScope(_cont, F.SysTrace(p,m,l), reason).meta)
+    ? new loop(ViaScope(status._cont, F.SysTrace(p,m,l), reason).meta)
     : loop._cont;
 
     internal static pending Pending(pending @base, V reason,

@@ -8,11 +8,9 @@ using Active.Core.Details;
 namespace Active.Core{
 public readonly partial struct action{
 
+    internal static readonly action _done = new action();
 
-
-    internal static readonly action _void = new action();
-
-    public static action operator % (action x, action y) => _void;
+    public static action operator % (action x, action y) => _done;
 
     public static action    operator & (action x, action    y) => y;
     public static status    operator & (action x, status    y) => y;
@@ -29,7 +27,9 @@ public readonly partial struct action{
 
     #if AL_OPTIMIZE   // --------------------------------------------
 
-    public static failure operator ! (action s) => failure._false;
+    public static action done(ValidString reason = null) => _done;
+
+    public static failure operator ! (action s) => failure._fail;
     #endif
 
     public static implicit operator bool(action self)

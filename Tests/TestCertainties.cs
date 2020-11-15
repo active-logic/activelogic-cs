@@ -8,28 +8,28 @@ public class TestCertainties{
 public class TestAction : CoreTest{
 
     [Test] public void Action()
-    => o ( (status)action._void, status._done );
+    => o ( (status)action._done, status._done );
 
     [Test] public void InvertAction()
-    => o( !action._void, failure._false );
+    => o( !action._done, failure._fail );
 
     [Test] public void CombineActions()
-    { action x = action._void % action._void; }
+    { action x = action._done % action._done; }
 
     [Test] public void And_Action_Action()
-    => o(action._void && action._void, action._void);
+    => o(action._done && action._done, action._done);
 
     [Test] public void Action_and_Status()
-    => o(action._void & status._done, status._done);
+    => o(action._done & status._done, status._done);
 
     [Test] public void Status_and_Action()
-    => o(status._done && action._void, status._done);
+    => o(status._done && action._done, status._done);
 
     [Test] public void And_Action_Failure()
-    => o(action._void & failure._false, failure._false);
+    => o(action._done & failure._fail, failure._fail);
 
     [Test] public void ToStatus(){
-        status s = action._void;
+        status s = action._done;
         o( s, status._done );
     }
 
@@ -38,19 +38,19 @@ public class TestAction : CoreTest{
 public class TestFailure : CoreTest{
 
     [Test] public void Failure_internal()
-    => o ( (status)failure._false, status._fail  );
+    => o ( (status)failure._fail, status._fail  );
 
     [Test] public void Failure()
-    => o ( (status)failure._false, status._fail  );
+    => o ( (status)failure._fail, status._fail  );
 
     [Test] public void InvertFailure()
-    => o( !failure._false, action._void );
+    => o( !failure._fail, action._done );
 
     [Test] public void CombineFailures()
-    { failure x = failure._false % failure._false; }
+    { failure x = failure._fail % failure._fail; }
 
     [Test] public void OrFailures()
-    => o(failure._false || failure._false, failure._false);
+    => o(failure._fail || failure._fail, failure._fail);
 
 }
 

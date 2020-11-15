@@ -1,27 +1,27 @@
-*Sources: Logging.cs - Last Updated: 2019.7.30*
+*Sources: Logging.cs - Last Updated: 2020.11.15*
 
 # Logging
 
-The log-tree lets the user visualize control state in real time. To generate a log tree, the user rely on specific idioms, detailed in this section.
+The log-tree lets you visualize control state in real time. This section describes logging related APIs.
 
 The logging feature solves three problems commonly associated with logging:
 
-- **Readability** - in general console output is unstructured and hard to read. A fortiori, using console output to debug loops running at 60Hz is a peculiar challenge.
+- **Readability** - in general console output is unstructured and hard to read. Using console output to debug loops running at 60Hz is ineffective.
 - **Performance** - the API provides safe idioms ensuring minimal overheads, so that you needn't remove traces before shipping.
-- **Best practice** - by providing clear attachment points, the API encourages you to build beautiful logs which improve maintainability of your programs.
+- **Best practice** - the logging API helps you design self-explanatory control programs with minimal semantic overheads.
 
 ## Logging within Gigs and tasks
 
 ### Logging statuses
 
-Often, logging facilities are used in the context of `UGig` and `UTask` subclasses.
+Often logging is used in the context of `UGig` and `UTask` subclasses.
 
-Wherever `done()`, `fail()` and `cont()` appear in your program, caller information is generated. You may attach a user defined message, using the following syntax:
+Wherever `done`, `fail`, `cont` and other status keywords appear in your program, adding `()` generates caller information and you may attach a custom message to *motivate* the emitted status:
 
 ```cs
-done(log && message);
-fail(log && message);
-cont(log && message);
+done();                        // no custom message
+done(log && message);          // custom messages appended
+pending.cont(log && message);  // ...
 ```
 
 Here is an example:
@@ -30,14 +30,16 @@ Here is an example:
 cont(log && $"Searching within a {dist:0.#}m range");
 ```
 
-String interpolation is recommended throughout. The `log && message` syntax ensures that no string formatting is performed in log-less mode, which is required for good performance. In contrast, the following usage is strongly discouraged:
+To avail short-form logging calls (such as `done()` instead of `status.done()`), statically import `Active.Status`.
+
+String interpolation is recommended; the `log && message` syntax ensures no string formatting is applied in release builds, which is required for best performance. In contrast the following approach is strongly discouraged:
 
 ```cs
 var msg = string.Format("Searching within a {0:0.#}m range", dist);
 cont(log && msg);
 ```
 
-With the above syntax, string formatting cannot be avoided; this would result in significant overheads.
+With the above syntax, string formatting overheads cannot be avoided.
 
 Using the above syntax, you may also attach messages to `@void()`, `failure()`, `forever()`, `impending.cont()`, `impending.doom()`, `pending.cont()` and `pending.fail()`.
 
@@ -61,7 +63,7 @@ public status Defend(){
 
 **TIP:** Always use `Eval` in combination with `return`.
 
-Whenever logging a status, you may attach a message using the indexing syntax:
+Whenever logging a status, you may also attach a custom message using the indexing syntax:
 
 ```cs
 public status Defend(){
@@ -76,6 +78,8 @@ public status Defend(){
 
 ## Logging using `Via`
 
+*[DOC REVIEW NOTE] in recent versions of AL, it appears that Eval is now a static keyword.*
+
 Without a `UGig` or `UTask` context, all the above idioms remain available except `Eval()`. In place of `Eval()` use `Via()`:
 
 ```cs
@@ -89,7 +93,7 @@ public status Defend(){
 }
 ```
 
-If you prefer a consistent semantic marker (to identify every logging message within an application), use `Via` everywhere:
+If you prefer a consistent semantic marker (to identify every logging message within your application), use `Via` everywhere:
 
 ```cs
 action Reset() => done().Via(log && $"All clear");
@@ -97,7 +101,7 @@ action Reset() => done().Via(log && $"All clear");
 
 ## Logging and the information chain
 
-Building log-trees requires propagating annotated statuses up the call stack; orphaned statuses do not appear within the log-tree; the following example illustrates this scenario:
+Building log-trees requires propagating annotated statuses up the call stack; orphaned statuses do not appear within the log-tree; the following example illustrates this:
 
 ```cs
 public status TwoStep(){

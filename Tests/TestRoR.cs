@@ -51,7 +51,7 @@ public class TestRoR : TestBase{
         bool flag = true;
         RoR.Enter("Nemo", φ, leniency: 1);
         RoR.OnResume(ref γ,
-            () => { flag = false; return status.@void(); });
+            () => { flag = false; return action.done(); });
         o(flag, true);
     }
 
@@ -62,7 +62,7 @@ public class TestRoR : TestBase{
         bool flag = true;
         RoR.Enter("Nemo", φ, leniency);
         RoR.OnResume(ref γ,
-            () => { flag = false; return status.@void(); });
+            () => { flag = false; return action.done(); });
         o(flag, offset == 0 ? true : false);
     }
 

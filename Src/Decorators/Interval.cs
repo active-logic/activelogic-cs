@@ -1,7 +1,7 @@
 // Doc/Reference/Decorators.md
 using System;
 using static System.Math;
-using static Active.Core.status;
+using static Active.Status;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 
 namespace Active.Core{

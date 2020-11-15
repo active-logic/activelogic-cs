@@ -23,7 +23,7 @@ otherwise, defend;
 otherwise, retreat.
 ```
 
-Status constants are defined as `done`, `fail` and `cont`; a status, therefore, is either `.complete`, `.failing` or `.running` with a running status causing execution to *yield* until the next iteration.
+A status, is either `.complete`, `.failing` or `.running`, with a running status causing execution to *yield* until the next iteration.
 
 **NOTE**: *While similar to coroutines in some ways, a yielding selector does not store the stack. BTs always evaluate top down and (to ensure responsiveness) there is no guarrantee that an interrupted sequence or selector will resume at the next iteration.*
 
@@ -56,7 +56,7 @@ Unlike other BT libraries, the AL calculus fits right within your update loop; y
 
 ```cs
 using Active.Core;                
-using static Active.Core.status;  
+using static Active.Raw;  
 
 public class Soldier{
 
@@ -69,7 +69,7 @@ public class Soldier{
 }
 ```
 
-The update manager will then invoke `Step()` at every frame, perhaps with a policy to determine whether a failing/complete agent should repeat execution or stop.
+Your update manager should invoke `Step()` at every frame, perhaps with a policy to decide whether a failing/complete agent should either repeat execution or stop.
 
 In AL, `Gig` and `Task` are engine-agnostic base classes you may use to implement this approach. `Gig` only provides basic logging support while `Task` benefits additional features covered later in the guide.
 
@@ -83,21 +83,21 @@ public class Soldier : Gig{
 }
 ```
 
-When assigning or returning a status, use `done()`, `fail()` or `cont()`:
+When assigning or returning a status, use `done`, `fail` or `cont`:
 
 ```cs
-status Attack() => hasWeapon ? fail() : Play("Strike");
+status Attack() => hasWeapon ? fail : Play("Strike");
 ```
 
 AL does not restrict status expressions to sequences and selectors
-(see how we used the ternary conditional `x ? y : z`).
+(here we used the ternary conditional `x ? y : z`).
 
-**NOTE**: *status does not convert to `bool`; instead, query the `running`, `failing` and `complete` status properties; booleans do convert to status (where* true *is* done, false *is* failing *).*
+**NOTE**: *status does not convert to `bool`; instead, query the `.running`, `.failing` and `.complete` status properties; booleans do convert to status (where* true *is* done, false *is* failing *).*
 
 Within any expression, terms evaluating to `status` are referred as *tasks* or *subtasks*:
 
 ```cs
-A && B || (C && D)  // A status expression
+A && B || (C && D)  // a status expression
 ```
 
 Visual BT presentation:
@@ -118,16 +118,16 @@ A        ⍰
          C       D
 ```
 
-In the above diagram, `C && D` is a subtask. Following operator precedence, `B || (C && D)` is also a task/subtask.
+As above, `C && D` is a subtask and (following operator precedence) `B || (C && D)` is yet another task/subtask.
 
-**NOTE**: *Initially, mixing `&&` and `||` may feel confusing; start with simple status expressions, defining new C# functions for subtasks*
+**NOTE**: *Initially, mixing `&&` and `||` may be confusing; start with simple status expressions, defining new C# functions for each subtask*
 
-**A key to understanding behavior trees** is that a later task (such as `Retreat`) - does not evaluate before ticking (traversing) prior tasks (in our example, `Attack` and `Defend`); well designed status functions use guard conditions:
+**A key to understanding behavior trees** is that a later task (such as `Retreat`) - does not evaluate before ticking (traversing) prior tasks (in our example, `Attack` and `Defend`); as such, well designed status functions use guard conditions:
 
 ```cs
 status DoSomething(){
-    if( CANNOT_DO    ) return fail();  // guard A
-    if( ALREADY_DONE ) return done();  // guard B
+    if( CANNOT_DO    ) return fail;  // guard A
+    if( ALREADY_DONE ) return done;  // guard B
     return REALLY_DO_SOMETHING;
 }
 ```
@@ -150,15 +150,20 @@ Let's consider another, possible implementation of the `Attack()` function:
 
 ```cs
 status Attack(){
-    if(health < 25) return fail();
-    if(!threat)     return fail();
+    if(health < 25) return fail;
+    if(!threat)     return fail;
     return MoveTo(threat) && Strike(threat);
 }
 ```
 
-Here, notice the `MoveTo(threat) && Strike(threat)` idiom. The conditional operator AND (`&&`) behaves differently from the conditional OR (`||`). In this case an attack will not complete until *both* `MoveTo` and `Strike` did succeed.
+Here, notice the `MoveTo(threat) && Strike(threat)` idiom. The conditional operator AND (`&&`) behaves differently from the conditional OR (`||`). In this case an attack will not complete until *both* `MoveTo` and `Strike` did succeed. If correctly implemented (using guard conditions), ticking `MoveTo` while within striking range will not interfere with the strike task.
 
-If correctly implemented (using guard conditions), ticking `MoveTo` while within striking range will not interfere with the strike task.
+Since AL allows mixing boolean and trilean (three-valued) logics, the `Attack` implementation may be represented concisely:
+
+```cs
+status Attack()
+=> (health > 25) && threat && MoveTo(threat) && Strike(threat);
+```
 
 Expressions of the form `EXP_1 && ... && EXP_n` are known as *sequences*; use a sequence when each task is a prerequisite to the following task.
 
@@ -189,7 +194,7 @@ public class Soldier : Task{
     // ...
 
     status Attack()
-        => Engage(threat) && Cooldown(1.0f)?[ Strike(threat) ];
+    => Engage(threat) && Cooldown(1.0f)?[ Strike(threat) ];
 
 }
 ```
@@ -204,7 +209,7 @@ status Attack()
     => Cooldown(0.5f)?[ Warmup() ] && Cooldown(1.0f)?[ Strike() ];
 ```
 
-Under the hood, decorators leverage site binding and [null-conditional operators](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-). Site binding in AL is (conceptually) similar to lambdas (anon functions / anon storage); the 'one per line' limitation is a language issue (upvote/discuss [#2824 on csharplang](https://github.com/dotnet/csharplang/discussions/2824)).
+Under the hood, decorators leverage site binding and [null-conditional operators](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-). Site binding in AL is (conceptually) similar to lambdas (anon functions <> anon storage); the 'one per line' limitation is a language issue (upvote/discuss [#2824 on csharplang](https://github.com/dotnet/csharplang/discussions/2824)).
 
 Site bound decorators are optional. The alternative (declaring a field in your class) is [documented here](Reference/Decorators.md), and it is also useful if you wish to expose decorator parameters.
 
@@ -226,7 +231,7 @@ status Charge => Seq()
     + @do?[ Reach(target) ];
 ```
 
-By default an ordered sequence runs until either a failure is encountered, or all tasks have succeeded, thereupon the ordered sequence resets (if you do not wish to reset, use `Seq(repeat: false) + ...`).
+By default an ordered sequence runs each task *once and once only* until either a failure is encountered, or all tasks have succeeded, thereupon the ordered sequence resets (if you do not wish to reset, use `Seq(repeat: false) + ...`).
 
 Above, the `@do?[ EXP ]` node spans a unique function call. You may embed a stateless selector/sequence or indeed any other status expression.
 
@@ -241,7 +246,7 @@ status Fallback() => Sel()
     ... ;
 ```
 
-**NOTE**: `@do?[ ... ]` nodes are not site-bound so the 'one per line' quirk does not apply, except perhaps for readability.
+**NOTE**: `@do?[ ... ]` nodes are not site-bound so the 'one per line' quirk does not apply, except perhaps for improved readability.
 
 ## Tasks and Gigs
 
@@ -268,7 +273,7 @@ The above example illustrates designing complex agents by assembling ever larger
 
 ## Logging
 
-While the Active Logic logging/history tracing APIs are available in the Github repository, visual logging typically requires engine/editor integration. For an overview of how visual logging works in Unity, refer to the [Unity Quick Start Guide](QuickStart-Unity.md).
+While the Active Logic logging/history tracing APIs are available in this repository, visual logging normally requires engine/editor integration. For an overview of how visual logging works in Unity, refer to the [Unity Quick Start Guide](QuickStart-Unity.md).
 
 **NOTE**: *AL is debugger friendly. Getting productive without visual logging is possible, notably if you are using unit/functional tests.*
 

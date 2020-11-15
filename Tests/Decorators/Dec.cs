@@ -6,6 +6,6 @@ public class Dec: Resettable{
     public bool didReset = false;
     public action Reset(){
         didReset = true;
-        return status.@void();
+        return action.done();
     }
 }

@@ -16,6 +16,6 @@ public class TestAbstractDecorator
     [Test] public void FnToString() => o( x.ToString(), "<C>" );
 
     public class Concrete : AbstractDecorator
-    { override public action Reset() => status.@void(); }
+    { override public action Reset() => action.done(); }
 
 }

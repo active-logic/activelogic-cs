@@ -1,7 +1,7 @@
 // Doc/Reference/Decorators.md
 #if UNITY_2018_1_OR_NEWER
 
-using static Active.Core.status;
+using static Active.Status;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 using Active.Core.Details;
 

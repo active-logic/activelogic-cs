@@ -8,7 +8,7 @@ using NUnit.Framework;
 using Active.Core;
 using Active.Core.Details;
 using S = Active.Core.status;
-using static Active.Core.status;
+using static Active.Status;
 
 public class TestStatus : CoreTest {
 

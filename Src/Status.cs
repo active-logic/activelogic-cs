@@ -63,20 +63,21 @@ public readonly partial struct status{
     public status ViaDecorator(IDecorator scope, S reason=null)
     => this;
 
+    [Obsolete("Import Active.Status/Active.Raw", false)]
     public static status Eval(status s) => s;
 
     public static status done(S reason = null) => _done;
     public static status fail(S reason = null) => _fail;
     public static status cont(S reason = null) => _cont;
 
-    public static action  @void  (S reason = null) => action._void;
-    public static failure @false (S reason = null) => failure._false;
-
+    [Obsolete("Import Active.Status", false)]
+    public static action  @void  (S reason = null) => action._done;
+    [Obsolete("Import Active.Status", false)]
+    public static failure @false (S reason = null) => failure._fail;
     [Obsolete("Use '@false' instead", false)]
-    public static failure flop (S reason = null) => failure._false;
-
+    public static failure flop (S reason = null) => failure._fail;
     [Obsolete("Use loop.cont instead", false)]
-    public static loop forever(S reason = null) => loop._forever;
+    public static loop forever(S reason = null) => loop._cont;
 
     #endif  // AL_OPTIMIZE
 

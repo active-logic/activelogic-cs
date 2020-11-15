@@ -6,7 +6,7 @@
 #if !AL_OPTIMIZE
 
 using System;
-using static Active.Core.status;
+using static Active.Status;
 using Tag = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 
 namespace Active.Core{

@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;  // used by Register
 using Active.Core.Details;
-using static Active.Core.status;
+using static Active.Status;
 using P  = System.Runtime.CompilerServices.CallerFilePathAttribute;
 using M  = System.Runtime.CompilerServices.CallerMemberNameAttribute;
 using L  = System.Runtime.CompilerServices.CallerLineNumberAttribute;

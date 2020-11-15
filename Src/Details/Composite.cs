@@ -16,7 +16,7 @@ public abstract class Composite : Resettable{
 
     public static implicit operator int(Composite self) => self.index;
 
-    public action Reset(){ index = 0; return status.@void(); }
+    public action Reset(){ index = 0; return action.done(); }
 
     // A complete sequence succeeds, whereas a complete selector fails;
     public abstract status end{ get; }

@@ -16,7 +16,7 @@ using P  = System.Runtime.CompilerServices.CallerFilePathAttribute;
 using S  = System.String;
 using X  = Active.Core.status;
 using Lg = Active.Core.Details.Logging;
-using static Active.Core.status;
+using static Active.Status;
 
 namespace Active.Core{
 
@@ -32,6 +32,10 @@ partial struct action{
 
     public action Via(V reason = null,
                       [P]S p="", [M]S m="", [L]int l=0)
+    => Lg.Action(reason, p, m, l);
+
+    public static action done(V reason = null,
+                              [P] S p="", [M] S m="", [L] int l=0)
     => Lg.Action(reason, p, m, l);
 
 }
@@ -55,6 +59,7 @@ partial struct failure{
     public failure Via(V reason = null,
                        [P]S p="", [M]S m="", [L]int l=0)
     => Lg.Failure(reason, p, m, l);
+
 }
 
 partial struct loop{
