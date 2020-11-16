@@ -3,6 +3,7 @@
 #define AL_OPTIMIZE
 #endif
 
+using InvOp = System.InvalidOperationException;
 using System; using Active.Core.Details;
 
 namespace Active.Core{
@@ -12,19 +13,19 @@ public readonly partial struct failure{
     internal static readonly failure _flop = new failure();
     internal static readonly failure _fail = new failure();
 
-    public static failure   operator | (failure x, failure   y) => y;
-    public static status    operator | (failure x, status    y) => y;
-    public static action    operator | (failure x, action    y) => y;
-    public static loop      operator | (failure x, loop      y) => y;
-    public static pending   operator | (failure x, pending   y) => y;
-    public static impending operator | (failure x, impending y) => y;
+    // --------------------------------------------------------------
 
     public static failure operator % (failure x, failure y) => _fail;
+    public static failure operator | (failure x, failure y) => y;
+
+    public static failure operator & (failure x, status y)
+    => throw new InvOp($"({x} & {y}) is not allowed");
 
     public static loop operator + (failure x) => loop._cont;
 
     public static bool operator true  (failure s) => false;
-    public static bool operator false (failure s) => true;
+    public static bool operator false (failure s)
+    => throw new InvOp("falsehood cannot be tested (failure)");
 
     #if AL_OPTIMIZE   // --------------------------------------------
 
@@ -33,6 +34,9 @@ public readonly partial struct failure{
     public static action operator ! (failure s) => action._done;
 
     #endif
+
+    public static implicit operator bool(failure self)
+    => false;
 
     public static implicit operator impending(failure self)
     => impending._fail;

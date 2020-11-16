@@ -4,12 +4,13 @@
 #endif
 
 using System;
+using InvOp = System.InvalidOperationException;
 using Active.Core.Details;
 
 namespace Active.Core{
 public readonly partial struct loop{
 
-    internal static readonly loop _cont    = new loop();
+    internal static readonly loop _cont = new loop();
 
     #if AL_OPTIMIZE
 
@@ -21,13 +22,25 @@ public readonly partial struct loop{
 
     public static loop operator % (loop x, loop y) => _cont;
 
+    public static loop operator & (loop x, status y)
+    => throw new InvOp($"({x} & {y}) is not allowed");
+
+    public static loop operator | (loop x, status y)
+    => throw new InvOp($"({x} | {y}) is not allowed");
+
+    public static bool operator true  (loop s)
+    => throw new InvOp("truehood cannot be tested (loop)");
+
+    public static bool operator false (loop s)
+    => throw new InvOp("falsehood cannot be tested (loop)");
+
     public static implicit operator impending(loop self)
     => impending._cont;
 
     public static implicit operator pending(loop self)
     => pending._cont;
 
-    // public static implicit operator status(loop self)
-    // => status._cont;
+    public static implicit operator status(loop self)
+    => status._cont;
 
 }}

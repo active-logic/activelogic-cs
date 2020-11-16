@@ -3,8 +3,8 @@
 #define AL_OPTIMIZE
 #endif
 
+using System; using InvOp = System.InvalidOperationException;
 using Active.Core.Details;
-using System;
 
 namespace Active.Core{
 public readonly partial struct impending{
@@ -30,10 +30,23 @@ public readonly partial struct impending{
     public bool failing  => ω <= -1;
     public bool running  => ω ==  0;
 
+    // --------------------------------------------------------------
+
     public static impending operator | (impending x, impending y) => y;
 
-    public static bool operator true (impending s) => s.ω != -1;
-    public static bool operator false(impending s) => s.ω !=  1;
+    // Disable `impending && status` via implicit conversion
+    public static impending operator & (impending x, status y)
+    => throw new InvOp("{x} & {y} is not allowed");
+
+    public static bool operator true (impending s)
+    => s.ω != -1;
+
+    // Disable `impending && T`, even when right hand is dynamic
+    public static bool operator false(impending s)
+    => throw new InvOp("Cannot test falsehood (impending)");
+
+    override public string ToString()
+    => ω == -1 ? "impending.fail" : "impending.cont";
 
     #if AL_OPTIMIZE  // ----------------------------------------------
 
@@ -48,9 +61,14 @@ public readonly partial struct impending{
     [Obsolete("Use fail instead", false)]
     public static impending doom(ValidString reason = null) => _doom;
 
-    #endif
+    public static implicit operator status(impending self)
+    => new status(self.ω);
 
-    // public static implicit operator status(impending self)
-    // => self.undue;
+    #else  // !AL_OPTIMIZE
+
+    public static implicit operator status(impending self)
+    => new status(self.ω, self.meta);
+
+    #endif
 
 }}

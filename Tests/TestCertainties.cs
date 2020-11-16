@@ -16,7 +16,7 @@ public class TestAction : CoreTest{
     [Test] public void CombineActions()
     { action x = action._done % action._done; }
 
-    [Test] public void And_Action_Action()
+    [Test] public void Action_and_Action()
     => o(action._done && action._done, action._done);
 
     [Test] public void Action_and_Status()
@@ -25,8 +25,8 @@ public class TestAction : CoreTest{
     [Test] public void Status_and_Action()
     => o(status._done && action._done, status._done);
 
-    [Test] public void And_Action_Failure()
-    => o(action._done & failure._fail, failure._fail);
+    [Test] public void Action_and_Failure()
+    => o(action._done & failure._fail, false);
 
     [Test] public void ToStatus(){
         status s = action._done;
@@ -55,9 +55,6 @@ public class TestFailure : CoreTest{
 }
 
 public class TestLoop : CoreTest{
-
-    [Test] public void Loop()
-    => o ( loop._cont.ever, status._cont);
 
     [Test] public void CombineLoops()
     { loop x = loop._cont % loop._cont; }

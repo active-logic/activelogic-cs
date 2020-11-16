@@ -1,6 +1,7 @@
 #if !(UNITY_EDITOR || DEBUG)
 #define AL_OPTIMIZE
 #endif
+
 #if !AL_OPTIMIZE
 
 using Active.Core.Details;

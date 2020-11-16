@@ -3,8 +3,8 @@
 #define AL_OPTIMIZE
 #endif
 
+using System; using InvOp = System.InvalidOperationException;
 using Active.Core.Details;
-using System;
 
 namespace Active.Core{
 public readonly partial struct pending{
@@ -24,12 +24,19 @@ public readonly partial struct pending{
     }
 
     public bool running  => ω ==  0;
-
     public bool complete => ω >=  1;
+
+    // --------------------------------------------------------------
 
     public static pending operator & (pending x, pending y) => y;
 
-    public static bool operator true (pending s) => s.ω != -1;
+    // Disable `pending || status` via implicit conversion
+    public static pending operator | (pending x, status y)
+    => throw new InvOp("{x} | {y} is not allowed");
+
+    public static bool operator true (pending s)
+    => throw new InvOp("Cannot test truehood (pending)");
+
     public static bool operator false(pending s) => s.ω !=  1;
 
     public override string ToString()
@@ -37,6 +44,7 @@ public readonly partial struct pending{
 
     #if AL_OPTIMIZE   // ---------------------------------------------
 
+    // ZZZ
     public status due => new status(ω);
 
     public static impending operator !(pending s)
@@ -46,9 +54,14 @@ public readonly partial struct pending{
 
     public static pending done(ValidString reason = null) => _done;
 
-    #endif
+    public static implicit operator status(pending self)
+    => new status(self.ω);
 
-    // public static implicit operator status(pending self)
-    // => self.due;
+    #else  // !AL_OPTIMIZE
+
+    public static implicit operator status(pending self)
+    => new status(self.ω, self.meta);
+
+    #endif
 
 }}
