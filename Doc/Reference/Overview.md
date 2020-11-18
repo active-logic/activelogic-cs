@@ -1,25 +1,40 @@
+*Last Updated: 2020.11.18*
+
 # Active Logic Reference
 
 ## Content
+
+### Core AL
 
 1. [Status and status expressions](Status.md)
 2. [Certainties](Certainties.md)
 3. [Status keywords and logging calls](Constants-and-logging)
 4. [Gigs](Gig.md) and [Tasks](Task.md)
-5. [Steppers, agents and tickers](Steppers.md)
-6. [Logging](Logging.md)
-7. [Decorators](Decorators.md)
+5. [Decorators](Decorators.md)
     - [Built-in decorators](Decorators-Builtin.md)
     - [Custom decorators](Decorators-Custom.md)
     - [Reset blocks](Reset-Management.md) [beta]
-8. [Ordered composites](OrderedComposites.md)
-9. [Mutable composites](MutableComposites.md)
-10. [Memory and performance](MemoryAndPerformance.md)
-11. [Extending the API](Extensions.md)
+6. [Ordered composites](OrderedComposites.md)
+7. [Mutable composites](MutableComposites.md)
+8. [Memory and performance](MemoryAndPerformance.md)
+9. [Extending the API](Extensions.md)
+
+### Unity Integration
+
+1. [Steppers, agents and tickers](Unity/Steppers.md)
+2. [UGig & UTask](Unity/Tasks.md)
+3. [Logging](Unity/Logging.md)
+4. [Visual History](Visual-History.md)
+5. [Soft breakpoints](Soft-Breakpoints.md)
+6. [Animation drivers](Unity/Animation-Drivers.md)
+
+Note: *Unity Integration is available [via the Unity Asset Store](
+http://u3d.as/1AZ8)*
 
 ## Engine & Language support
 
-The C# implementation requires C# 7.2 or later
+Active Logic requires C# 7.2 or later.
+
 The library is tested against the following Unity Versions:
 - Unity 2019 and later (tested: 2019.1.9f1)
 - Unity 2018 LTS (tested: 2018.4.4f1)
@@ -28,6 +43,8 @@ The library is tested against the following Unity Versions:
 Configuration (under Project Settings > Player)
 - Scripting Runtime Version: `.NET 4.x Equivalent`
 - API Compatibility Level: `.NET 4.x`
+
+NOTE: In Unity 2019 and later you needn't tweak .NET configuration.
 
 ## Macros
 

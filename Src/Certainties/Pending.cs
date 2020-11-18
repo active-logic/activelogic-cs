@@ -44,7 +44,6 @@ public readonly partial struct pending{
 
     #if AL_OPTIMIZE   // ---------------------------------------------
 
-    // ZZZ
     public status due => new status(ω);
 
     public static impending operator !(pending s)
