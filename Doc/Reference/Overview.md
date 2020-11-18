@@ -24,8 +24,8 @@
 1. [Steppers, agents and tickers](Unity/Steppers.md)
 2. [UGig & UTask](Unity/Tasks.md)
 3. [Logging](Unity/Logging.md)
-4. [Visual History](Visual-History.md)
-5. [Soft breakpoints](Soft-Breakpoints.md)
+4. [Visual History](Unity/Visual-History.md)
+5. [Soft breakpoints](Unity/Soft-Breakpoints.md)
 6. [Animation drivers](Unity/Animation-Drivers.md)
 
 Note: *Unity Integration is available [via the Unity Asset Store](
