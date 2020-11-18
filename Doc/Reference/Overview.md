@@ -8,7 +8,7 @@
 
 1. [Status and status expressions](Status.md)
 2. [Certainties](Certainties.md)
-3. [Status keywords and logging calls](Constants-and-logging)
+3. [Status keywords and logging calls](Constants-and-logging.md)
 4. [Gigs](Gig.md) and [Tasks](Task.md)
 5. [Decorators](Decorators.md)
     - [Built-in decorators](Decorators-Builtin.md)
