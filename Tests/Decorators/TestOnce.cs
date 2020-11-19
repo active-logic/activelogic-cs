@@ -31,12 +31,12 @@ public class TestOnce : DecoratorTest<Once> {
         o((status)rf, done);
     }
 
-    [Test] public void NullStatusRef(){
+    [Test] public void NullStatusRefToStatus(){
         var s = Once.StatusRef.ToStatus(null);
     }
 
     #if !AL_OPTIMIZE
-    [Test] public void NullStatusRefwLog(){
+    [Test] public void NullStatusRefToStatusWithLog(){
         var s = Once.StatusRef.ToStatusWithLog(null);
     }
     #endif
