@@ -19,13 +19,22 @@ public abstract class Comp : Active.Core.Details.Resettable{
     internal status key, state;
     internal int index, ι;
 
-    abstract public T this[status s]{ get; }
+    public static T current => stack.Peek();
 
-    public action Reset(){
-        state = key;
-        index = ι = 0;
-        return @void();
+    #if !AL_OPTIMIZE
+    internal T Step(bool repeat, CallInfo i)
+    {callInfo = i; return Step(repeat); }
+    #endif
+
+    internal T Step(bool repeat){
+        if(repeat && !state.running){ index = 0; state = key; }
+        ι = 0;
+        stack.Push(this); return this;
     }
+
+    public T @do => (state != !key && ι++ == index) ? this : null;
+
+    abstract public T this[status s]{ get; }
 
     public static implicit operator status(T x){
         var @this = (T)stack.Pop();
@@ -34,6 +43,12 @@ public abstract class Comp : Active.Core.Details.Resettable{
         #else
         return @this.state / @this.callInfo;
         #endif
+    }
+
+    public action Reset(){
+        state = key;
+        index = ι = 0;
+        return @void();
     }
 
 }}

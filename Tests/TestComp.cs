@@ -16,6 +16,20 @@ public class TestComp : TestBase{
         o( x.ι, 0);
     }
 
+    [Test] public void @do([Values(-1, 1)] int key,
+                           [Range (-1, 1)] int state,
+                           [Values(true, false)] bool matchIndex){
+        x.key   = status.@unchecked(key);
+        x.state = status.@unchecked(state);
+        x.ι     = matchIndex ? 0 : -1;
+        x.index = 0;
+        if(x.key.complete){      // for a sequence
+            o(x.@do, x.state != fail() && matchIndex ? x : null);
+        }else if(x.key.failing){ // for a selector
+            o(x.@do, x.state != done() && matchIndex ? x : null);
+        }
+    }
+
     [Test] public void StatusConversion([Range(-1, 1)] int val){
         var s = status.@unchecked(val);
         x.Step();

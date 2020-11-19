@@ -16,7 +16,7 @@ public class Once : AbstractDecorator{
     //
     static status hold;
     //
-	status state = cont();
+	internal status state = cont();
     int frame = 0;
 
     #if !AL_OPTIMIZE
@@ -81,11 +81,11 @@ public class Once : AbstractDecorator{
          => status.log ? ToStatusWithLog(self) : ToStatus(self);
          #endif
 
-         static status ToStatus(StatusRef? self)
+         internal static status ToStatus(StatusRef? self)
          => self?.x ?? Once.hold;
 
          #if !AL_OPTIMIZE
-         static status ToStatusWithLog(StatusRef? self){
+         internal static status ToStatusWithLog(StatusRef? self){
              if(self.HasValue){
                  var ι = self.Value;
                  return ι.x.ViaDecorator(

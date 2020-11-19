@@ -10,8 +10,8 @@ public class TestSeq_func : TestBase{
         int a = 0;
         var seq = new Seq();
         for(int i = 0; i < 3; i++){
-            status z = seq.Step(repeat: false)
-                     + task?[ Do(++a) ];
+            status z = seq.Once()
+                     + seq.@do?[ Do(++a) ];
         }
         o(a, 1);
     }
@@ -21,9 +21,9 @@ public class TestSeq_func : TestBase{
         var seq = new Seq();
         status s = fail();
         for(int i = 0; i < 3; i++){
-            s = seq.Step(repeat: false)
-                + task?[ Do(++a) ]
-                + task?[ Do(b++) ];
+            s = seq.Once()
+                + seq.@do?[ Do(++a) ]
+                + seq.@do?[ Do(b++) ];
         }
         o(a, 1);
         o(b, 1);
@@ -34,7 +34,8 @@ public class TestSeq_func : TestBase{
         int a = 0;
         var seq = new Seq();
         for(int i = 0; i < 3; i++){
-            status s = seq.Step(repeat: false) + task?[ Fail( a++ ) ];
+            status s = seq.Once()
+                + seq.@do?[ Fail( a++ ) ];
             o(s.failing);
         }
         o(a, 1);
@@ -44,7 +45,8 @@ public class TestSeq_func : TestBase{
         int a = 0;
         var seq = new Seq();
         for(int i = 0; i < 3; i++){
-            status s = seq.Step(repeat: false) + task?[ Cont( a++ ) ];
+            status s = seq.Once()
+                + seq.@do?[ Cont( a++ ) ];
             o(s.running);
         }
         o(a, 3);

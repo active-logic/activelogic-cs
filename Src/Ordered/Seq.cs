@@ -3,33 +3,31 @@
 #define AL_OPTIMIZE
 #endif
 
-using System.Collections.Generic;
 using static Active.Status; using Active.Core.Details;
 using T = Active.Core.Seq;
+using P  = System.Runtime.CompilerServices.CallerFilePathAttribute;
+using M  = System.Runtime.CompilerServices.CallerMemberNameAttribute;
+using L  = System.Runtime.CompilerServices.CallerLineNumberAttribute;
+using S  = System.String;
 
 namespace Active.Core{
 public class Seq : Comp{
 
-    internal static T self => (T)stack.Peek();
-
     public Seq() => key = state = done();
 
-    #if !AL_OPTIMIZE
-    public T Step(bool repeat, CallInfo i){
-        callInfo = i;
-        return Step(repeat);
-    }
-    #endif
+    public T Repeat([P] S p="", [M] S m="", [L] int l=-1)
+    => (T)Step(repeat: true
+        #if !AL_OPTIMIZE
+        , (p, m, l)
+        #endif
+    );
 
-    public T Step(bool repeat=false){
-        if(repeat && !state.running){ index = 0; state = key; }
-        ι = 0;
-        stack.Push(this); return this;
-    }
-
-    public static T task
-    => (self.state != !self.key && self.ι++ == self.index)
-       ? self : null;
+    public T Once([P] S p="", [M] S m="", [L] int l=-1)
+    => (T)Step(repeat: false
+        #if !AL_OPTIMIZE
+        , (p, m, l)
+        #endif
+    );
 
     override public Comp this[status s]{ get{
         state = s; if(s == key){ index++; } return this;

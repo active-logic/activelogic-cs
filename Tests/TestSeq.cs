@@ -8,10 +8,6 @@ public class TestSeq : TestBase{
 
     T x; [SetUp] public void Setup() => x = new T();
 
-    [Test] public void Self_afterEnter(){
-        x.Step(); o(T.self, x);
-    }
-
     [Test] public void InitialState(){
         o(x.key.complete);
         o(x.index, 0);
@@ -30,22 +26,22 @@ public class TestSeq : TestBase{
     }
 
     [Test] public void Task_atIndex(){
-        x.Step();
-        o( T.task, x);
+        x.Once();
+        o( x.@do, x);
         o( x.ι, 1);
     }
 
     [Test] public void Task_beforeIndex(){
-        x.Step();
+        x.Once();
         x.index = 3;
-        o( T.task, null);
+        o( x.@do, null);
         o( x.ι, 1);
     }
 
     [Test] public void Task_failing(){
-        x.Step();
+        x.Once();
         x.state = fail();
-        o( T.task, null);
+        o( x.@do, null);
     }
 
     [Test] public void Indexer([Range(-1, 1)] int val){
