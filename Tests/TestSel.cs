@@ -14,6 +14,13 @@ public class TestSel : TestBase{
         o(x.ι, 0);
     }
 
+    [Test] public void Repeat([Range(-1, 1)] int  val){
+        var s = status.@unchecked(val);
+        x.index = 3;
+        x.state = s;
+        o(x.Repeat(), x);
+    }
+
     [Test] public void Step([Range(-1, 1)]        int  val,
                             [Values(true, false)] bool repeat){
         var s = status.@unchecked(val);

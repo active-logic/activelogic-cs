@@ -9,6 +9,16 @@ using Active.Core.Details;
 
 public class TestOnce : DecoratorTest<Once> {
 
+
+/*    [Test] public void Task_Once(){
+        var task = new Task();
+        var x = task.Once(0);
+        o(x != null);
+    }*/
+
+    class Task : Active.Core.Task{}
+
+
     [Test] public void Cycle(){
         StatusRef.checkLogData = false;
         o( x.pass.HasValue ); // Works the first time

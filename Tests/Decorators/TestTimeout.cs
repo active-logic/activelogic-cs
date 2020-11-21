@@ -21,6 +21,10 @@ public class TestTimeout : DecoratorTest<TestTimeout.Timeout> {
 		o(dec.due, 5 + st); o(dec.duration, 5);
 	}
 
+	[Test] public void Implicit(){
+		Active.Core.Timeout z = 1f;
+	}
+
 	[Test] public void Initializer([Values(0f, 3f)] float st){
 		t = st;
 		var dec = new Timeout(){ duration = 5 };
@@ -65,7 +69,7 @@ public class TestTimeout : DecoratorTest<TestTimeout.Timeout> {
 		public float time_ => TestTimeout.t;
 		public Timeout() : base(){}
 		public Timeout(float duration) : base(duration){}
-		override protected float time => time_;
+		override internal float time => time_;
 	}
 
 }

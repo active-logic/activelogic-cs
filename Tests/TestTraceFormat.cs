@@ -1,3 +1,4 @@
+using ArgEx = System.ArgumentException;
 using NUnit.Framework;
 using Active.Core;
 using F = Active.Core.Details.TraceFormat;
@@ -14,10 +15,18 @@ public class TestTraceFormat : CoreTest {
 
   #endif
 
+    [Test] public void LogTrace_null(){
+        o( F.LogTrace(null), "?trace" );
+    }
+
 	[Test] public void ReasonField(){
 		o ( F.ReasonField(null)           	, null );
 		o ( F.ReasonField("")  				, null );
 		o ( F.ReasonField("Foo")  			, "Foo" );
+	}
+
+    [Test] public void BadReason(){
+		Assert.Throws<ArgEx>( () => F.ReasonField("(parens)") );
 	}
 
 	[Test] public void LogTrace(){

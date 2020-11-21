@@ -1,3 +1,8 @@
+// Doc/Reference/Reset-Management.md
+#if !(UNITY_EDITOR || DEBUG)
+#define AL_OPTIMIZE
+#endif
+
 using System;
 using InvOp = System.InvalidOperationException;
 using NUnit.Framework;
@@ -15,6 +20,14 @@ public class TestResetCriterion : TestBase{
     }
 
     [Test] public void Id(){ int z = ResetCriterion.id; }
+
+    #if !AL_OPTIMIZE
+    [Test] public void Check_3arg(){
+        x.Check(null, stack, ("path", "method", 0));
+        o(x.context, null);
+        o(x.hold, null);
+    }
+    #endif
 
     [Test] public void Check_bypass(){
         x.Check(null, stack);

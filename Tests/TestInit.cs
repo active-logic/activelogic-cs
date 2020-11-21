@@ -12,6 +12,14 @@ public class TestInit : CoreTest {
         init = new Init();
     }
 
+    [Test] public void Reset(){
+        //init.stackIndex = 3;
+        init.passing = false;
+        init.Reset();
+        //o(init.stackIndex, -1);
+        o(init.passing, true);
+    }
+
     [Test] public void TestFirstPass(){
         string str = "";
         status x = init.pass?[ str = "boo" ] + Substr(ref str, 1);

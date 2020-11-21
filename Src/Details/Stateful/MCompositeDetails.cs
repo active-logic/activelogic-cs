@@ -7,7 +7,7 @@ partial class MComposite{
 
     status key = cont;
     IEnumerable<Func<status>> tasks;
-    IEnumerator<Func<status>> ι;
+    internal IEnumerator<Func<status>> ι;
     Func<status> task, flow;
 
     internal MComposite() => flow = Progressive;

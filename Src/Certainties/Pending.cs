@@ -39,6 +39,13 @@ public readonly partial struct pending{
 
     public static bool operator false(pending s) => s.ω !=  1;
 
+    public override bool Equals(object x)
+    => x is pending && Equals((pending)x);
+
+    public bool Equals(in pending x) => this.ω == x.ω;
+
+    override public int GetHashCode() => ω;
+
     public override string ToString()
     => ω == 0 ? "pending.cont" : "pending.done";
 

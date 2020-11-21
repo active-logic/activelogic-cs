@@ -1,5 +1,6 @@
 using Nul = System.NullReferenceException;
 using System.Collections.Generic;
+using InvOp = System.InvalidOperationException;
 
 namespace Active.Core.Details{
 public class ReCon : Stack<ReCon.Context>{
@@ -40,7 +41,7 @@ public class ReCon : Stack<ReCon.Context>{
         public void Exit(bool reset = true){
             if(!forward && reset) foreach(var e in this) e.Reset();
             if(owner.Peek() != this){
-                throw new System.Exception(
+                throw new InvOp(
                          "Exiting context not topmost in ReCon stack");
             }
             owner.Pop();

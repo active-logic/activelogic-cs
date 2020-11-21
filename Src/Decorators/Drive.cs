@@ -24,10 +24,8 @@ public class Drive : AbstractDecorator{
         return @in.running ? Eval(crit) : Bypass();
     }}
 
-    public Gate? this[bool @in, bool crit]{ get{
-        StatusRef.hold = @in ? status.cont() : status.fail();
-        return @in ? Eval(crit) : Bypass();
-    }}
+    public Gate? this[bool @in, bool crit]
+    => this[@in ? status.cont() : status.fail(), crit];
 
     protected Gate Eval(bool crit, ValidString reason=null)
     => new Gate(this, crit, new LogData(this, ".", reason));

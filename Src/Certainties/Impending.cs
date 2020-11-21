@@ -45,6 +45,13 @@ public readonly partial struct impending{
     public static bool operator false(impending s)
     => throw new InvOp("Cannot test falsehood (impending)");
 
+    public override bool Equals(object x)
+    => x is impending && Equals((impending)x);
+
+    public bool Equals(in impending x) => true;
+
+    override public int GetHashCode() => ω;
+
     override public string ToString()
     => ω == -1 ? "impending.fail" : "impending.cont";
 

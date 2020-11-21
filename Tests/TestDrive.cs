@@ -4,14 +4,29 @@ using Active.Core;
 
 public class TestDrive : DecoratorTest<Drive> {
 
+    [Test] public void Reset(){
+        var drive = new Drive();
+        o( (status)drive.Reset(), status._done );
+    }
+
+    [Test] public void Indexer_bool_true(){
+        var drive = new Drive();
+        o( drive[true , crit: true] != null );
+    }
+
+    [Test] public void Indexer_bool_false(){
+        var drive = new Drive();
+        o( drive[false, crit: true], null );
+    }
+
     [Test] public void Drive([Range(-1, 1)] int lh,
-                              [Range(-1, 1)] int rh){
+                             [Range(-1, 1)] int rh){
         status left = S(lh), right = S(rh);
         o ( (status) x[ left, crit: false ]?[ right ], left );
     }
 
     [Test] public void Tie([Range(-1, 1)] int lh,
-                              [Range(-1, 1)] int rh){
+                           [Range(-1, 1)] int rh){
         status left = S(lh), right = S(rh);
         if(lh != 0)
             o ( (status) x[ left, crit: true ]?[ right ], left );

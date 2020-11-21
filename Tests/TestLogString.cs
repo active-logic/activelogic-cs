@@ -25,8 +25,9 @@ public class TestLogString : TestBase{
     }
 
     [Test] public void Invalid(){
-        o( LogString.Invalid( invalid ) );
-        o( !LogString.Invalid( valid ) );
+        o(  LogString.Invalid(invalid) );
+        o( !LogString.Invalid(null   ) );
+        o( !LogString.Invalid(valid  ) );
     }
 
     [Test] public void @true()

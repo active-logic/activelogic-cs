@@ -31,6 +31,17 @@ public class TestReCon : TestBase{
         var cx = new ReCon.Context(rec, forward: false);
     }
 
+    [Test] public void ContextExit(){
+        var cx = rec.Enter(forward: false);
+        cx.Exit();
+    }
+
+    [Test] public void ContextExit_stackError(){
+        var a = rec.Enter(forward: false);
+        var b = rec.Enter(forward: false);
+        Assert.Throws<InvOp>( () => a.Exit() );
+    }
+
     [Test] public void NewCx_noRoE(){
         ReCon.Context cx;
         Assert.Throws<NullReferenceException>(

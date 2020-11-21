@@ -26,8 +26,6 @@ partial struct action{
 
     internal action(Meta meta) { this.meta = meta; }
 
-    //public status now => new status(1, meta);
-
     public static failure operator ! (action s) => new failure(s.meta);
 
     public action Via(V reason = null,

@@ -65,7 +65,7 @@ public class Once : AbstractDecorator{
 #if !AL_BEST_PERF
 partial class Task{
 	public Self.Gate? Once([Tag] int key = -1)
-	=> store.Decorator<Self>(key, Self.id)?.pass;
+	=> store.Decorator<Self>(key, Self.id).pass;
 }
 #endif
 

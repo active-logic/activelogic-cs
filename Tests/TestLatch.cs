@@ -4,6 +4,26 @@ using Active.Core.Details;
 
 public class TestLatch : DecoratorTest<Latch> {
 
+    [Test] public void Reset(){
+        x.passing = true;
+        x.Reset();
+        o(x.passing, false);
+    }
+
+    [Test] public void OnStatus_cont(){
+        x.OnStatus(cont);
+        o(x.passing, x.passing);
+    }
+
+    [Test] public void OnStatus_done_or_fail(){
+        x.OnStatus(done);
+        o(x.passing, false);
+        x.OnStatus(fail);
+        o(x.passing, false);
+    }
+
+    // =============================================================
+
     [Test] public void BasicTest(){
         o (x.passing, false);
         var s = x[true];

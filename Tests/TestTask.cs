@@ -9,6 +9,50 @@ public class TestTask2 : CoreTest{
 
     [SetUp] public void Setup()   => x = new C();
 
+    [Test] public void Rox([Values(true, false)] bool staticReCon){
+        x.staticRecon = staticReCon;
+        o( x.rox != null );
+    }
+
+    [Test] public void RoE(){
+        o( x.roe != null );
+    }
+
+    [Test] public void OrderedComposite_do(){
+        x.Seq();
+        o( x.@do != null );
+    }
+
+    #pragma warning disable 618
+
+    [Test] public void OrderedComposite_and_or_deprecated(){
+        o( x.and, Task.iterator);
+        o( x.or, Task.iterator);
+    }
+
+    [Test] public void OrderedComposite_end_deprecated(){
+        var z = x.Sequence();
+        o( x.end, status.@unchecked(2) );
+    }
+
+    [Test] public void OrderedComposite_loop_deprecated(){
+        var z = x.Sequence();
+        o( x.loop.complete );
+    }
+
+    [Test] public void Reset_didHaveStore(){
+        x._store = new Active.Core.Details.HashStore();
+        x.Reset();
+        o(x._store != null);
+    }
+
+    [Test] public void Reset_didNotHaveStore(){
+        x.Reset();
+        o(x._store == null);
+    }
+
+    #pragma warning restore 618
+
     [Test] public void Register(){
         var z = new Value();
         x.Register(z);

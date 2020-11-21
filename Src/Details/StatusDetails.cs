@@ -101,7 +101,7 @@ public readonly partial struct status{
     internal static status @unchecked(int value)
     => new status(value, @unchecked: true);
 
-    static int Validate(int ω)
+    internal static int Validate(int ω)
     => (ω < -1 || ω > +1) ? throw new ArgEx(ω.ToString()) : ω;
 
     internal class Ref{

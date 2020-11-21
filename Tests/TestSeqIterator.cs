@@ -18,6 +18,9 @@ public class TestSeqIterator : CoreTest {
         o( k.raw - 1, 1 );
     }
 
+    [Test] public void repeat()
+    { o ( (-i.repeat).complete ); o ( s.index, -1 ); }
+
     [Test] public void loop()
     { o ( (-i.loop).running ); o ( s.index, -1 ); }
 

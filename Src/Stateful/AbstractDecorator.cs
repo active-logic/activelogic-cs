@@ -9,7 +9,7 @@ namespace Active.Core{
 public abstract partial class AbstractDecorator : IDecorator,
                                                   Resettable{
 
-    protected virtual float time{ get{
+    internal virtual float time{ get{
       #if UNITY_2018_1_OR_NEWER
         return UnityEngine.Time.time;
       #else

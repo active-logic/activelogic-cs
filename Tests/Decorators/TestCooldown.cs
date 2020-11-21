@@ -95,7 +95,7 @@ public class TestCooldown : DecoratorTest<TestCooldown.Cooldown> {
 		public int time_;
 		public Cooldown() : base(){}
 		public Cooldown(float duration) : base(duration){}
-		override protected float time => time_;
+		override internal float time => time_;
 	}
 
 	int t{

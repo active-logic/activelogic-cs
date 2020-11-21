@@ -14,15 +14,17 @@ public class Undef : AbstractDecorator{
 
     static int uid; internal static int id => uid = ID(uid);
     protected Random _random;
-    float stamp;
+    internal float stamp;
     status value;
 
 	public Undef(){}
 
-    protected Random random => _random ?? (_random = new Random());
+    internal Random random => _random ?? (_random = new Random());
 
     public status this[float s]{ get{
-		var t = time; if(stamp == 0) stamp = t; var remaining = s + stamp - t;
+		var t = time;
+        if(stamp == 0) stamp = t;
+        var remaining = s + stamp - t;
 		return (
             (remaining > 0) ? value
             : (value = status.@unchecked(random.Next(-1, 2)))

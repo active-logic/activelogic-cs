@@ -52,13 +52,6 @@ public class TestWaiter : CoreTest {
 		o ( x.note , z);
 	}
 
-/*
-	[Test] public void NewStatusRef([Range(-1, 1)] int val){
-		var z = status.@unchecked(val);
-		var w = new Waiter.StatusRef(z, newLogData);
-		o ( (status)w, z );
-	}
-*/
   #if !AL_OPTIMIZE
 
 	[Test] public void LoggingOnFailure(){
@@ -77,9 +70,11 @@ public class TestWaiter : CoreTest {
 	}
 
 	[Test] public void ViaDecorator(){
-		o (status.log, true);
+		var _log = status.log;
+		status.log = true;
 		var s = cont().ViaDecorator(x, log && "SetPos");
 		o ( s.trace != null );
+		status.log = _log;
 	}
 
 	// Not much of a test, just basic screening

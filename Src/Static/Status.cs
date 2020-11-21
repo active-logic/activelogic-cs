@@ -29,6 +29,8 @@ public static class Status{
 
     public static status Eval(status s) => s;
 
+    public static status ε(status s) => s;
+
     #else  // logging variants ======================================
 
     internal static bool log => status.log;

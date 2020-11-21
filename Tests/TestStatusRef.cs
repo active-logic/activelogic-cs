@@ -35,6 +35,13 @@ public class TestStatusRef : TestBase{
     // --------------------------------------------------------------
 
     #if !AL_OPTIMIZE
+
+    [Test] public void SetLogData_clearFirst(){
+        StatusRef.SetLogData(dec, null, null);
+        Assert.Throws<InvOp>(
+                        () => StatusRef.SetLogData(dec, null, null) );
+    }
+
     [Test] public void ToStatusWithLog([Values(true, false)] bool lg){
         status.log = lg;
         StatusRef.SetLogData(dec, null, null);
