@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using Active.Core;
+using Active.Core.Details;
 
 public class TestInterval : DecoratorTest<TestInterval.Interval> {
 
@@ -74,6 +75,7 @@ public class TestInterval : DecoratorTest<TestInterval.Interval> {
     }
 
     [Test] public void Cycle(){
+		StatusRef.checkLogData = false;
         t = 0;  // Fires on start
 		o(x[5] != null);
         t = 8;  // Fires at t==8 (8 > 5)

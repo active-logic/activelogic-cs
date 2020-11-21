@@ -14,13 +14,10 @@ public class Once : AbstractDecorator{
 
     static int uid; internal static int id => uid = ID(uid);
     //
-    static status hold;
-    //
 	internal status state = cont();
     int frame = 0;
 
     #if !AL_OPTIMIZE
-    internal static LogData logData;
     protected object target;
     #endif
 
@@ -34,9 +31,9 @@ public class Once : AbstractDecorator{
 
     protected Gate? Bypass(ValidString reason=null){
         #if !AL_OPTIMIZE
-        logData = new LogData(this, target, reason);
+        SetLogData(target, reason);
         #endif
-        hold = state;
+        StatusRef.hold = state;
         return null;
     }
 
@@ -63,47 +60,7 @@ public class Once : AbstractDecorator{
 
     }
 
-    // ===============================================================
-
-    public readonly struct StatusRef{
-
-         readonly status x;
-         readonly LogData logData;
-
-         internal StatusRef(status value, LogData logData)
-         { x = value; this.logData = logData; }
-
-         #if AL_OPTIMIZE
-         public static implicit operator status(StatusRef? self)
-         => ToStatus(self);
-         #else
-         public static implicit operator status(StatusRef? self)
-         => status.log ? ToStatusWithLog(self) : ToStatus(self);
-         #endif
-
-         internal static status ToStatus(StatusRef? self)
-         => self?.x ?? Once.hold;
-
-         #if !AL_OPTIMIZE
-         internal static status ToStatusWithLog(StatusRef? self){
-             if(self.HasValue){
-                 var ι = self.Value;
-                 return ι.x.ViaDecorator(
-                             ι.logData.scope,
-                             log && ι.logData.Reason());
-             }else{
-                 if(Self.logData.scope == null) throw
-                    new InvOp("Log data is null");
-                 return hold.ViaDecorator(
-                             Self.logData.scope,
-                             log && Self.logData.Reason());
-             }
-        }
-        #endif
-
-    }  // StatusRef
-
-}
+}  // Once
 
 #if !AL_BEST_PERF
 partial class Task{

@@ -87,7 +87,7 @@ public class TestCooldown : DecoratorTest<TestCooldown.Cooldown> {
 		s = x[5]?[done.Via(log && "Test")];
 		// Since the target returned 'done' we're now on cooldown. The target
 		// scope was stored in the previous run, so the '? ->' notation drops.
-		o (F.Status(s), "  <C> [5.0] TestCooldown.Format");
+		o (F.Status(s).StartsWith("  <C> [5.0] TestCooldown.Format"));
 	}
   #endif
 

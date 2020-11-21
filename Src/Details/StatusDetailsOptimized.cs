@@ -46,6 +46,15 @@ public readonly partial struct status{
     internal static status @unchecked(int value)
     => new status(value);
 
+    public override string ToString(){
+        switch(ω){
+            case  1: return "done";
+            case -1: return "fail";
+            case  0: return "cont";
+            default: return $"invalid_status({ω})";
+        }
+    }
+
     internal status ViaScope(object scope, string reason=null) => this;
 
     static LogTrace LogTrace(object scope, string reason=null) => null;

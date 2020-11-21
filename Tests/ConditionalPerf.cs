@@ -8,6 +8,7 @@ public class ConditionalPerf : TestBase {
 
 	[Test] public void Benchmark([Values(false, true)] bool lhs,
                                  [Values(false, true)] bool logging){
+		StatusRef.checkLogData = false;
         status.log = logging;
         var dec = new Stub();
 		for(int rhs = -1; rhs <= +1; rhs++)

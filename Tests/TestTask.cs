@@ -3,12 +3,35 @@ using Active.Core;
 
  #if !AL_BEST_PERF
 
-// TODO unclear what this is testing
-public class TestTaskUnit : CoreTest{
+public class TestTask2 : CoreTest{
 
     Task x;
 
     [SetUp] public void Setup()   => x = new C();
+
+    [Test] public void Register(){
+        var z = new Value();
+        x.Register(z);
+        z.value = true;
+        x.Reset();
+        o(z.value, false);
+    }
+
+    [Test] public void Release(){
+        var z = new Value();
+        x.Register(z);
+        x.Release();
+        z.value = true;
+        x.Reset();
+        o(z.value, true);
+    }
+
+    [Test] public void ImplicitStatus() => o( ((status)x).failing );
+
+    [Test] public void ImplicitStatusFunction()
+    => o( ((System.Func<status>)x)().failing );
+
+    // TODO likely duplicates =======================================
 
     #if UNITY_2018_1_OR_NEWER
     [Test] public void After()    => o( x.After(1, 0)   == null);
@@ -25,6 +48,11 @@ public class TestTaskUnit : CoreTest{
     //[Test] public void Undef()    => o( x.undef(0)      != null);
 
     class C : Task{}
+
+    class Value: Active.Core.Details.Resettable{
+        public bool value = false;
+        public action Reset(){ value = false; return action.done(); }
+    }
 
 }
 

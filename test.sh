@@ -1,6 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 dotnet add "Tests/Tests.csproj" package coverlet.msbuild
+# Do a release build for 'optimized' define
+dotnet build -c Release
+# Coverage is based on logging/debug mode
 dotnet test -c Debug -p:CollectCoverage=true \
                      -p:CoverletOutputFormat=opencover
 # Install reportgen if needed

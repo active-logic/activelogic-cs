@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using Active.Core;
-
+using Active.Core.Details;
 
 public class TestLatch : DecoratorTest<Latch> {
 
@@ -17,6 +17,7 @@ public class TestLatch : DecoratorTest<Latch> {
     }
 
     [Test] public void CycleResetsOnTargetdone(){
+        StatusRef.checkLogData = false;
         o (x[false] == null);           // fail until...
         o (x[true] != null);            // ...the condition passes,
         o (x[false] != null);           // then Pass regardless of condition

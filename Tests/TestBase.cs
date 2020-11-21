@@ -1,7 +1,21 @@
+#if !(UNITY_EDITOR || DEBUG)
+#define AL_OPTIMIZE
+#endif
+
 using NUnit.Framework;
 using Active.Core.Details;
 
 public class TestBase {
+
+    #if !AL_OPTIMIZE
+
+    [SetUp] public void LogDataSetup()
+    => StatusRef.checkLogData = true;
+
+    [TearDown] public void LogDataTeardown()
+    => StatusRef.ClearLogData();
+
+    #endif
 
     // Set to 1e3 for running benches
     protected const int BaseIters = (int)1;

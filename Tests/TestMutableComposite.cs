@@ -16,7 +16,8 @@ public class TestMutableComposite : CoreTest{
         x = new MComposite();
     }
 
-    [TearDown] public void Teardown() => status.log = true;
+    [TearDown] public void TeardownTMC()
+    => status.log = true;
 
     [Test] public void FieldLoop()
     { o( x.loop, true ); x.loop = false; o( x.loop, false ); }

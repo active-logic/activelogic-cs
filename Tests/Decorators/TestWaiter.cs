@@ -32,7 +32,7 @@ public class TestWaiter : CoreTest {
 	[Test] public void Cont([Range(-1, 1)] int val){
 		var z = status.@unchecked(val);
 		status s = x[false]?[z];
-		o(s, status._cont);
+		o(s.running);
 	}
 
 	[Test] public void Construct(){}
@@ -52,19 +52,20 @@ public class TestWaiter : CoreTest {
 		o ( x.note , z);
 	}
 
+/*
 	[Test] public void NewStatusRef([Range(-1, 1)] int val){
 		var z = status.@unchecked(val);
 		var w = new Waiter.StatusRef(z, newLogData);
 		o ( (status)w, z );
 	}
-
+*/
   #if !AL_OPTIMIZE
 
 	[Test] public void LoggingOnFailure(){
 		status s = x[false]?[done(log && "Testing")];
 		// Question mark indicates we don't know the subtask managed
 		// by this decorator just yet
-		o (TraceFormat.LogTrace(s.trace), "<D> Bear ?");
+		o (TraceFormat.LogTrace(s.trace), "<D> Bear ? -> Waiter.cont");
 	}
 
 	[Test] public void LoggingOnSuccess(){
@@ -97,11 +98,14 @@ public class TestWaiter : CoreTest {
 		  "* <D> +Out -> <D> +In -> StatusDetails.op_Implicit");
 	}
 
+/*
 	[Test] public void ToStatusWithLog(){
 		var @ref = new Waiter.StatusRef(done(), newLogData);
 		var s = (status)@ref;
 	}
+*/
 
+/*
 	// NOTE: static scope only used when Gate/StatusRef is null
 	[Test] public void ToStatusWithLog_badStaticScope(){
 		Waiter.logData
@@ -111,6 +115,7 @@ public class TestWaiter : CoreTest {
 			var s = (status)@ref;
 		});
 	}
+*/
 
   #endif
 

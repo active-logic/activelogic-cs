@@ -1,6 +1,7 @@
 using NUnit.Framework;
 
 using Active.Core;
+using Active.Core.Details;
 
 public class TestInOut : DecoratorTest<InOut> {
 
@@ -22,6 +23,7 @@ public class TestInOut : DecoratorTest<InOut> {
         { var s = x[true, false]; o(x[true, true] == null); }
 
     [Test] public void Cycle(){
+        StatusRef.checkLogData = false;
         // initially neither condition is true; not passing
         o(x[false, false] == null);
         // when in condition becomes true, passing
