@@ -1,9 +1,19 @@
+#if !(UNITY_EDITOR || DEBUG)
+#define AL_OPTIMIZE
+#endif
+
 using NUnit.Framework;
 using Active.Core;
 using Active.Core.Details;
 
 public class TestAbstractDecorator
              : DecoratorTest<TestAbstractDecorator.Concrete>{
+
+    #if AL_OPTIMIZE
+    [Test] public void Reason_isNull() => o(
+        new AbstractDecorator.LogData(null, null, null)
+        .Reason(), null );
+    #endif
 
     [Test] public void Nature(){
         o( x is Resettable );

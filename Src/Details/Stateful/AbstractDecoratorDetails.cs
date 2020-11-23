@@ -35,7 +35,11 @@ partial class AbstractDecorator{
         }
 
         public string Reason()
+        #if AL_OPTIMIZE
+        => null;
+        #else
         => TraceFormat.DecoratorReason(target, reason);
+        #endif
 
     }
 

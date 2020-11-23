@@ -1,3 +1,7 @@
+#if !(UNITY_EDITOR || DEBUG)
+#define AL_OPTIMIZE
+#endif
+
 using System;
 using ArgEx = System.ArgumentException;
 
@@ -25,6 +29,7 @@ public static class TraceFormat{
 		return trace.next == null ? @out : $"{@out} -> {LogTrace(trace.next)}";
 	}
 
+	#if !AL_OPTIMIZE
 	public static string DecoratorReason(object target, string reason)
 		=> ( (string)target == "."
 			 ? $"{ReasonField(reason)}"
@@ -33,6 +38,7 @@ public static class TraceFormat{
 	public static string Scope(LogTrace t) => t?.scope.ToString();
 
 	static string DecoratorTarget(object target) => target?.ToString() ?? "?";
+	#endif
 
 	/* Used by TraceFormat.LogTrace */
 	static string Reason(string reason, bool isDecorator)

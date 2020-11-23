@@ -20,11 +20,36 @@ public class TestStatus : CoreTest {
 	[Test] public void Fail_Func()    => o ( fail().failing  );
 	[Test] public void Running_Func() => o ( cont().running  );
 
-    #if !AL_OPTIMIZE
+	// --------------------------------------------------------------
 
-    LogString log = null;
+	#if AL_OPTIMIZE
+	// optimized mode
+	[Test] public void Construct_withLogTrace(){
+		status a = done();
+		o( new status(a, trace: null).complete );
+	}
 
-	[Test] public void Construct_value_and_trace(
+	// optimized mode
+	[Test] public void ToString_(){
+		o ( fail.ToString() , "fail" );
+		o ( cont.ToString() , "cont" );
+		o ( done.ToString(),  "done"    );
+		o ( status.@unchecked(5).ToString(), "invalid_status(5)");
+	}
+
+	// optimized mode
+	[Test] public void Indexer(){
+		o( done[null].complete );
+	}
+
+	// optimized mode
+	[Test] public void WithValidString(){
+		o( (done % (ValidString)null).complete );
+	}
+
+	#endif
+
+	[Test] public void Construct_withValueAndTrace(
 									 [Values(true, false)] bool lg){
 		var _log = status.log;
 		//
@@ -32,6 +57,30 @@ public class TestStatus : CoreTest {
 		//
 		status.log = _log;
 	}
+
+	[Test] public void Construct_withStatusAndPrev_1(){
+		status a = done(), b = fail();
+		o( new status(a, prev: b).complete );
+	}
+
+	[Test] public void Construct_withStatusAndPrev_2()
+	=> o( new status(done(), prev: fail(), value: 5).complete);
+
+	[Test] public void Equals_type_mismatch(){
+		o(done.Equals( "1" ), false);
+	}
+
+	// Optimized mode
+	[Test] public void ViaDecorator()
+	=> o( done.ViaDecorator(null, null).complete );
+
+	// optimized mode
+	//[Test] public void LogTrace()
+	//=> o( status.LogTrace(null, null), null );
+
+	#if !AL_OPTIMIZE
+
+	LogString log = null;
 
 	[Test] public void Construct_logtraceMissing(){
 		Assert.Throws<ArgEx>( () =>
@@ -61,10 +110,6 @@ public class TestStatus : CoreTest {
 						     $"{nameof(ConstructWithCIAndReason)}");
 			o(s.trace.reason, r);
 		}
-	}
-
-	[Test] public void Equals_type_mismatch(){
-		o(done.Equals( "1" ), false);
 	}
 
 	[Test] public void Validate(){
@@ -107,6 +152,7 @@ public class TestStatus : CoreTest {
 		o ( fail.ToString() , "failing ()" );
 		o ( cont.ToString() , "running ()" );
 		o ( done.ToString(),  "done ()"    );
+		//o ( new status(5).ToString(), "invalid_status(5)");
 	}
 
 	[Test] public void Condoner_withTrace(){
@@ -143,11 +189,12 @@ public class TestStatus : CoreTest {
 
 	[Test] public void StatusConsts(){
 		o( (status)status.@void(),   done);
+		o( (status)status.@false(),  fail);
 		o( (status)status.flop(),    fail);
 		o( (status)status.forever(), cont);
 	}
 
-	#pragma warning restore 612
+	#pragma warning restore 618
 
 	// ==============================================================
 
@@ -282,7 +329,9 @@ public class TestStatus : CoreTest {
 	}
 
 	// Don't know how to test this
-    [Test] public void Falsehood(){}
+    [Test] public void Falsehood(){
+		o( done && @fail, @fail );
+	}
 
     [Test] public void RunningIsTrueAndFalse(){
 		if(cont) Assert.Pass(); else Assert.Fail();

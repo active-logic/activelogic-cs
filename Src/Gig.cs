@@ -13,7 +13,11 @@ public abstract partial class Gig {
     protected static readonly LogString log = null;
 
     public virtual status Step()
+    #if AL_OPTIMIZE
+    => status._fail;
+    #else
     => status.fail(log && "`Step` is not implemented");
+    #endif
 
     public action Do(params object[] x) => @void();
 
