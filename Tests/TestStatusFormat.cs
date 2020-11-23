@@ -47,6 +47,18 @@ public class TestStatusFormat : CoreTest {
         o (F.Status(!done.Via(log && "Attack", "A", "B")), "  !A.B (Attack)");
     }
 
+    [Test] public void SysTrace(){
+        var z = F.SysTrace("Src/Task.cs", "Step", 4);
+        o(z, "Task.Step");
+    }
+
+    [Test] public void SysTrace_withAction(){
+        //F.UseLineNumbers = true;
+        var z = F.SysTrace("Src/Task.cs", "action", 4);
+        o(z, "Task");
+        //F.UseLineNumbers = false;
+    }
+
     /*
     [Test] public void StatusWithPromotionPrefix(){
         o (F.Status((+cont).due.Via(

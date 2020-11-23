@@ -20,14 +20,86 @@ public class TestStatus : CoreTest {
 	[Test] public void Fail_Func()    => o ( fail().failing  );
 	[Test] public void Running_Func() => o ( cont().running  );
 
-  #if !AL_OPTIMIZE
+	// --------------------------------------------------------------
 
-    LogString log = null;
+	#if AL_OPTIMIZE
+	// optimized mode
+	[Test] public void Construct_withLogTrace(){
+		status a = done();
+		o( new status(a, trace: null).complete );
+	}
+
+	// optimized mode
+	[Test] public void ToString_(){
+		o ( fail.ToString() , "fail" );
+		o ( cont.ToString() , "cont" );
+		o ( done.ToString(),  "done"    );
+		o ( status.@unchecked(5).ToString(), "invalid_status(5)");
+	}
+
+	// optimized mode
+	[Test] public void Indexer(){
+		o( done[null].complete );
+	}
+
+	// optimized mode
+	[Test] public void WithValidString(){
+		o( (done % (ValidString)null).complete );
+	}
+
+	#endif
+
+	[Test] public void Construct_withValueAndTrace(
+									 [Values(true, false)] bool lg){
+		var _log = status.log;
+		//
+		var z = new status(0, new LogTrace( this ), null);
+		//
+		status.log = _log;
+	}
+
+	[Test] public void Construct_withStatusAndPrev_1(){
+		status a = done(), b = fail();
+		o( new status(a, prev: b).complete );
+	}
+
+	[Test] public void Construct_withStatusAndPrev_2()
+	=> o( new status(done(), prev: fail(), value: 5).complete);
+
+	[Test] public void Equals_type_mismatch(){
+		o(done.Equals( "1" ), false);
+	}
+
+	// Optimized mode
+	[Test] public void ViaDecorator()
+	=> o( done.ViaDecorator(null, null).complete );
+
+	// optimized mode
+	//[Test] public void LogTrace()
+	//=> o( status.LogTrace(null, null), null );
+
+	#if !AL_OPTIMIZE
+
+	LogString log = null;
+
+	[Test] public void Construct_logtraceMissing(){
+		Assert.Throws<ArgEx>( () =>
+			{ var z = new status(0, null, null); });
+	}
+
+	[Test] public void Construct_loggingDisabled(){
+		var _log = status.log;
+		//
+		status.log = false;
+		var z = new status(0, null, null);
+		//
+		status.log = _log;
+	}
 
 	[Test] public void ConstructWithCI(){
 		status[] S = { done(), fail(), cont() };
 		foreach(var s in S) o(s.trace.scope,
-			                $"{nameof(TestStatus)}.{nameof(ConstructWithCI)}");
+			       $"{nameof(TestStatus)}.{nameof(ConstructWithCI)}");
 	}
 
 	[Test] public void ConstructWithCIAndReason(){
@@ -38,6 +110,10 @@ public class TestStatus : CoreTest {
 						     $"{nameof(ConstructWithCIAndReason)}");
 			o(s.trace.reason, r);
 		}
+	}
+
+	[Test] public void Validate(){
+		Assert.Throws<ArgEx>( () => status.Validate(12) );
 	}
 
 	[Test] public void Via(){
@@ -71,19 +147,69 @@ public class TestStatus : CoreTest {
 		try { var s = done | done; Assert.Fail(); }catch(ArgEx){}
 	}
 
-	// ToString is not overriden in optimized mode
+	// TODO: optimized mode version
 	[Test] public void ToString_(){
 		o ( fail.ToString() , "failing ()" );
 		o ( cont.ToString() , "running ()" );
 		o ( done.ToString(),  "done ()"    );
+		//o ( new status(5).ToString(), "invalid_status(5)");
 	}
 
-  #endif
+	[Test] public void Condoner_withTrace(){
+		o(~status.fail(log && "boo"), status._done);
+	}
+
+    #endif  // !AL_OPTIMIZE
+
+	// SCHEDULED FOR DEPRECATION ====================================
+
+	#if !AL_OPTIMIZE
+
+	[Test] public void Eval_ε([Values(true, false)] bool lg){
+		var _log = status.log;
+		//
+		status.log = lg;
+		o( status.ε(done, "path").complete );
+		o( status.ε(cont, "path").running  );
+		o( status.ε(fail, "path").failing  );
+		//
+		status.log = _log;
+	}
+
+	#endif
+
+	#pragma warning disable 618
+
+	[Test] public void Eval(){
+
+		o( status.Eval(done).complete );
+		o( status.Eval(cont).running  );
+		o( status.Eval(fail).failing  );
+	}
+
+	[Test] public void StatusConsts(){
+		o( (status)status.@void(),   done);
+		o( (status)status.@false(),  fail);
+		o( (status)status.flop(),    fail);
+		o( (status)status.forever(), cont);
+	}
+
+	#pragma warning restore 618
+
+	// ==============================================================
+
+    [Test] public void GetHashCode_(){
+		o( done.GetHashCode(), +1);
+		o( cont.GetHashCode(),  0);
+		o( fail.GetHashCode(), -1);
+	}
 
 	[Test] public void Map(){
 		o (done.Map(done, fail, cont).running);
 		o (fail.Map(done, fail, cont).complete);
 		o (cont.Map(done, fail, cont).failing);
+		Assert.Throws<System.ArgumentException>(
+		    () => status.@unchecked(5).Map(done, fail, cont));
 	}
 
 	[Test] public void Sequencer(){
@@ -163,16 +289,22 @@ public class TestStatus : CoreTest {
 		o ( (!cont).running  );
 	}
 
-	[Test] public void Promoter(){
+	[Test] public void Promoter([Values(true, false)]bool lg){
+		var z = status.log;
+		status.log = lg;
 		o(+fail, status._cont);
 		o(+cont, status._done);
 		o(+done, status._done);
+		status.log = z;
 	}
 
-	[Test] public void Demoter(){
+	[Test] public void Demoter([Values(true, false)]bool lg){
+		var z = status.log;
+		status.log = lg;
 		o(-fail , status._fail);
 		o(-cont , status._fail);
 		o(-done , status._cont);
+		status.log = z;
 	}
 
 	[Test] public void Condoner(){
@@ -197,7 +329,9 @@ public class TestStatus : CoreTest {
 	}
 
 	// Don't know how to test this
-    [Test] public void Falsehood(){}
+    [Test] public void Falsehood(){
+		o( done && @fail, @fail );
+	}
 
     [Test] public void RunningIsTrueAndFalse(){
 		if(cont) Assert.Pass(); else Assert.Fail();
@@ -206,11 +340,21 @@ public class TestStatus : CoreTest {
 
     [Test] public void EqualsOp(){ o ( null == fail, false ); }
 
+	[Test] public void IncrementOp(){
+		status d = done, c = cont, f = fail;
+		o(++f, cont); o(++c, done); o(++d, done);
+	}
+
+	[Test] public void DecrementOp(){
+		status d = done, c = cont, f = fail;
+		o(--f, fail); o(--c, fail); o(--d, cont);
+	}
+
     //[Test] public void BoolToStatus(){ o((S)true, done); o((S)false, fail); }
 
     [Test] public void StatusToBool(){ o (TryNarrowingConversion()); }
 
-	// Test internal APIs -----------------------------------------------------
+	// Test internal APIs -------------------------------------------
 
 	[Test] public void iConstructdoneStatusWithStatusValue()
 		=> o ( new S(StatusValue.done, newTrace).complete );

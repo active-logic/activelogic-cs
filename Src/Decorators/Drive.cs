@@ -13,30 +13,26 @@ namespace Active.Core{
 public class Drive : AbstractDecorator{
 
     static int uid; internal static int id => uid = ID(uid);
-    //
-    static status hold;
 
     #if !AL_OPTIMIZE
-    internal static LogData logData;
+
     protected object target;
     #endif
 
     public Gate? this[status @in, bool crit]{ get{
-        hold = @in;
+        StatusRef.hold = @in;
         return @in.running ? Eval(crit) : Bypass();
     }}
 
-    public Gate? this[bool @in, bool crit]{ get{
-        hold = @in ? status.cont() : status.fail();
-        return @in ? Eval(crit) : Bypass();
-    }}
+    public Gate? this[bool @in, bool crit]
+    => this[@in ? status.cont() : status.fail(), crit];
 
     protected Gate Eval(bool crit, ValidString reason=null)
     => new Gate(this, crit, new LogData(this, ".", reason));
 
     protected Gate? Bypass(ValidString reason=null){
         #if !AL_OPTIMIZE
-        logData = new LogData(this, target, reason);
+        SetLogData(target, reason);
         #endif
         return null;
     }
@@ -62,50 +58,12 @@ public class Drive : AbstractDecorator{
             #if !AL_OPTIMIZE
             owner.target = s.targetScope;
             #endif
-            return new StatusRef(crit ? s : hold, logData);
+            return new StatusRef(crit ? s : StatusRef.hold, logData);
         }}
 
     }
 
     // ===============================================================
-
-    public readonly struct StatusRef{
-
-         readonly status x;
-         readonly LogData logData;
-
-         internal StatusRef(status value, LogData logData)
-         { x = value; this.logData = logData; }
-
-         #if AL_OPTIMIZE
-         public static implicit operator status(StatusRef? self)
-         => ToStatus(self);
-         #else
-         public static implicit operator status(StatusRef? self)
-         => status.log ? ToStatusWithLog(self) : ToStatus(self);
-         #endif
-
-         static status ToStatus(StatusRef? self)
-         => self?.x ?? Self.hold;
-
-         #if !AL_OPTIMIZE
-         static status ToStatusWithLog(StatusRef? self){
-             if(self.HasValue){
-                 var ι = self.Value;
-                 return ι.x.ViaDecorator(
-                             ι.logData.scope,
-                             log && ι.logData.Reason());
-             }else{
-                 if(Self.logData.scope == null) throw
-                    new InvOp("Log data is null");
-                 return hold.ViaDecorator(
-                             Self.logData.scope,
-                             log && Self.logData.Reason());
-             }
-        }
-        #endif
-
-    }  // StatusRef
 
 }
 

@@ -1,7 +1,7 @@
 namespace Active.Core.Details{
 public abstract class Iterator{
 
-    protected static readonly LogString log = null;
+    internal static readonly LogString log = null;
 
     protected int i;
     protected readonly Composite κ;

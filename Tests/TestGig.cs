@@ -3,13 +3,15 @@ using Active.Core;
 using Active.Core.Details;
 using static Active.Status;
 
-public class GigTest : TestBase{
+public class TestGig : TestBase{
 
     C x;
 
     [SetUp] public void Setup() => x = new C();
 
     [Test] public void Log() => o( x.LogProperty(), null );
+
+    [Test] public void Do() => o( (status)x.Do( null ), status._done );
 
     [Test] public void Step() => o( x.Step().failing );
 

@@ -13,9 +13,13 @@ public abstract partial class Gig {
     protected static readonly LogString log = null;
 
     public virtual status Step()
+    #if AL_OPTIMIZE
+    => status._fail;
+    #else
     => status.fail(log && "`Step` is not implemented");
+    #endif
 
-    protected action Do(params object[] x) => @void();
+    public action Do(params object[] x) => @void();
 
     public static implicit operator Func<status> (Gig self) => self.Step;
     public static implicit operator status       (Gig self) => self.Step();

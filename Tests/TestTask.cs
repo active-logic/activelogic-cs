@@ -3,12 +3,79 @@ using Active.Core;
 
  #if !AL_BEST_PERF
 
-// TODO unclear what this is testing
-public class TestTaskUnit : CoreTest{
+public class TestTask2 : CoreTest{
 
     Task x;
 
     [SetUp] public void Setup()   => x = new C();
+
+    [Test] public void Rox([Values(true, false)] bool staticReCon){
+        x.staticRecon = staticReCon;
+        o( x.rox != null );
+    }
+
+    [Test] public void RoE(){
+        o( x.roe != null );
+    }
+
+    [Test] public void OrderedComposite_do(){
+        x.Seq();
+        o( x.@do != null );
+    }
+
+    #pragma warning disable 618
+
+    [Test] public void OrderedComposite_and_or_deprecated(){
+        o( x.and, Task.iterator);
+        o( x.or, Task.iterator);
+    }
+
+    [Test] public void OrderedComposite_end_deprecated(){
+        var z = x.Sequence();
+        o( x.end, status.@unchecked(2) );
+    }
+
+    [Test] public void OrderedComposite_loop_deprecated(){
+        var z = x.Sequence();
+        o( x.loop.complete );
+    }
+
+    [Test] public void Reset_didHaveStore(){
+        x._store = new Active.Core.Details.HashStore();
+        x.Reset();
+        o(x._store != null);
+    }
+
+    [Test] public void Reset_didNotHaveStore(){
+        x.Reset();
+        o(x._store == null);
+    }
+
+    #pragma warning restore 618
+
+    [Test] public void Register(){
+        var z = new Value();
+        x.Register(z);
+        z.value = true;
+        x.Reset();
+        o(z.value, false);
+    }
+
+    [Test] public void Release(){
+        var z = new Value();
+        x.Register(z);
+        x.Release();
+        z.value = true;
+        x.Reset();
+        o(z.value, true);
+    }
+
+    [Test] public void ImplicitStatus() => o( ((status)x).failing );
+
+    [Test] public void ImplicitStatusFunction()
+    => o( ((System.Func<status>)x)().failing );
+
+    // TODO likely duplicates =======================================
 
     #if UNITY_2018_1_OR_NEWER
     [Test] public void After()    => o( x.After(1, 0)   == null);
@@ -25,6 +92,11 @@ public class TestTaskUnit : CoreTest{
     //[Test] public void Undef()    => o( x.undef(0)      != null);
 
     class C : Task{}
+
+    class Value: Active.Core.Details.Resettable{
+        public bool value = false;
+        public action Reset(){ value = false; return action.done(); }
+    }
 
 }
 

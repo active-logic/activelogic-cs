@@ -6,9 +6,10 @@ public class LogString{
     public string str;
     public bool valid{ get; private set; }
 
-    LogString(string str){ this.str = str; }
+    internal LogString(string str){ this.str = str; }
 
-    LogString(string str, bool valid) { this.str = str; this.valid = valid; }
+    internal LogString(string str, bool valid)
+    { this.str = str; this.valid = valid; }
 
     override public string ToString(){
         return valid ? str : throw new Ex("Can't extract invalid string");

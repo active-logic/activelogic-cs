@@ -2,7 +2,11 @@ using NUnit.Framework;
 using Active.Core;
 using static Active.Status;
 
-public class TestLoggingSemantics : TestBase{
+public class TestStatusStaticImport : TestBase{
+
+    bool _log;
+    [SetUp]    public void SaveLoggingState()    => _log = status.log;
+    [TearDown] public void RestoreLoggingState() => status.log = _log;
 
     [Test] public void Standard(){
         o( done().complete  );
@@ -34,9 +38,16 @@ public class TestLoggingSemantics : TestBase{
         o( impending.fail().failing);
     }
 
-    [Test] public void Eval_([Range(-1, 1)] int val){
+    [Test] public void Eval_([Range(-1, 1)] int val,
+                             [Values(true, false)] bool lg){
+        status.log = lg;
         var s0 = status.@unchecked(val);
         o( s0, Eval(s0) );
+    }
+
+    [Test] public void ε_([Range(-1, 1)] int val){
+        var s0 = status.@unchecked(val);
+        o( s0, ε(s0) );
     }
 
 }

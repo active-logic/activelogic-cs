@@ -1,8 +1,25 @@
 using NUnit.Framework;
 
 using Active.Core;
+using Active.Core.Details;
 
 public class TestInOut : DecoratorTest<InOut> {
+
+
+    [Test] public void OnStatus_status([Range(-1, 1)] int w){
+        var s = status.@unchecked(w);
+        x.OnStatus(s);
+        o(x.passing, false);
+    }
+
+    [Test] public void Reset(){
+        o(x.passing, false);
+        x.passing = true;
+        x.Reset();
+        o(x.passing, false);
+    }
+    
+    // =======================================================
 
     [Test] public void T0_0(){ o( x[false, false] == null ); }
 	[Test] public void T0_1(){ o( x[false, true ] == null ); }
@@ -22,6 +39,7 @@ public class TestInOut : DecoratorTest<InOut> {
         { var s = x[true, false]; o(x[true, true] == null); }
 
     [Test] public void Cycle(){
+        StatusRef.checkLogData = false;
         // initially neither condition is true; not passing
         o(x[false, false] == null);
         // when in condition becomes true, passing

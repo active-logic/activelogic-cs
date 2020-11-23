@@ -18,13 +18,13 @@ partial class Task{
 
     #else  // !AL_THREAD_SAFE
 
-      protected Iterator and => iterator;
-      protected Iterator or  => iterator;
+      public Iterator and => iterator;
+      public Iterator or  => iterator;
 
-      protected status end
+      public status end
       { get{ var i = iterator; iterator = null; return i.end; }}
 
-      protected status loop
+      public status loop
       { get{ var i = iterator; iterator = null; return i.loop; }}
 
       [Obsolete("Use Seq() instead", false)]

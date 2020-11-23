@@ -36,7 +36,7 @@ partial class Task{
 
     #endif  // end-(!)AL_OPTIMIZE
 
-    protected Comp @do => Comp.current.@do;
+    public Comp @do => Comp.current.@do;
 
     #endif  // end !AL_THREAD_SAFE
     #endif  // end !AL_BEST_PERF

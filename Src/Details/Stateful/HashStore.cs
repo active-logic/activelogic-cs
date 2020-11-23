@@ -4,11 +4,11 @@ using Active.Core;
 namespace Active.Core.Details{
 class HashStore : Store{
 
-    Dictionary<int, Seq> seqmap;          // Stores new seq
-    Dictionary<int, Sel> selmap;          // Stores new seq
+    internal Dictionary<int, Seq> seqmap;            // Stores new seq
+    internal Dictionary<int, Sel> selmap;            // Stores new seq
 
-    Dictionary<int, Composite> cmap;            // Stores composites
-    Dictionary<int, AbstractDecorator> dmap;    // Decorators map
+    internal Dictionary<int, Composite> cmap;     // Stores composites
+    internal Dictionary<int, AbstractDecorator> dmap; // Decorators
 
     Dictionary<int, AbstractDecorator> decs
     => (dmap = dmap ?? new Dictionary<int, AbstractDecorator>());
@@ -25,7 +25,7 @@ class HashStore : Store{
     Seq Store.Seq(int key){
         Seq @out;
         seqs.TryGetValue(key, out @out);
-        if(@out!=null){
+        if(@out != null){
             //nityEngine.Debug.Log("Ret seq "+@out);
             return @out;
         }

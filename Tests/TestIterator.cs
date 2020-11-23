@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using Active.Core;
 using Active.Core.Details;
+using InvOp = System.InvalidOperationException;
 using Ex = System.Exception;
 
 public class TestIterator : CoreTest{
@@ -9,7 +10,12 @@ public class TestIterator : CoreTest{
 
     [SetUp] public void Setup() => i = new TIterator(new Sequence());
 
+    [Test] public void Log() => o( Iterator.log == null );
+
     [Test] public void @true(){ if(i){ } else { Assert.Fail(); } }
+
+    [Test] public void @false()
+    => Assert.Throws<InvOp>( () => { var z = (dynamic)i && true; } );
 
     class TIterator : Iterator{
 

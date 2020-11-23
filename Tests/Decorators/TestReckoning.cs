@@ -1,3 +1,7 @@
+#if !(UNITY_EDITOR || DEBUG)
+#define AL_OPTIMIZE
+#endif
+
 using System;
 using InvOp = System.InvalidOperationException;
 using NUnit.Framework;
@@ -15,6 +19,14 @@ public class TestReckoning : TestBase{
         x = new Reckoning(arg, stack);
         o(x.context != null, arg);
     }
+
+    #if !AL_OPTIMIZE
+    [Test] public void Constructor_withCallInfo(
+                                      [Values(true, false)] bool arg){
+        x = new Reckoning(arg, stack, ("path", "member", -1));
+        o(x.context != null, arg);
+    }
+    #endif
 
     [Test] public void Indexer([Range(-1, 1)]        int val,
                                [Values(true, false)] bool arg){

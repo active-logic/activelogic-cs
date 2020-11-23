@@ -14,12 +14,18 @@ public class TestStatusLogging : CoreTest {
 
     const string T = "TestStatusLogging";
     protected static readonly LogString log = null;
+    bool _log;
 
-    [SetUp] public void Setup() => StatusFormat.UseASCII();
+    [SetUp] public void Setup()
+    { _log = status.log; StatusFormat.UseASCII(); }
 
-    [Test] public void Indexer1(){
+    [TearDown] public void RestoreLoggingState() => status.log = _log;
+
+    [Test] public void Indexer1([Values(true, false)] bool lg){
+        status.log = lg;
         var s = (done() && cont())[log && "Floppy"];
-        o(StatusFormat.Status(s), $"+ {T}.Indexer1 (Floppy)");
+        o(StatusFormat.Status(s), lg ? $"+ {T}.Indexer1 (Floppy)"
+                                     : "+ ?trace");
     }
 
     [Test] public void Indexer2(){

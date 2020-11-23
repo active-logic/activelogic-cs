@@ -5,10 +5,22 @@
 using NUnit.Framework;
 using Active.Core;
 using static Active.Raw;
+using Active.Core.Details;
 
 public class TestOnce : DecoratorTest<Once> {
 
+
+/*    [Test] public void Task_Once(){
+        var task = new Task();
+        var x = task.Once(0);
+        o(x != null);
+    }*/
+
+    class Task : Active.Core.Task{}
+
+
     [Test] public void Cycle(){
+        StatusRef.checkLogData = false;
         o( x.pass.HasValue ); // Works the first time
         x.OnStatus(done.Via());
         o( x.pass, null);     // Not the second
@@ -34,20 +46,5 @@ public class TestOnce : DecoratorTest<Once> {
         var rf = gate[done];
         o((status)rf, done);
     }
-
-    [Test] public void NullStatusRefToStatus(){
-        var s = Once.StatusRef.ToStatus(null);
-    }
-
-    #if !AL_OPTIMIZE
-    [Test] public void NullStatusRefToStatusWithLog(){
-        var s = Once.StatusRef.ToStatusWithLog(null);
-    }
-    #endif
-
-    //[Test] public void Once_StatusRef(){
-    //    var rf = new StatusRef(done, new Once.LogData(x, null, null));
-    //
-    //}
 
 }

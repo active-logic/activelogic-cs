@@ -6,7 +6,7 @@
 using Active.Core.Details;
 
 namespace Active.Core{
-public abstract partial class Conditional : AbstractDecorator{
+public abstract partial class Waiter : AbstractDecorator{
 
     public abstract void OnStatus(status s);
 
@@ -14,13 +14,14 @@ public abstract partial class Conditional : AbstractDecorator{
         return new Gate(this, new LogData(this, ".", reason));
     }
 
-    protected Gate? fail(ValidString reason=null){
+    protected Gate? cont(ValidString reason=null){
+        StatusRef.hold = status.cont();
         #if !AL_OPTIMIZE
-        logData = new LogData(this, target, reason);
+        SetLogData(target, reason);
         #endif
         return null;
     }
 
-    public interface OptionalArguments{ Conditional.Gate? pass{ get; } }
+    public interface OptionalArguments{ Waiter.Gate? pass{ get; } }
 
-}}  // Active.Core
+}}

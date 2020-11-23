@@ -1,17 +1,34 @@
+#if !(UNITY_EDITOR || DEBUG)
+#define AL_OPTIMIZE
+#endif
+
 using NUnit.Framework;
 using Active.Core;
+using Active.Core.Details;
 
 public class TestInterval : DecoratorTest<TestInterval.Interval> {
 
+	bool _log;
+
 	static float t; // Time.time value for testing
 
-	[SetUp] override public void Setup(){ t = 0; base.Setup(); }
+	[SetUp] override public void Setup(){
+		t = 0;
+		_log = status.log;
+		base.Setup();
+	}
+
+	[TearDown] public void Teardown() => status.log = _log;
 
 	[Test] public void NoCatchupDefault() => o( x.catchup, false);
 
 	[Test] public void PeriodOneDefault() => o( x.period, 1);
 
 	// Constructors =================================================
+
+	[Test] public void Implicit(){ Active.Core.Interval i = 2f; }
+
+	[Test] public void OnStatus() => x.OnStatus(done);
 
 	[Test] public void ConstructNoArg([Values(0, 3)]float st){
 		t = st;
@@ -39,7 +56,21 @@ public class TestInterval : DecoratorTest<TestInterval.Interval> {
 	[Test] public void Initializer()
 	=> o ( new Interval(){ period = 5 }.period, 5 );
 
-	// ==============================================================
+	[Test] public void Indexer_0s([Values(true, false)] bool lg){
+		status.log = lg;
+		o( x[0] != null );
+	}
+
+	[Test] public void Indexer_1s([Values(true, false)] bool lg,
+								  [Values(true, false)] bool catchup){
+		status.log = lg;
+		x.catchup = catchup;
+		o( x[1] != null );
+		t = 0;
+		o( x[1], null );
+	}
+
+	// Legacy tests =================================================
 
 	[Test] public void DefaultTestInstance(){
 		o ( x.period, 1 );
@@ -74,6 +105,7 @@ public class TestInterval : DecoratorTest<TestInterval.Interval> {
     }
 
     [Test] public void Cycle(){
+		StatusRef.checkLogData = false;
         t = 0;  // Fires on start
 		o(x[5] != null);
         t = 8;  // Fires at t==8 (8 > 5)
@@ -100,7 +132,7 @@ public class TestInterval : DecoratorTest<TestInterval.Interval> {
 		public Interval() : base(){}
 		public Interval(float period, float offset=0f)
 	    : base(period, offset){}
-		override protected float time => TestInterval.t;
+		override internal float time => TestInterval.t;
 	}
 
 }

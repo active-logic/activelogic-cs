@@ -18,11 +18,11 @@ public class StatusFormat{
 
 	public static string Decorator(object x) => $"<{x.GetType().Name[0]}>";
 
-	public static string LastPathComponent(string path) => path.Substring(
-		path.LastIndexOf(System.IO.Path.DirectorySeparatorChar) + 1
-	).Replace(".cs", null);
-
   #if !AL_OPTIMIZE
+
+    public static string LastPathComponent(string path) => path.Substring(
+	    path.LastIndexOf(System.IO.Path.DirectorySeparatorChar) + 1
+    ).Replace(".cs", null);
 
 	public static string CallTree(in status status){
 		var builder = new StringBuilder();

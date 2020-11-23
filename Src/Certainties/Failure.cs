@@ -27,6 +27,10 @@ public readonly partial struct failure{
     public static bool operator false (failure s)
     => throw new InvOp("falsehood cannot be tested (failure)");
 
+    public override bool Equals(object x) => x is failure;
+
+    override public int GetHashCode() => -1;
+
     #if AL_OPTIMIZE   // --------------------------------------------
 
     public static failure fail(ValidString reason = null) => _fail;

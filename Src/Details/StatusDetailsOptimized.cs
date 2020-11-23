@@ -15,11 +15,16 @@ public readonly partial struct status{
 
     internal status(StatusValue value, LogTrace trace=null) => ω = (int)value;
 
-    status(int value)                              => ω = value;
-    status(in status s, LogTrace trace)            => this = s;
-    status(in status s, int value)                 => ω = value;
-    status(in status s, in status prev)            => this = s;
-    status(in status s, in status prev, int value) => ω = value;
+    internal status(int value) => ω = value;
+
+    internal status(in status s, LogTrace trace) => this = s;
+
+    internal status(in status s, int value) => ω = value;
+
+    internal status(in status s, in status prev) => this = s;
+
+    internal status(in status s, in status prev, int value)
+    => ω = value;
 
     public static status operator & (status x, status y) => y;
     public static status operator | (status x, status y) => y;
@@ -46,9 +51,19 @@ public readonly partial struct status{
     internal static status @unchecked(int value)
     => new status(value);
 
-    internal status ViaScope(object scope, string reason=null) => this;
+    public override string ToString(){
+        switch(ω){
+            case  1: return "done";
+            case -1: return "fail";
+            case  0: return "cont";
+            default: return $"invalid_status({ω})";
+        }
+    }
 
-    static LogTrace LogTrace(object scope, string reason=null) => null;
+    //internal status ViaScope(object scope, string reason=null) => this;
+
+    //internal static LogTrace LogTrace(object scope,
+    //                                  string reason=null) => null;
 
 }}
 

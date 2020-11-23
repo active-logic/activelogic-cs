@@ -19,11 +19,11 @@ public class TestSelIterator : CoreTest {
         o( k.raw +1, -1 );
     }
 
-    [Test] public void loop(){
-        status k = i.loop;
-        o ( s.index, -1 );
-        o ( k.failing );
-    }
+    [Test] public void repeat()
+    { o ( (+i.repeat).failing ); o ( s.index, -1 ); }
+
+    [Test] public void loop()
+    { o ( (+i.loop).running ); o ( s.index, -1 ); }
 
     [Test] public void indexer(){
                                o( s.index, 0 );

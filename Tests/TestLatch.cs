@@ -1,8 +1,28 @@
 using NUnit.Framework;
 using Active.Core;
-
+using Active.Core.Details;
 
 public class TestLatch : DecoratorTest<Latch> {
+
+    [Test] public void Reset(){
+        x.passing = true;
+        x.Reset();
+        o(x.passing, false);
+    }
+
+    [Test] public void OnStatus_cont(){
+        x.OnStatus(cont);
+        o(x.passing, x.passing);
+    }
+
+    [Test] public void OnStatus_done_or_fail(){
+        x.OnStatus(done);
+        o(x.passing, false);
+        x.OnStatus(fail);
+        o(x.passing, false);
+    }
+
+    // =============================================================
 
     [Test] public void BasicTest(){
         o (x.passing, false);
@@ -17,6 +37,7 @@ public class TestLatch : DecoratorTest<Latch> {
     }
 
     [Test] public void CycleResetsOnTargetdone(){
+        StatusRef.checkLogData = false;
         o (x[false] == null);           // fail until...
         o (x[true] != null);            // ...the condition passes,
         o (x[false] != null);           // then Pass regardless of condition

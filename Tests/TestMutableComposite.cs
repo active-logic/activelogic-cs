@@ -16,7 +16,8 @@ public class TestMutableComposite : CoreTest{
         x = new MComposite();
     }
 
-    [TearDown] public void Teardown() => status.log = true;
+    [TearDown] public void TeardownTMC()
+    => status.log = true;
 
     [Test] public void FieldLoop()
     { o( x.loop, true ); x.loop = false; o( x.loop, false ); }
@@ -28,6 +29,14 @@ public class TestMutableComposite : CoreTest{
 
     [Test] public void PropDitherSet()
     => Assert.Throws<Ex>( () => { x.dither = false; } );
+
+    [Test] public void PropConcurrent(){
+        x.concurrent = true; o(x.concurrent);
+    }
+
+    [Test] public void PropOrdered(){
+        x.ordered = true; o(x.ordered);
+    }
 
     [Test] public void PropIsSequenceGet() => o( !x.isSequence );
 
@@ -129,6 +138,13 @@ public class TestMutableComposite : CoreTest{
     }
 
     [Test] public void FuncReset() => o ( x.Reset(), @void() );
+
+    [Test] public void FuncReset_ordered(){
+        var arr = new List<Func<status>>();
+        x.ι = arr.GetEnumerator();
+        x.ordered = true;
+        o ( x.Reset(), @void() );
+    }
 
     [Test] public void FuncResetSel() => o( Selector().Reset(), @void() );
 

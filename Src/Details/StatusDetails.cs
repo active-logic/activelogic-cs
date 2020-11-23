@@ -49,13 +49,13 @@ public readonly partial struct status{
 
     status(in status s, int value){ this = s; ω = value; }
 
-    status(in status s, in status prev){
+    internal status(in status s, in status prev){
         this = s;
         meta = log ? new Meta(meta, prev: new Ref(prev))
                    : new Meta(meta);
     }
 
-    status(in status s, in status prev, int value){
+    internal status(in status s, in status prev, int value){
         this = s; ω = value;
         meta = log ? new Meta(meta, prev: new Ref(prev))
                    : new Meta(meta);
@@ -96,12 +96,14 @@ public readonly partial struct status{
 
     public override int GetHashCode() => ω;
 
-    public override string ToString() => StatusFormat.ToString(this);
+    public override string ToString()
+    => (ω >= -1 || ω <= +1) ? StatusFormat.ToString(this)
+                            : $"invalid_status({ω})";
 
     internal static status @unchecked(int value)
     => new status(value, @unchecked: true);
 
-    static int Validate(int ω)
+    internal static int Validate(int ω)
     => (ω < -1 || ω > +1) ? throw new ArgEx(ω.ToString()) : ω;
 
     internal class Ref{
