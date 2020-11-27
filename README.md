@@ -59,7 +59,7 @@ Self-contained; no particular install steps required. Checkout the repo (or just
 ## License
 
 - GNU Affero GPL v3.0. TLDR, use the software freely, *provided derivative works are free, open source*.
-- Unity integration [via the Asset Store](https://www.assetstore.unity3d.com/#!/content/151850)
+- Full-featured Unity integration [via the Asset Store](https://www.assetstore.unity3d.com/#!/content/151850); a free Unity integration is also available [here](https://github.com/active-logic/active-lt/)
 - Pending a standalone commercial license, read [here](Doc/Commercial.md)
 
 ## Where next?
