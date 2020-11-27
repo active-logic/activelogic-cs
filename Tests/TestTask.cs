@@ -9,14 +9,22 @@ public class TestTask2 : CoreTest{
 
     [SetUp] public void Setup()   => x = new C();
 
-    [Test] public void Rox([Values(true, false)] bool staticReCon){
-        x.staticRecon = staticReCon;
+    [Test] public void Rox([Values(true, false)] bool staticRecon){
+        #if !AL_THREAD_SAFE
+        var _static = x.staticRecon;
+        x.staticRecon = staticRecon;
         o( x.rox != null );
+        x.staticRecon = _static;
+        #else
+        o( x.rox != null );
+        #endif
     }
 
     [Test] public void RoE(){
         o( x.roe != null );
     }
+
+    #if !AL_THREAD_SAFE
 
     [Test] public void OrderedComposite_do(){
         x.Seq();
@@ -39,6 +47,8 @@ public class TestTask2 : CoreTest{
         var z = x.Sequence();
         o( x.loop.complete );
     }
+
+    #endif  // !AL_THREAD_SAFE
 
     [Test] public void Reset_didHaveStore(){
         x._store = new Active.Core.Details.HashStore();

@@ -70,13 +70,10 @@ public class TestStatus : CoreTest {
 		o(done.Equals( "1" ), false);
 	}
 
-	// Optimized mode
+	#if AL_OPTIMIZE
 	[Test] public void ViaDecorator()
 	=> o( done.ViaDecorator(null, null).complete );
-
-	// optimized mode
-	//[Test] public void LogTrace()
-	//=> o( status.LogTrace(null, null), null );
+	#endif
 
 	#if !AL_OPTIMIZE
 
@@ -189,7 +186,7 @@ public class TestStatus : CoreTest {
 
 	[Test] public void StatusConsts(){
 		o( (status)status.@void(),   done);
-		o( (status)status.@false(),  fail);
+		//o( (status)status.@false(),  fail);
 		o( (status)status.flop(),    fail);
 		o( (status)status.forever(), cont);
 	}

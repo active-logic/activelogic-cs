@@ -72,8 +72,8 @@ public readonly partial struct status{
 
     [Obsolete("Import Active.Status", false)]
     public static action  @void  (S reason = null) => action._done;
-    [Obsolete("Import Active.Status", false)]
-    public static failure @false (S reason = null) => failure._fail;
+    //[Obsolete("Import Active.Status", false)]
+    //public static failure @false (S reason = null) => failure._fail;
     [Obsolete("Use '@false' instead", false)]
     public static failure flop (S reason = null) => failure._fail;
     [Obsolete("Use loop.cont instead", false)]
