@@ -7,7 +7,7 @@ namespace Active.Core{
 public class Latch : Conditional{
 
     static int uid; internal static int id => uid = ID(uid);
-	public bool passing;
+	internal bool passing;
     int frame;
 
 	public Gate? this[bool cond]{ get{

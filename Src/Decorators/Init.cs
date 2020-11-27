@@ -14,7 +14,7 @@ public class Init : AbstractDecorator{
     static int uid; internal static int id => uid = ID(uid);
     internal static Init[] stack = new Init[128];
     internal static int stackIndex = -1;
-    public bool passing = true;
+    internal bool passing = true;
     int frame;
 
     // NOTE: unlike other decorators, it appears that the entry
