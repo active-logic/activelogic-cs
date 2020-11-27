@@ -10,7 +10,7 @@ The logging feature solves three problems commonly associated with logging:
 - **Performance** - the API provides safe idioms ensuring minimal overheads, so that you needn't remove traces before shipping.
 - **Best practice** - the logging API helps you design self-explanatory control programs with minimal semantic overheads.
 
-## Logging within Gigs and tasks
+## Logging within gigs and tasks
 
 ### Logging statuses
 
@@ -75,6 +75,18 @@ public status Defend(){
     )[log && $"HP left: {health}"];
 }
 ```
+
+***Why 'Eval' is necessary***
+
+As your code executes, the AL library accumulates logging information pertaining to status expressions. As an example consider the following function:
+
+public ABC() => A && B && C;
+
+Upon evaluating `C`, A && `B` have already evaluated, and the associate logging information is preserved. However, without `Eval`, AL cannot determine that we are exiting ABC.
+
+Because of that, although you might get output without using `Eval`, the structure of such output may be incorrect.
+
+If you do not consistently use `Eval` the log-tree view will display partial/incorrectly structured output.
 
 ## Logging using `Via`
 

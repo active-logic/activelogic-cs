@@ -1,13 +1,35 @@
 
-*Reading time: 12 minutes - Last Updated: 2020.11.13*
+*Reading time: 12 minutes - Last Updated: 2020.11.27*
 
-# Active Logic for Unity - quick start Guide
+# Active Logic for Unity - Quick start guide
 
-Be welcome! Here is a hands-on introduction to Active Logic. Let's get started.
+Be welcome! Here is a hands-on introduction to Active Logic. This guide is suitable for the following distributions:
+- [Active Logic](PENDING_URL)
+- [Active-LT](https://github.com/active-lt)
+
+Features only available in Active Logic are marked with the [PRO] label; if you are upgrading from Active-LT, [read here](Upgrading.md).
+
+This guide assumes some familiarity with Behavior Trees. For a gentle introduction follow the [Frogger tutorial](https://github.com/active-logic/active-lt-demos/tree/main/Frogger).
+For a comprehensive introduction to behavior trees, we recommend [this book](https://btirai.github.io).
+
+*Reading offline? You may be looking at an out of date version of the guide; for up to date, comprehensive documentation, visit*
+https://github.com/active-logic/activelogic-cs
+
+## Namespaces and scopes
+
+- Avail Active Logic `using Active.Core`
+- For keywords use either `static Active.Raw` or `static Active.Status`
+
+```cs
+using Active.Core;
+using static Active.Raw;  // using static Active.Status;
+
+// ...
+```
 
 ## Status expressions
 
-Throughout this guide we'll consider the example of a basic 'soldier' AI or agent. A soldier may attack, defend or retreat; in AL this is modeled using a *status expression*:
+Throughout this guide we consider the example of a basic 'soldier' AI or agent. A soldier may attack, defend or retreat; in AL this is modeled using a *status expression*:
 
 ```cs
 status s = Attack() || Defend() || Retreat();
@@ -23,7 +45,7 @@ otherwise, retreat.
 
 A `status` may be `complete`, `failing` or `running` (for 'continue'). a value of *running* causes execution to *yield* until the next iteration.
 
-Status expressions are invoked *frequently* - usually, within update loops. The next example shows using status expressions within a vanilla `MonoBehaviour` (a base class for behaviors in the Unity game engine):
+Status expressions are invoked *frequently*; below, status expresssions are used via `MonoBehaviour`:
 
 ```cs
 using UnityEngine;
@@ -49,9 +71,7 @@ public class Soldier : MonoBehaviour{
 
 The above iterates frame by frame until `state` changes to *failing* or *complete*.
 
-The Active Logic calculus is not restricted to Unity or `MonoBehaviour`, so this may be considered a sketch for your own integration.
-
-Indeed AL does provide powerful base classes advantageously replacing `MonoBehaviour`:
+Instead of `MonoBehaviour`, we recommend using `UGig` or `UTask`:
 
 ```cs
 public class Soldier : UGig{  // or `Gig`
@@ -63,12 +83,10 @@ public class Soldier : UGig{  // or `Gig`
 }
 ```
 
-**NOTE**: `UGig` and `UTask` partake the integration available from the [Unity Asset Store](https://assetstore.unity.com/packages/tools/ai/active-logic-151850). If you are using another engine, `Gig` and `Task` provide a template/starting point for your own integration.
-
 When assigning or returning a status, use `done()`, `fail()` or `cont()`:
 
 ```cs
-status Attack() => hasWeapon ? fail() : Play("Strike");
+status Attack() => hasWeapon ? fail : Play("Strike");
 ```
 
 AL does not restrict status expressions to sequences and selectors
@@ -108,13 +126,13 @@ Initially, mixing `&&` and `||` may be confusing. If so, write simple status exp
 
 ```cs
 status DoSomething(){
-    if( CANNOT_DO    ) return fail();  // guard A
-    if( ALREADY_DONE ) return done();  // guard B
+    if( CANNOT_DO    ) return fail;  // guard A
+    if( ALREADY_DONE ) return done;  // guard B
     return REALLY_DO_SOMETHING;
 }
 ```
 
-While perhaps surprising, *over-exercising* (ticking a done task) and *over-checking* (ticking a failing task) are integral to BT, ensuring *responsiveness*.
+*Over-exercising* (ticking a done task) and *over-checking* (ticking a failing task) are integral to BT, ensuring *responsiveness*.
 
 Let's say a soldier dropped their sword. In BT, how would the following sequence handle this?
 
@@ -130,8 +148,8 @@ Status expressions implement *stateless* control. In our toy model/example this 
 
 ```cs
 status Attack(){
-    if(health < 25) return fail();
-    if(!threat)     return fail();
+    if(health < 25) return fail;
+    if(!threat)     return fail;
     return MoveTo(threat) && Strike(threat);
 }
 ```
@@ -146,9 +164,23 @@ More generally, selectors and sequences are known as *composites*.
 
 In all, status expressions and status functions combine to form behavior trees.
 
-## Decorators
+## Status keywords
 
-In the above example, we've hinted at a `Strike()` task. Effective control requires a variety of small 'utilities' used to modulate behavior. A staple of video game design, the cooldown is one such thing:
+Status keywords include `done`, `cont` and `fail`. Throughout documentation and examples you will see either of the following:
+
+- The raw, unadornated form such as `done`
+- Logging calls, such as `done()` or `done(log && "For no reason")`
+
+Raw constants are slightly faster, and require using *Active.Raw*. Logging calls are available via *Active.Status*, and capture useful debugging information, along with custom messages.
+
+Within the same project, you may use either *Active.Raw* or *Active.Status*. Ordinarily, logging calls are recommended, unless one of the following is true:
+
+- You are running AL in a physics loop and/or really need to maximise performance
+- You are using a test oriented workflow (then perhaps you do not need the logging/visual history features)
+
+## Decorators [PRO]
+
+In the above example we hinted at a `Strike()` task. Effective control requires a variety of small 'utilities' used to modulate behavior. A staple of video game design, the cooldown is one such thing:
 
 ```cs
 status Attack(){
@@ -157,15 +189,15 @@ status Attack(){
 }
 ```
 
-This literally is AL magic. Normally you would declare a variable to store a time stamp for the cooldown. AL manages this data (aka control state) on your behalf.
+AL magic lets you invoke stateful decorators without explicitly allocating storage (With a cooldown for instance, a date stamp is stored, so we know when the cooldown has expired).
 
-`Gig`, `UGig` (and `MonoBehaviour`) do not support the above syntax. This only works within a class inheriting from `Task` or `UTask` ('stateful context').
+With the above syntax, decorators are supported via `Task` and `UTask` (aka "stateful contexts"); if you are not using decorators, prefer `Gig` and `UGig`.
 
 AL offers several [built-in decorators](Reference/Decorators-Builtin.md) and you may also [craft your own](Reference/Decorators-Custom.md).
 
-## Ordered Composites
+## Ordered Composites [PRO]
 
-Stateless control encourages you to leverage world/agent state as the primary drive for agent behavior. This works well, and often reduces bugs.
+Stateless control encourages you to leverage world/agent state as the primary drive for behavior. This works well, and often reduces bugs.
 
 However some design problems do not fit this approach; consider this:
 
@@ -201,7 +233,7 @@ status s = Sel()
     - /* ... */ ;
 ```
 
-**NOTE**: *decorators and ordered composites add control state to your logic. However useful, control state is by nature* error prone*. Abusing decorators will reduce the responsiveness and resilience of your agents, whereas responsive, environment-aware agents draw current information from world state.*
+**NOTE**: *decorators and ordered composites add control state to your logic. Overusing stateful control reduces the responsiveness and resilience of your agents, whereas responsive, environment-aware agents draw current information from world state.*
 
 ## Tasks and frame agents
 
@@ -209,6 +241,7 @@ We have already encountered `UTask`. In Active Logic, `UTask` is a handy base cl
 
 ```cs
 using Active.Core;
+using static Active.Raw;
 
 public class Soldier : UTask{
 
@@ -219,30 +252,29 @@ public class Soldier : UTask{
 
     status Attack() => threat && health > 25
         ? Engage(threat) && Cooldown(1.0f)?[ Strike(threat) ]
-        : fail();
+        : fail;
 
-    status Defend() => undef();
+    // status Defend() => ...
 
-    status Retreat() => undef();
+    // status Retreat() => ...
 
 }
 ```
 
-Because `Soldier` inherits from `UTask`, it is also a Unity component which may be added to the Unity inspector. In the same way that `Update()` is present in many subclasses of `MonoBehaviour`, `Step()` is our entry point for BT-style update loops.
+Because `Soldier` inherits from `UTask`, it is also a Unity component which may be added to the Unity inspector. In the same way that `Update()` is present in many subclasses of `MonoBehaviour`, `Step()` is our entry point for BT-styled update loops.
 
-A task, however, **does not run on its own**.
+A task **does not run on its own**.
 
 To make the above runnable, add an `Agent`. Then, in the agent inspector, add `Soldier` as root (if you forget, this happens automatically).
-
-**NOTE**: *`undef()` denotes an unimplemented status function. While debugging, undef randomizes its return value, which is useful for testing incomplete models; undef() is only allowed in debug mode.*
 
 **Uses of task objects**
 
 in AL, task objects are used in several ways:
 
-When writing a low level module (such as locomotion, or simple actions), prefer `Task` or `Gig` to `UTask`, `UGig` (even when using Unity). Then you do not override the `Step()` function. Instead you provide a collection of status functions such as `status Walk(...)` and `status Jump(...)`; another task will then invoke these functions directly.
+When writing a low level module (such as locomotion, or a collection of game actions), prefer `Task` or `Gig` to `UTask`, `UGig` (even when using Unity).
+Then you do not override the `Step()` function. Instead you provide a collection of status functions such as `status Walk(...)` and `status Jump(...)`; another task will then invoke these functions directly.
 
-When designing higher level behaviors, such as *roles* (say `Farmer` or `Soldier`), override `status Step()` and perhaps expose the task in the inspector via `UTask` (for parameterization). In such cases there is no need to *invoke* the step function:
+When designing high level behaviors, such as *roles* (say `Farmer` or `Soldier`), override `status Step()` and perhaps expose the task in the inspector via `UTask` (for parameterization). In such cases there is no need to explicitly invoke the step function:
 
 ```cs
 class Citizen : UGig{
@@ -257,7 +289,7 @@ class Citizen : UGig{
 }
 ```
 
-In the above example, `UGig` is used since neither decorators, nor any ordered composite(s) are needed. `UTask` would be fine but does allocate (a little) memory, even when no stateful constructs are used.
+In the above example, `UGig` is used since neither decorators, nor any ordered composite(s) are needed.
 
 The above example also suggests how you compose versatile agents by assembling ever larger BTs, combining OOP's delegation pattern with BT's modular control paradigm.
 
@@ -271,26 +303,26 @@ For useful output, we annotate the soldier script:
 
 ```cs
 using Active.Core;
+using static Active.Status;  // Active.Status for logging calls
 
 public class Soldier : UTask{
 
     float health = 100;
 
+    // Wrap status expressions with 'Eval'
     override protected status Step() => Eval(
         Attack() || Defend() || Retreat()
     );
 
 
+    // (log && $"string") for custom messages
     status Attack() => Eval(
         !threat     ? fail(log && "No enemy around") :
         health < 25 ? fail(log && "Health too low")  :
         Engage(threat) && Cooldown(1.0f)?[ Strike(threat) ]
     );
 
-    status Defend()  => undef();
-
-    status Retreat() => undef();
-
+    // (STATUS_EXP)[log && $"string"], also for custom messages
     status Engage(Transform threat){
         var dist = Vector3.Distance(transform.position, threat.position);
         return Eval(
@@ -298,7 +330,9 @@ public class Soldier : UTask{
         )[log && $"At {dist:0.#}meters from target"];
     }
 
-    status Approach() => undef;
+    // status Defend()   => ...
+    // status Retreat()  => ...
+    // status Approach() => ...
 
 }
 ```
@@ -313,8 +347,9 @@ This example illustrates everything you need to know to get started with logging
 - `done()`, `cont()` and `fail()` may receive a custom log message as argument.
 - You may attach a custom message to any status, like so: `status[log && $"Custom"]`
 - String interpolation is preferred.
-- The `log && message` idiom ensures logging does not decrease performance in production builds; as such, you need not remove log messages before shipping.
+- The `log && message` idiom ensures logging does not decrease performance in production builds; as such, you may not need to remove log messages before shipping, and the logging annotations also help documenting your logic.
 
 ## Going further
 
-The quick start guide is intended as a short introduction to AL; to learn more, check the [API reference](Reference/Overview.md).
+The quick start guide is intended as a short introduction to AL; to learn more, check the API reference at
+https://github.com/active-logic/activelogic-cs/blob/master/Doc/Reference/Overview.md
