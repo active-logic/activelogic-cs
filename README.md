@@ -49,7 +49,11 @@ This means better performance (low/no GC), cleaner syntax and the freedom to str
 
 ## Installation
 
-Self-contained; no particular install steps required. Checkout the repo (or just the `Src` directory) inside your source tree.
+`dotnet add package ActiveLogic`
+
+(via [NuGet](https://www.nuget.org/packages/ActiveLogic/))
+
+From source: no dependencies.
 
 ## Language support
 
