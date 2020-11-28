@@ -65,7 +65,7 @@ From source: no dependencies.
 ## License
 
 - GNU Affero GPL v3.0. TLDR, use the software freely, *provided derivative works are free, open source*.
-- Unity Store Assets are covered by their (end user license agreement)[https://unity3d.com/legal/as_terms].
+- Unity Store Assets are covered by their [end user license agreement](https://unity3d.com/legal/as_terms).
 - Pending a standalone commercial license, read [here](Doc/Commercial.md)
 
 ## Where next?
