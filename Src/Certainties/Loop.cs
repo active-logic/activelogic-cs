@@ -34,6 +34,8 @@ public readonly partial struct loop{
     public static bool operator false (loop s)
     => throw new InvOp("falsehood cannot be tested (loop)");
 
+    public override bool Equals(object x) => x is loop;
+
     override public int GetHashCode() => 0;
 
     public static implicit operator impending(loop self)

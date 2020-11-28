@@ -160,6 +160,8 @@ public class TestStatus : CoreTest {
 
 	// SCHEDULED FOR DEPRECATION ====================================
 
+	#pragma warning disable 618
+
 	#if !AL_OPTIMIZE
 
 	[Test] public void Eval_ε([Values(true, false)] bool lg){
@@ -174,8 +176,6 @@ public class TestStatus : CoreTest {
 	}
 
 	#endif
-
-	#pragma warning disable 618
 
 	[Test] public void Eval(){
 

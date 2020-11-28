@@ -31,6 +31,10 @@ public static class Status{
 
     public static status ε(status s) => s;
 
+    public static action  Do   (object arg) => action._done;
+    public static loop    Cont (object arg) => loop._cont;
+    public static failure Fail (object arg) => failure._fail;
+
     #else  // logging variants ======================================
 
     internal static bool log => status.log;
@@ -65,6 +69,18 @@ public static class Status{
     public static status Eval(status s,
                        [P] S path="", [M] S member="", [L] int line=0)
     => status.log ? Lg.Status(s, null, path, member, line) : s;
+
+    public static action Do(object arg,
+                       [P] S path="", [M] S member="", [L] int line=0)
+    => status.log ? Lg.Action(null, path, member, line) : action._done;
+
+    public static loop Cont(object arg,
+                       [P] S path="", [M] S member="", [L] int line=0)
+    => status.log ? Lg.Forever(null, path, member, line) : loop._cont;
+
+    public static failure Fail(object arg,
+                       [P] S path="", [M] S member="", [L] int line=0)
+    => status.log ? Lg.Failure(null, path, member, line) : failure._fail;
 
     public static status ε(status s, [P] S path="", [M] S member="",
                                      [L] int line=0)

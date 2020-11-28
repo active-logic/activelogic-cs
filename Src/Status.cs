@@ -63,7 +63,7 @@ public readonly partial struct status{
     public status ViaDecorator(IDecorator scope, S reason=null)
     => this;
 
-    [Obsolete("Import Active.Status/Active.Raw", false)]
+    [Obsolete("Use via Active.Status or Active.Raw", false)]
     public static status Eval(status s) => s;
 
     public static status done(S reason = null) => _done;

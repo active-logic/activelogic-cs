@@ -2,7 +2,7 @@ using NUnit.Framework;
 using Active.Core;
 using static Active.Status;
 
-public class TestStatusStaticImport : TestBase{
+public class TestActiveStatus : TestBase{
 
     bool _log;
     [SetUp]    public void SaveLoggingState()    => _log = status.log;
@@ -49,5 +49,14 @@ public class TestStatusStaticImport : TestBase{
         var s0 = status.@unchecked(val);
         o( s0, ε(s0) );
     }
+
+    [Test] public void Do_  ([Values(true, false)] bool lg)
+    { status.log = lg; o( Do(null), @void() );     }
+
+    [Test] public void Cont_([Values(true, false)] bool lg)
+    { status.log = lg; o( Cont(null), forever() ); }
+
+    [Test] public void Fail_([Values(true, false)] bool lg)
+    { status.log = lg; o( Fail(null), @false() );  }
 
 }

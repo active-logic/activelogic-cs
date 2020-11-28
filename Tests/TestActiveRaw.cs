@@ -2,7 +2,7 @@ using NUnit.Framework;
 using Active.Core;
 using static Active.Raw;
 
-public class TestRawSemantics : TestBase{
+public class TestActiveRaw : TestBase{
 
     [Test] public void Standard(){
         o( done.complete  );
@@ -38,5 +38,9 @@ public class TestRawSemantics : TestBase{
         var s0 = status.@unchecked(val);
         o( s0, Eval(s0) );
     }
+
+    [Test] public void Do_  () => o( Do(null), @void );
+    [Test] public void Cont_() => o( Cont(null), forever );
+    [Test] public void Fail_() => o( Fail(null), @false );
 
 }

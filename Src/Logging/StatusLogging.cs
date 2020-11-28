@@ -22,10 +22,12 @@ partial struct status{
     ? new status(this, new LogTrace(trace.scope, trace.next, reason))
     : this;
 
+    [Obsolete("Use via Active.Raw or Active.Status", false)]
     public static status ε(status s, [P] S path="", [M] S member="",
                                      [L] int line=0)
     => Eval(s, path, member, line);
 
+    [Obsolete("Use via Active.Status or Active.Raw", false)]
     public static status Eval(status s, [P] S path="", [M] S member="",
                                         [L] int line=0)
     => log ? Lg.Status(s, null, path, member, line) : s;

@@ -17,4 +17,8 @@ public static class Raw{
 
     public static status Eval(status s) => s;
 
+    public static action  Do   (object arg) => @void;
+    public static loop    Cont (object arg) => forever;
+    public static failure Fail (object arg) => @false;
+
 }}
