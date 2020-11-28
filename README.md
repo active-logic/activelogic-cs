@@ -49,9 +49,7 @@ This means better performance (low/no GC), cleaner syntax and the freedom to str
 
 ## Installation
 
-`dotnet add package ActiveLogic`
-
-(via [NuGet](https://www.nuget.org/packages/ActiveLogic/))
+`dotnet add package ActiveLogic` (via [NuGet](https://www.nuget.org/packages/ActiveLogic/))
 
 From source: no dependencies.
 
