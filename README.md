@@ -55,8 +55,7 @@ From source: no dependencies.
 
 ## Language support
 
-- The library requires C# 7.2
-- C# only (still considering a C++ implementation)
+- C# 7.2 or later
 
 ## License
 
