@@ -49,11 +49,8 @@ Status expressions are invoked *frequently*; below, status expresssions are used
 
 ```cs
 using UnityEngine;
-// Typical AL imports
-using Active.Core;                // Core API.
-using static Active.Core.status;  // Static import for 'done()'
-                                  // instead of 'status.done()', and
-                                  // so forth.
+using Active.Core;                
+using static Active.Raw;
 
 public class Soldier : MonoBehaviour{
 
@@ -83,7 +80,7 @@ public class Soldier : UGig{  // or `Gig`
 }
 ```
 
-When assigning or returning a status, use `done()`, `fail()` or `cont()`:
+When assigning or returning a status, use `done`, `fail` or `cont`:
 
 ```cs
 status Attack() => hasWeapon ? fail : Play("Strike");
@@ -292,6 +289,26 @@ class Citizen : UGig{
 In the above example, `UGig` is used since neither decorators, nor any ordered composite(s) are needed.
 
 The above example also suggests how you compose versatile agents by assembling ever larger BTs, combining OOP's delegation pattern with BT's modular control paradigm.
+
+### Pause, Suspend and Resume
+
+When using the stateless API (such as with Active-LT) you do not have access to the `Wait` and `After` decorators. However you can still make your BT sleep/wait:
+
+```cs
+// Inside any Stepper, including UGig and UTask
+Pause(3.5f);  // Pause and resume after 3.5 seconds (game time)
+Suspend();    // Pause indefinitely
+Resume();     // Resume after calling `Pause` or `Suspend`
+```
+
+There is a key difference between `Pause` and `Wait`.
+
+- `Wait` is waiting on a specific subtask. For example you may insert a delay after delivering a blow. However if your BT navigates to another task, this delay will then be ignored.
+- `Pause` and `Suspend` disable running the behavior tree. In this case your BT will only resume after the delay has expired, or code external to the BT has invoked `Resume`.
+
+`Pause` and `Suspend` may be easier to understand than `Wait` and `After`. In general though, `Wait` is appropriate when the agent delay further action 'on their own accord'.
+
+TIP: *if neither `Pause` nor `Wait` do exactly what you want them to, redesign around what the agent are waiting* for *and write a task that will wait until the relevant state change has occured.*
 
 ## Logging and the Log-Tree
 
