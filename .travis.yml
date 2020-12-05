@@ -2,15 +2,20 @@ language: csharp
 solution: main.csproj
 dotnet: 2.2.401
 mono: none
-#env:
-#    - defs=
-#    - defs=AL_BEST_PERF
-#    - defs=AL_OPTIMIZE
-#    - defs=AL_STRICT
-#    - defs=AL_THREAD_SAFE
+env:
+    jobs:
+    - defs=AL_NONE cfg=Release cover=1
+    - defs=AL_OPTIMIZE cfg=Release
+    - defs=AL_THREAD_SAFE cfg=Release
+    - defs=AL_THREAD_SAFE%3BAL_OPTIMIZE cfg=Release
+    - defs=AL_NONE cfg=Debug
+    - defs=AL_OPTIMIZE cfg=Debug
+    - defs=AL_THREAD_SAFE cfg=Debug
+    - defs=AL_THREAD_SAFE%3BAL_OPTIMIZE cfg=Debug
 script:
-    - dotnet test -c Release -p:DefineConstants=$defs
-    - dotnet test -c Debug -p:DefineConstants=$defs
+- dotnet test -c $cfg -p:DefineConstants=$defs
 after_script:
-    - dotnet test -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=opencover
-    - bash <(curl -s https://codecov.io/bash)
+- if [ -n "$cover" ]; then
+    dotnet test -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=opencover;
+    bash <(curl -s https://codecov.io/bash);
+  fi
