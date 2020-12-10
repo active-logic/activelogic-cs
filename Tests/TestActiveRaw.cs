@@ -1,8 +1,15 @@
-using NUnit.Framework;
-using Active.Core;
-using static Active.Raw;
+#if !(UNITY_EDITOR || DEBUG)
+#define AL_OPTIMIZE
+#endif
+
+using NUnit.Framework; using Active.Core; using static Active.Raw;
+using Ex = System.Exception;
 
 public class TestActiveRaw : TestBase{
+
+    // ...
+    // ...
+    // ...
 
     [Test] public void Standard(){
         o( done.complete  );
@@ -17,6 +24,15 @@ public class TestActiveRaw : TestBase{
         o( impending_cont.running );
         o( impending_fail.failing );
     }
+
+    #if !AL_OPTIMIZE
+    [Test] public void Undef(){
+        o( undef.failing );
+        o( undef_done.complete );
+        o( undef_cont.running );
+        o( undef_fail.failing );
+    }
+    #endif
 
     // ==============================================================
 

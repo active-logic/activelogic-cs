@@ -1,6 +1,9 @@
-using NUnit.Framework;
-using Active.Core;
-using static Active.Status;
+#if !(UNITY_EDITOR || DEBUG)
+#define AL_OPTIMIZE
+#endif
+
+using NUnit.Framework; using Active.Core; using static Active.Status;
+using Ex = System.Exception;
 
 public class TestActiveStatus : TestBase{
 
@@ -21,6 +24,15 @@ public class TestActiveStatus : TestBase{
         // ...
         // ...
     }
+
+    #if !AL_OPTIMIZE
+    [Test] public void Undef(){
+        o( undef().failing );
+        o( undef(done()).complete );
+        o( undef(cont()).running );
+        o( undef(fail()).failing );
+    }
+    #endif
 
     // ==============================================================
 
