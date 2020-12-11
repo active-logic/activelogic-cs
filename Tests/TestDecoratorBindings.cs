@@ -7,6 +7,7 @@
 using NUnit.Framework;
 using Active.Core;
 using Active.Core.Details;
+using static Active.Raw;
 
 #pragma warning disable 0618
 
@@ -23,18 +24,13 @@ public class TestDecoratorBindings : TestBase{
         o = x.Once();
         o = x.Timeout(1f);
         o = x.Wait(1f);
-        o = x.While(status.cont());
+        o = x.While(cont);
         o = x.While(true);
         o = x.with(null);
-        o = x.Tie(status.cont());
+        o = x.Tie(cont);
         o = x.Tie(true);
         o = x.Sequence();
         o = x.Selector();
-
-        #if !AL_OPTIMIZE
-        o = x.undef();
-        #endif  // !AL_OPTIMIZE
-
         #if !AL_THREAD_SAFE
         o = x.Seq();
         o = x.Sel();

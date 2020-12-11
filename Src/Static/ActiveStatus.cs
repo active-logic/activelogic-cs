@@ -5,6 +5,7 @@
 
 using Active.Core;
 using V = Active.Core.Details.ValidString;
+using LS = Active.Core.Details.LogString;
 
 #if !AL_OPTIMIZE
 using P  = System.Runtime.CompilerServices.CallerFilePathAttribute;
@@ -30,6 +31,9 @@ public static class Status{
     public static status Eval(status s) => s;
 
     public static status ε(status s) => s;
+
+    //public static status undef()         => throw new Unimplemented();
+    //public static status undef(status s) => throw new Unimplemented();
 
     public static action  Do   (object arg) => action._done;
     public static loop    Cont (object arg) => loop._cont;
@@ -65,6 +69,21 @@ public static class Status{
     public static loop forever(V reason = null,
                                [P] S p="", [M] S m="", [L] int l=0)
     => Lg.Forever(reason, p, m, l);
+
+    // ==============================================================
+
+    public static status undef(status @value,
+                               [P] S p="", [M] S m="", [L] int l=0)
+    => status.log ? Lg.Status(@value,
+                             (LS)null && "undef", p, m, l)
+                  : @value;
+
+    public static status undef([P] S p="", [M] S m="", [L] int l=0)
+    => status.log ? Lg.Status(status._fail,
+                             (LS)null && "undef", p, m, l)
+                  : status._fail;
+
+    // ==============================================================
 
     public static status Eval(status s,
                        [P] S path="", [M] S member="", [L] int line=0)
