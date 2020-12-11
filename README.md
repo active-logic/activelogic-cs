@@ -19,25 +19,23 @@ Active Logic seamlessly integrates with C#:
 ```cs
 class Duelist : UTask{
 
-    float health = 100;
-
-    Transform threat => null;
+    float     health = 100;
+    Transform threat;
 
     // BT selectors and sequences via || and &&
-    override public status Step() => Attack() || Defend() || Retreat();
+    override public status Step()
+        => Attack()
+        || Defend()
+        || Retreat();
 
     // Conditionals without 'conditional nodes'
-    status Attack() => threat && health > 25
-        ? Engage(threat) && Cooldown(1.0f)?[ Strike(threat) ]
-        : fail(log && $"No threat, or low hp ({health})");
+    status Attack() => (threat && health > 25) ?
+        Engage(threat) && Cooldown(1.0f)?[ Strike(threat) ]
+      : fail(log && $"No threat, or low hp ({health})");
 
-    // Special statuses (pending, impending, action, ...) are useful
-    // when you know a task will never fail, never succeed or similar.
-    // (optional but type safe!)
-    pending   Defend()                  => + undef();
-    status    Engage(Transform threat)  =>   undef();
-    impending Retreat()                 => - undef();
-    action    Strike(Transform threat)  =>   @void();
+    status Defend() => ...;
+
+    // ...
 
 }
 ```
