@@ -83,7 +83,7 @@ public class Soldier : UGig{  // or `Gig`
 When assigning or returning a status, use `done`, `fail` or `cont`:
 
 ```cs
-status Attack() => hasWeapon ? fail : Play("Strike");
+status Attack() => hasWeapon ? Play("Strike") : fail;
 ```
 
 AL does not restrict status expressions to sequences and selectors
