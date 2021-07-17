@@ -51,12 +51,10 @@ public class Interval : Waiter, Waiter.OptionalArguments{
 
 }
 
-#if !AL_BEST_PERF
 partial class Task{
 	public Waiter.Gate? Every(float delay, float offset = 0f,
                                            [Tag] int key = -1)
     => store.Decorator<Interval>(key, Active.Core.Interval.id)[delay];
 }
-#endif
 
 }

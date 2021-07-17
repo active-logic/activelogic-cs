@@ -48,12 +48,10 @@ public class ResetCriterion : AbstractDecorator{
 
 }
 
-#if !AL_BEST_PERF
 partial class Task{
     public ResetCriterion with(object arg, [Tag] int key = -1)
     => store.Decorator<ResetCriterion>(
                   key, Active.Core.ResetCriterion.id).Check(arg, rox);
 }
-#endif
 
 }  // Active.Core

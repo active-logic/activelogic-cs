@@ -43,13 +43,11 @@ public class Timeout : Conditional, Conditional.OptionalArguments{
 
 }
 
-#if !AL_BEST_PERF
 partial class Task{
 	public Conditional.Gate? Timeout(float duration,
                                      [Tag] int key = -1)
     => store.Decorator<Timeout>(
                       key, Active.Core.Timeout.id)[duration];
 }
-#endif
 
 }

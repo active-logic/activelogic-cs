@@ -23,12 +23,10 @@ public class Latch : Conditional{
 
 }
 
-#if !AL_BEST_PERF
 partial class UTask{
 }partial class Task{
 	public Conditional.Gate? Latch(bool @in, [Tag] int key = -1)
 	=> store.Decorator<Latch>(key, Active.Core.Latch.id)[@in];
 }
-#endif
 
 }

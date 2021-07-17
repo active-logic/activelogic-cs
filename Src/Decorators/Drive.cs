@@ -67,7 +67,6 @@ public class Drive : AbstractDecorator{
 
 }
 
-#if !AL_BEST_PERF
 partial class Task{
 	public Self.Gate? While(status @in, [Tag] int key = -1)
 	=> store.Decorator<Self>(key, Self.id)[@in, crit: false];
@@ -78,6 +77,5 @@ partial class Task{
     public Self.Gate? Tie(bool @in, [Tag] int key = -1)
     => store.Decorator<Self>(key, Self.id)[@in, crit: true];
 }
-#endif
 
 }

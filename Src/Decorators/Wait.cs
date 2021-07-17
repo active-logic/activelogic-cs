@@ -35,11 +35,9 @@ public class Wait : AbstractDecorator{
 
 }
 
-#if !AL_BEST_PERF
 partial class Task{
 	public status Wait(float delay, [Tag] int key = -1)
 	=> store.Decorator<Wait>(key, Active.Core.Wait.id)[delay];
 }
-#endif
 
 }  // Active.Core

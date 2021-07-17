@@ -37,12 +37,10 @@ public class Delay: Waiter, Waiter.OptionalArguments{
 
 }
 
-#if !AL_BEST_PERF
 partial class Task{
 	public Waiter.Gate? After(float delay, [Tag] int key = -1)
 	=> store.Decorator<Delay>(key, Active.Core.Delay.id)[delay];
 }
-#endif
 
 }  // Active.Core
 
