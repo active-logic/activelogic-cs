@@ -5,7 +5,18 @@
 
 Be welcome! Here is a hands-on introduction to Active Logic. Let's get started.
 
-This introduction is engine agnostic; if you are using Unity, read the [Unity Quick Start Guide](QuickStart-Unity.md).
+This introduction is engine agnostic. Unity users may prefer the [Unity Quick Start Guide](QuickStart-Unity.md).
+
+## Setting the time
+
+Before evaluating a behaviour tree, set the time:
+
+```
+// Set at game frame start or before invoking your ticker
+SimTime.time = System.DateTime.Now.TotalMilliseconds/1000f;
+```
+
+Active Logic uses [simulated time](Reference/SimTime.md) to evaluate certain decorators, such as intervals and cooldowns.
 
 ## Status expressions and the update loop
 

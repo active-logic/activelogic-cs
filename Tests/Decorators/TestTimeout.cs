@@ -5,7 +5,7 @@ using Active.Core;
 /* Timeout limits the duration of the target task */
 public class TestTimeout : DecoratorTest<TestTimeout.Timeout> {
 
-	static float t;  // Replaces Time.time (see derived class at end)
+	static float t{ set => SimTime.time = value; }
 
 	[SetUp] override public void Setup(){ t = 0; base.Setup(); }
 
@@ -66,10 +66,8 @@ public class TestTimeout : DecoratorTest<TestTimeout.Timeout> {
 	}
 
 	public class Timeout : Active.Core.Timeout{
-		public float time_ => TestTimeout.t;
 		public Timeout() : base(){}
 		public Timeout(float duration) : base(duration){}
-		override internal float time => time_;
 	}
 
 }
