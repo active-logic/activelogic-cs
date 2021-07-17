@@ -48,9 +48,12 @@ public class TestStatusRef : TestBase{
         StatusRef.ToStatusWithLog(x);
     }
 
-    [Test] public void ToStatusWithLog_badScope(){
+    [Test] public void ToStatusWithLog_badScope([Values(true, false)] bool lg){
+        status.log = lg;
         StatusRef.SetLogData(null, null, null);
-        Assert.Throws<InvOp>( () => StatusRef.ToStatusWithLog(null) );
+        if(status.log)
+            Assert.Throws<InvOp>(
+                () => StatusRef.ToStatusWithLog(null) );
     }
 
     [Test] public void ToStatusWithLog_nullRef([Values(true, false)]
