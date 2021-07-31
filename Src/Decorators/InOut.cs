@@ -23,11 +23,9 @@ public class InOut : Conditional{
 
 }
 
-#if !AL_BEST_PERF
 partial class Task{
     public Conditional.Gate? InOut(bool @in, bool @out, [Tag] int key = -1)
     => store.Decorator<InOut>(key, Active.Core.InOut.id)[@in, @out];
 }
-#endif
 
 }

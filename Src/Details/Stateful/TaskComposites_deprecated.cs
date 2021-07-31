@@ -5,7 +5,6 @@ using Active.Core.Details;
 namespace Active.Core{
 partial class Task{
 
-    #if !AL_BEST_PERF
     #if AL_THREAD_SAFE
 
       [Obsolete("Use Seq() instead", false)]
@@ -36,6 +35,5 @@ partial class Task{
       => iterator = store.Composite<Selector>(key).iterator;
 
     #endif  // end !AL_THREAD_SAFE
-    #endif  // end !AL_BEST_PERF
 
 }}

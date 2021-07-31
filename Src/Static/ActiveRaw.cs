@@ -21,16 +21,9 @@ public static class Raw{
 
     public static status Eval(status s) => s;
 
-    #if AL_OPTIMIZE
-    //public static status undef      => throw new Unimplemented();
-    //public static status undef_done => throw new Unimplemented();
-    //public static status undef_cont => throw new Unimplemented();
-    //public static status undef_fail => throw new Unimplemented();
-    #else
-    public static status undef      = status._fail;
-    public static status undef_done = status._done;
-    public static status undef_cont = status._cont;
-    public static status undef_fail = status._fail;
+    #if !AL_OPTIMIZE
+    public static status undef()         => status._fail;
+    public static status undef(status s) => s;
     #endif
 
     public static action  Do   (object arg) => @void;

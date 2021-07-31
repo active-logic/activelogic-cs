@@ -37,13 +37,11 @@ public class FrameDelay: Waiter, Waiter.OptionalArguments{
 
 }
 
-#if !AL_BEST_PERF
 partial class Task{
 	public Waiter.Gate? AfterFrames(int frames, [Tag] int key = -1)
 	=> store.Decorator<FrameDelay>(key,
                                    Active.Core.FrameDelay.id)[frames];
 }
-#endif
 
 }  // Active.Core
 

@@ -43,6 +43,23 @@ loop.cont()
 impending.done() // will not compile since 'impending' never succeeds
 ```
 
+## Using `undef()`
+
+If you defer implementing a status function, use `undef`:
+
+```cs
+status Defend() => undef();
+```
+
+Release and optimized builds do not support `undef`; this ensures your product is feature-complete before shipping.
+
+By default `undef` returns the failing status; this may be customized:
+
+```cs
+status Defend() => undef(cont);    // with Active.Raw
+status Defend() => undef(cont());  // with Active.Status
+```
+
 ## Expression wrappers
 
 Via `Active.Raw` or `Active.Status`, use a wrapper to include any expression within a status expression, then return an arbitrary status constant; here is an example:

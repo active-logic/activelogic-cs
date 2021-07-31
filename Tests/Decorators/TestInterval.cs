@@ -10,7 +10,7 @@ public class TestInterval : DecoratorTest<TestInterval.Interval> {
 
 	bool _log;
 
-	static float t; // Time.time value for testing
+	static float t{ set => SimTime.time = value; }
 
 	[SetUp] override public void Setup(){
 		t = 0;
@@ -132,7 +132,6 @@ public class TestInterval : DecoratorTest<TestInterval.Interval> {
 		public Interval() : base(){}
 		public Interval(float period, float offset=0f)
 	    : base(period, offset){}
-		override internal float time => TestInterval.t;
 	}
 
 }

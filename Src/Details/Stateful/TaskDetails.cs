@@ -17,9 +17,7 @@ partial class Task{
 
     ReCon _rox;
 
-    #if !AL_BEST_PERF
     internal Store _store;
     Store store => _store ?? (_store = new HashStore());
-    #endif
 
 }}

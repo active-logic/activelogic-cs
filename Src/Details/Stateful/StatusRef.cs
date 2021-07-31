@@ -38,12 +38,13 @@ public readonly struct StatusRef{
 
      internal static void SetLogData(AbstractDecorator dec,
                               object target, string reason){
+        if(!status.log) return;
         if(checkLogData && staticLogData.HasValue)
             throw new InvOp("Clear log data first");
         staticLogData = new LogData(dec, target, reason);
     }
 
-    // Only for testing; do not use.
+    // Only for unit testing; do not use.
     internal static void ClearLogData() => staticLogData = null;
 
      internal static status ToStatusWithLog(StatusRef? self){
@@ -53,6 +54,7 @@ public readonly struct StatusRef{
                          ι.logData.scope,
                          log && ι.logData.Reason());
          }else{
+             if(!status.log) return hold;
              var scope  = staticLogData.Value.scope;
              var reason = staticLogData.Value.Reason();
              if(scope == null) throw new InvOp("scope is null");

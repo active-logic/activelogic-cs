@@ -27,10 +27,10 @@ public class TestActiveRaw : TestBase{
 
     #if !AL_OPTIMIZE
     [Test] public void Undef(){
-        o( undef.failing );
-        o( undef_done.complete );
-        o( undef_cont.running );
-        o( undef_fail.failing );
+        o( undef().failing );
+        o( undef(done).complete );
+        o( undef(cont).running );
+        o( undef(fail).failing );
     }
     #endif
 

@@ -30,11 +30,9 @@ public class Cooldown: Conditional, Conditional.OptionalArguments{
 
 }
 
-#if !AL_BEST_PERF
 partial class Task{
 	public Conditional.Gate? Cooldown(float duration, [Tag] int key = -1)
 	=> store.Decorator<Cooldown>(key, Active.Core.Cooldown.id)[duration];
 }
-#endif
 
 }

@@ -22,7 +22,7 @@ public class Wait : AbstractDecorator{
     public static implicit operator status(Wait self)
     => self[self.delay];
 
-    public status this[float duration]{ get{
+    public status this[float delay]{ get{
         Notices.OnEnter(ref frame, this);
         stamp = stamp ?? time;
         var elapsed = time - stamp.Value;
@@ -35,11 +35,9 @@ public class Wait : AbstractDecorator{
 
 }
 
-#if !AL_BEST_PERF
 partial class Task{
 	public status Wait(float delay, [Tag] int key = -1)
 	=> store.Decorator<Wait>(key, Active.Core.Wait.id)[delay];
 }
-#endif
 
 }  // Active.Core

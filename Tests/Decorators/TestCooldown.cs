@@ -92,15 +92,10 @@ public class TestCooldown : DecoratorTest<TestCooldown.Cooldown> {
   #endif
 
 	public class Cooldown : Active.Core.Cooldown{
-		public int time_;
 		public Cooldown() : base(){}
 		public Cooldown(float duration) : base(duration){}
-		override internal float time => time_;
 	}
 
-	int t{
-		set => x.time_ = value;
-		get => x.time_;
-	}
+	int t{ set => SimTime.time = value; }
 
 }

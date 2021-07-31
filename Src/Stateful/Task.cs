@@ -39,17 +39,13 @@ public abstract partial class Task : Gig, Context {
 
     public virtual action Reset(){
         if(_context != null) foreach(var k in _context) k.Reset();
-      #if !AL_BEST_PERF
         _store?.Reset();
-      #endif
         return @void();
     }
 
     public virtual action Release(){
         _context = null;
-      #if !AL_BEST_PERF
-        _store = null;
-      #endif
+        _store   = null;
         return Reset();
     }
 

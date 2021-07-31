@@ -56,11 +56,9 @@ public class Init : AbstractDecorator{
 
 }
 
-#if !AL_BEST_PERF
 partial class Task{
     public Init With([Tag] int key = -1)
     => store.Decorator<Init>(key, Active.Core.Init.id).pass;
 }
-#endif
 
 }  // end-Active.Core
