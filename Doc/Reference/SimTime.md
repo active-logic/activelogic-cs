@@ -10,11 +10,15 @@ In order for time-reliant decorators (cooldown, delay, interval, timeout, wait a
 
 ## Setting the time
 
-Depending on the intended use case, there's a couple of approaches to setting the time:
+```
+SimTime.time = 34.14f;  // Set the current time (unitless/client specific)
+```
 
-1- If all the agents/tickers in your game use the same time, consider setting `SimTime.time` at the beginning of each iteration (or game/physics frame)
+When do we need to set the time?
 
-2- In less common cases, different agents may each use their own time. For example, in a turn based game, 'tactical time' (round count) may be used to evaluate some agents while other parts of your game may use real time for animation.
+- If all the agents/tickers in your game use the same time, consider setting `SimTime.time` at the beginning of each iteration (or game/physics frame)
+
+- In less common cases, different agents may each use their own time. For example, in a turn based game, 'tactical time' (round count) may be used to evaluate some agents while other parts of your game may use real time for animation.
 
 **Sim time is not thread safe** - you may use sim time in a multi-threaded environment, provided all agents use the same time, and all threads complete work within the current iteration.
 
