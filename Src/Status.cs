@@ -10,6 +10,8 @@ using S = Active.Core.Details.ValidString;
 namespace Active.Core{
 public readonly partial struct status{
 
+    public static status[] values = {_fail, _cont, _done};
+
     #if !AL_OPTIMIZE
 
     public   bool failing  => ω <= -1;

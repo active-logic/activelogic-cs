@@ -28,12 +28,21 @@ public static class Status{
     public static failure @false (V reason = null) => failure._fail;
     public static loop    forever(V reason = null) => loop._cont;
 
-    public static status Eval(status s) => s;
+    public static status    Eval(status    s) => s;
+    public static action    Eval(action    s) => s;
+    public static failure   Eval(failure   s) => s;
+    public static loop      Eval(loop      s) => s;
+    public static pending   Eval(pending   s) => s;
+    public static impending Eval(impending s) => s;
+    public static bool      Eval(bool      s) => s;
 
-    public static status ε(status s) => s;
-
-    //public static status undef()         => throw new Unimplemented();
-    //public static status undef(status s) => throw new Unimplemented();
+    public static status    ε(status    s) => s;
+    public static action    ε(action    s) => s;
+    public static failure   ε(failure   s) => s;
+    public static loop      ε(loop      s) => s;
+    public static pending   ε(pending   s) => s;
+    public static impending ε(impending s) => s;
+    public static status    ε(bool      s) => s;
 
     public static action  Do   (object arg) => action._done;
     public static loop    Cont (object arg) => loop._cont;
@@ -75,12 +84,12 @@ public static class Status{
     public static status undef(status @value,
                                [P] S p="", [M] S m="", [L] int l=0)
     => status.log ? Lg.Status(@value,
-                             (LS)null && "undef", p, m, l)
+                             new LS("undef", true), p, m, l)
                   : @value;
 
     public static status undef([P] S p="", [M] S m="", [L] int l=0)
     => status.log ? Lg.Status(status._fail,
-                             (LS)null && "undef", p, m, l)
+                             new LS("undef", true), p, m, l)
                   : status._fail;
 
     // ==============================================================
@@ -88,6 +97,30 @@ public static class Status{
     public static status Eval(status s,
                        [P] S path="", [M] S member="", [L] int line=0)
     => status.log ? Lg.Status(s, null, path, member, line) : s;
+
+    public static action Eval(action s,
+                       [P] S path="", [M] S member="", [L] int line=0)
+    => status.log ? Lg.Action(null, path, member, line) : s;
+
+    public static failure Eval(failure s,
+                       [P] S path="", [M] S member="", [L] int line=0)
+    => status.log ? Lg.Failure(null, path, member, line) : s;
+
+    public static loop Eval(loop s,
+                       [P] S path="", [M] S member="", [L] int line=0)
+    => status.log ? Lg.Forever(null, path, member, line) : s;
+
+    public static pending Eval(pending s,
+                       [P] S path="", [M] S member="", [L] int line=0)
+    => status.log ? Lg.Pending(s, null, path, member, line) : s;
+
+    public static status Eval(bool s,
+                       [P] S path="", [M] S member="", [L] int line=0)
+    => status.log ? Lg.Status(s, null, path, member, line) : s;
+
+    public static impending Eval(impending s,
+                       [P] S path="", [M] S member="", [L] int line=0)
+    => status.log ? Lg.Impending(s, null, path, member, line) : s;
 
     public static action Do(object arg,
                        [P] S path="", [M] S member="", [L] int line=0)
@@ -102,8 +135,25 @@ public static class Status{
     => status.log ? Lg.Failure(null, path, member, line) : failure._fail;
 
     public static status ε(status s, [P] S path="", [M] S member="",
-                                     [L] int line=0)
-    => Eval(s, path, member, line);
+    [L] int line=0) => Eval(s, path, member, line);
+
+    public static action ε(action s, [P] S path="", [M] S member="",
+    [L] int line=0) => Eval(s, path, member, line);
+
+    public static failure ε(failure s, [P] S path="", [M] S member="",
+    [L] int line=0) => Eval(s, path, member, line);
+
+    public static loop ε(loop s, [P] S path="", [M] S member="",
+    [L] int line=0) => Eval(s, path, member, line);
+
+    public static pending ε(pending s, [P] S path="", [M] S member="",
+    [L] int line=0) => Eval(s, path, member, line);
+
+    public static impending ε(impending s, [P] S path="", [M] S member="",
+    [L] int line=0) => Eval(s, path, member, line);
+
+    public static status ε(bool s, [P] S path="", [M] S member="",
+    [L] int line=0) => Eval(s, path, member, line);
 
     #endif  // (!)AL_OPTIMIZE
 

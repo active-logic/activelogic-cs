@@ -347,9 +347,18 @@ public class TestStatus : CoreTest {
 		o(--f, fail); o(--c, fail); o(--d, cont);
 	}
 
-    //[Test] public void BoolToStatus(){ o((S)true, done); o((S)false, fail); }
-
     [Test] public void StatusToBool(){ o (TryNarrowingConversion()); }
+
+	// TODO: inconsistent across Unity, .NET
+	[Test] public void StatusToString(){
+		o( done.ToString().StartsWith("done") );
+		o( fail.ToString().StartsWith("fail") );
+		o(    cont.ToString().StartsWith("running")  // in .NET
+		   || cont.ToString().StartsWith("cont"));   // in Unity
+		var z = status.@unchecked(21);
+		o(    z.ToString().StartsWith("invalid")     // in Unity
+		   || z.ToString().StartsWith("done"));      // in .NET
+	}
 
 	// Test internal APIs -------------------------------------------
 

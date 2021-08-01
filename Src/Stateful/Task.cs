@@ -49,7 +49,7 @@ public abstract partial class Task : Gig, Context {
         return Reset();
     }
 
-    public static implicit operator status       (Task self) => self.Step();
-    public static implicit operator Func<status> (Task self) => self.Step;
+    public static implicit operator status(Task self) => self.Step();
+    public static implicit operator Func<status>(Task self) => self.Step;
 
 }}

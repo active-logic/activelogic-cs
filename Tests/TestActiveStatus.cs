@@ -2,12 +2,13 @@
 #define AL_OPTIMIZE
 #endif
 
+using System.Collections.Generic;
 using NUnit.Framework; using Active.Core; using static Active.Status;
-using Ex = System.Exception;
 
-public class TestActiveStatus : TestBase{
+public class TestActiveStatus : TestStaticAPI{
 
     bool _log;
+
     [SetUp]    public void SaveLoggingState()    => _log = status.log;
     [TearDown] public void RestoreLoggingState() => status.log = _log;
 
@@ -26,7 +27,8 @@ public class TestActiveStatus : TestBase{
     }
 
     #if !AL_OPTIMIZE
-    [Test] public void Undef(){
+    [Test] public void Undef([Values(true, false)] bool lg){
+        status.log = lg;
         o( undef().failing );
         o( undef(done()).complete );
         o( undef(cont()).running );
@@ -50,16 +52,24 @@ public class TestActiveStatus : TestBase{
         o( impending.fail().failing);
     }
 
-    [Test] public void Eval_([Range(-1, 1)] int val,
-                             [Values(true, false)] bool lg){
+    [Test] public void Eval_and_ε(
+                             [Range(0, 9)] int i,
+                             [Values(true, false)] bool lg,
+                             [Values(true, false)] bool shorthand){
         status.log = lg;
-        var s0 = status.@unchecked(val);
-        o( s0, Eval(s0) );
+        dynamic x = statuses[i];
+        var y = shorthand ? ε(x) : Eval(x);
+        o(x, y);
+        o(x.GetType(), y.GetType());
     }
 
-    [Test] public void ε_([Range(-1, 1)] int val){
-        var s0 = status.@unchecked(val);
-        o( s0, ε(s0) );
+    [Test] public void Eval_Bool([Values(true, false)] bool x,
+                                [Values(true, false)] bool lg,
+                                [Values(true, false)] bool shorthand){
+        status.log = lg;
+        var y = shorthand ? ε(x) : Eval(x);
+        o( (status)x, y );
+        o( y.GetType(), typeof(status) );
     }
 
     [Test] public void Do_  ([Values(true, false)] bool lg)

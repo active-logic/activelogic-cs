@@ -9,6 +9,8 @@ using System; using Active.Core.Details;
 namespace Active.Core{
 public readonly partial struct failure{
 
+    public static failure[] values = {_fail};
+
     [Obsolete("Use _fail instead", true)]
     internal static readonly failure _flop = new failure();
     internal static readonly failure _fail = new failure();
