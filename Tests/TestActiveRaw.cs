@@ -2,12 +2,13 @@
 #define AL_OPTIMIZE
 #endif
 
+using System.Collections.Generic;
 using NUnit.Framework; using Active.Core; using static Active.Raw;
-using Ex = System.Exception;
 
-public class TestActiveRaw : TestBase{
+public class TestActiveRaw : TestStaticAPI{
 
-    // ...
+    // (logging not supported)
+    //
     // ...
     // ...
 
@@ -50,9 +51,24 @@ public class TestActiveRaw : TestBase{
         o( impending._fail.failing);
     }
 
-    [Test] public void Eval_([Range(-1, 1)] int val){
-        var s0 = status.@unchecked(val);
-        o( s0, Eval(s0) );
+    [Test] public void Eval_and_ε(
+                             [Range(0, 9)] int i,
+                             [Values(true, false)] bool lg,
+                             [Values(true, false)] bool shorthand){
+        status.log = lg;
+        dynamic x = statuses[i];
+        var y = shorthand ? ε(x) : Eval(x);
+        o(x, y);
+        o(x.GetType(), y.GetType());
+    }
+
+    [Test] public void Eval_Bool([Values(true, false)] bool x,
+                                [Values(true, false)] bool lg,
+                                [Values(true, false)] bool shorthand){
+        status.log = lg;
+        var y = shorthand ? ε(x) : Eval(x);
+        o( (status)x, y );
+        o( y.GetType(), typeof(status) );
     }
 
     [Test] public void Do_  () => o( Do(null), @void );

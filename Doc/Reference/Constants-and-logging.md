@@ -1,4 +1,4 @@
-*Sources: Status.cs, Raw.cs - Last Updated: 2020.12.04*
+*Sources: ActiveStatus.cs, ActiveRaw.cs - Last Updated: 2020.12.04*
 
 # Status keywords, logging calls and expression wrappers
 

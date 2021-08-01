@@ -136,6 +136,10 @@ public class TestLoop : CoreTest{
     [Test] public void GetHashCode_()
     => o(loop._cont.GetHashCode(), 0);
 
+    [Test] public void Demote()  => o( -loop._cont, failure._fail );
+
+    [Test] public void Promote() => o( +loop._cont, action ._done );
+
     [Test] public void CombineLoops()
     { loop x = loop._cont % loop._cont; }
 
@@ -261,12 +265,6 @@ public class TestImpending : CoreTest{
         o( new impending(0).Equals( impending._cont), true  );
         o( new impending(0).Equals( new object()   ), false );
     }
-
-    //[Test] public void ToString1()
-    //=> o ( impending.fail().ToString(), "fail");
-
-    //[Test] public void ToString2()
-    //=> o ( impending.cont().ToString(), "cont");
 
 }
 

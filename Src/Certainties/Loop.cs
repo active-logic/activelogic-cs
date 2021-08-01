@@ -3,12 +3,13 @@
 #define AL_OPTIMIZE
 #endif
 
-using System;
 using InvOp = System.InvalidOperationException;
 using Active.Core.Details;
 
 namespace Active.Core{
 public readonly partial struct loop{
+
+    public static loop[] values = {_cont};
 
     internal static readonly loop _cont = new loop();
 
@@ -19,6 +20,9 @@ public readonly partial struct loop{
     public static loop cont(ValidString reason = null) => _cont;
 
     #endif
+
+    public static failure operator - (loop x) => failure._fail;
+    public static action  operator + (loop x)  => action._done;
 
     public static loop operator % (loop x, loop y) => _cont;
 

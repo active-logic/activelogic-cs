@@ -9,7 +9,7 @@ using Active.Core.Details;
 namespace Active.Core{
 public readonly partial struct action{
 
-
+    public static action[] values = {_done};
 
     internal static readonly action _done = new action();
 

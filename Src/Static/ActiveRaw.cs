@@ -19,8 +19,22 @@ public static class Raw{
     public static impending impending_cont = impending._cont;
     public static impending impending_fail = impending._fail;
 
-    public static status Eval(status s) => s;
+    public static status    Eval(status    s) => s;
+    public static action    Eval(action    s) => s;
+    public static failure   Eval(failure   s) => s;
+    public static loop      Eval(loop      s) => s;
+    public static pending   Eval(pending   s) => s;
+    public static impending Eval(impending s) => s;
+    public static status    Eval(bool      s) => s;
 
+    public static status    ε(status    s) => s;
+    public static action    ε(action    s) => s;
+    public static failure   ε(failure   s) => s;
+    public static loop      ε(loop      s) => s;
+    public static pending   ε(pending   s) => s;
+    public static impending ε(impending s) => s;
+    public static status    ε(bool      s) => s;
+    
     #if !AL_OPTIMIZE
     public static status undef()         => status._fail;
     public static status undef(status s) => s;

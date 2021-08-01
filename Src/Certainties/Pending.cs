@@ -9,6 +9,8 @@ using Active.Core.Details;
 namespace Active.Core{
 public readonly partial struct pending{
 
+    public static pending[] values = {_cont, _done};
+
     internal readonly int ω;
     internal static readonly pending _cont = new pending( 0),
                                      _done = new pending(+1);

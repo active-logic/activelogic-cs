@@ -9,6 +9,8 @@ using Active.Core.Details;
 namespace Active.Core{
 public readonly partial struct impending{
 
+    public static impending[] values = {_fail, _cont};
+
     internal readonly int ω;
     internal static readonly impending _cont = new impending( 0);
     internal static readonly impending _fail = new impending(-1);
