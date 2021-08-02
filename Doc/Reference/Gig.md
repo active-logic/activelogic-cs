@@ -1,16 +1,29 @@
-*Source: UGig.cs - Last Updated: 2019.8.13*
+*Source: Gig.cs, UGig.cs - Last Updated: 2021.8.2*
 
 # Gigs
 
-The `UGig` base class is a restricted `UTask` with minimal memory and performance overheads; gigs inherit from `MonoBehaviour`; they are intended for subclassing.
+The `Gig` base class is a restricted `Task` with minimal memory and performance overheads; this provides a template for your tasks and behavior trees:
 
-To use a `UGig` as root within a stepper (such as `Agent` or `PhysicsAgent`) override the `status Step()` method. To invoke a UGig as a subtask, prefer the implicit notation to `gig.Step()`
+```
+public class MyTask : Gig{
+
+    override public status Step
+    =>  /* your implementation */
+
+}
+```
+
+
+*NOTE: when using Active Logic, implementing a comprehensive BT as a single class is not uncommon; bearing in mind that a complex status expression is already a BT, good OOP should guide your design.*
+
+To invoke a gig, prefer the implicit notation to `gig.Step()`
 
 ```cs
 status x = Strike() && myTask;  // instead of `myTask.Step()`
 ```
 
-To parameterize a gig, prefer indexers to explicit `Step()` variants.
+
+To parameterize gigs, prefer indexers to explicit `Step()` variants.
 
 ```cs
 status x = Strike() && myTask[params];
@@ -18,30 +31,39 @@ status x = Strike() && myTask[params];
 
 *Note: C# allows overloading indexers with distinct parameter sets; however optional parameters should not be used*
 
-## Class UGig
+**In Unity** `UGig` inherits from `MonoBehaviour`; to use a gig as root within a stepper (such as `Agent` or `PhysicsAgent`) override its `status Step()` method as above.
 
-### Field and Properties
+## Class Gig
+
+*In Unity: Gig and UGig*
 
 ### Methods
 
-`public virtual status Step()`
+`public virtual status Step()`<br>
 Stub for your step method
 
-`protected action Do(object arg) (params object[] args)`
+`protected action Do(object arg) (params object[] args)`<br>
 Convert the result of a non void expression to `done`.
 Example: `status Step() => Do( myVar = 34 )`
 
-`protected status Do<T>() where T : UGig`
-Retrieve/create and evaluate a component task of type T; performance note: depends on `GetComponent<T>` (provisional)
+### Additional methods (UGig)
 
-`protected status Pause(float duration)`
+`protected status Do<T>() where T : UGig`<br>
+Retrieve/create and evaluate a component task of type T.
+
+`protected status Pause(float duration)`<br>
 Pause the underlying stepper for a specified duration (seconds)
 
-`protected status Resume()`
+`protected status Resume()`<br>
 Resume execution while paused or suspended
 
-`protected status Suspend()`
+`protected status Suspend()`<br>
 Suspend the underlying stepper indefinitely
+
+### Properties (UGig)
+
+`public bool suspended` <br>
+True if the underlying stepper is suspended or paused
 
 ### Type Conversions
 

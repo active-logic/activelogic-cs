@@ -1,10 +1,12 @@
-*Source: UTask.cs - Last Updated: 2019.7.30*
+*Source: Task.cs, UTask.cs - Last Updated: 2021.8.2*
 
 # Tasks
 
-Derived from `UGig` and `MonoBehaviour`, tasks are intended for subclassing. Generally speaking, a `UTask` subclass constitutes a dependable, productive environment for using decorators, composites, and logging features.
+Derived from gigs (`Gig` or `UGig`) tasks are intended for subclassing; in addition to logging features availed in gigs, tasks easily leverage stateful composites and decorators.
 
-## Class UTask : UGig
+## Class Task : Gig
+
+*In Unity: Task and UTask*
 
 ### Methods
 
