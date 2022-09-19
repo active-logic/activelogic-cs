@@ -73,11 +73,6 @@ public readonly partial struct impending{
     public static implicit operator status(impending self)
     => new status(self.ω);
 
-    #else  // !AL_OPTIMIZE
-
-    public static implicit operator status(impending self)
-    => new status(self.ω, self.meta);
-
     #endif
 
 }}

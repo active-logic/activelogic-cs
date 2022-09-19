@@ -28,6 +28,12 @@ partial struct action{
 
     public static failure operator ! (action s) => new failure(s.meta);
 
+    public static implicit operator status(action self)
+    => new status(1, self.meta);
+
+    public static implicit operator pending(action self)
+    => new pending(1, self.meta);
+
     public action Via(V reason = null,
                       [P]S p="", [M]S m="", [L]int l=0)
     => Lg.Action(reason, p, m, l);
@@ -42,11 +48,13 @@ partial struct failure{
 
     readonly Meta meta;
 
-    //public status never => new status(-1, meta);
-
-    //public status fail => new status(-1, meta);
-
     public static action operator ! (failure s) => new action(s.meta);
+
+    public static implicit operator impending(failure self)
+    => new impending(-1, self.meta);
+
+    public static implicit operator status(failure self)
+    => new status(-1, self.meta);
 
     internal failure(Meta meta) { this.meta = meta; }
 
@@ -65,6 +73,15 @@ partial struct loop{
     readonly Meta meta;
 
     public loop(Meta meta) { this.meta = meta; }
+
+    public static implicit operator impending(loop self)
+    => new impending(0, self.meta);
+
+    public static implicit operator pending(loop self)
+    => new pending(0, self.meta);
+
+    public static implicit operator status(loop self)
+    => new status(0, self.meta);
 
     public status ever => new status(0, meta);
 
@@ -85,6 +102,9 @@ partial struct pending{
 
     public static impending operator !(pending s)
     => new impending(-s.ω, s.meta);
+
+    public static implicit operator status(pending self)
+    => new status(self.ω, self.meta);
 
     public static pending cont(ValidString reason = null,
                                [P] S p="", [M] S m="", [L] int l=0)
@@ -107,6 +127,9 @@ partial struct impending{
 
     public static pending operator !(impending s)
     => new pending(-s.ω, s.meta);
+
+    public static implicit operator status(impending self)
+    => new status(self.ω, self.meta);
 
     public static impending cont
       (ValidString reason = null, [P] S p="", [M] S m="", [L] int l=0)

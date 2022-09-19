@@ -48,38 +48,17 @@ public class TestStatusFormat : CoreTest {
     }
 
     [Test] public void SysTrace(){
-        var z = F.SysTrace("Src/Task.cs", "Step", 4);
+        var z = F.SysTrace(MakePath("Src", "Task.cs"), "Step", 4);
         o(z, "Task.Step");
     }
 
     [Test] public void SysTrace_withAction(){
-        //F.UseLineNumbers = true;
-        var z = F.SysTrace("Src/Task.cs", "action", 4);
+        var z = F.SysTrace(MakePath("Src", "Task.cs"), "action", 4);
         o(z, "Task");
-        //F.UseLineNumbers = false;
     }
 
-    /*
-    [Test] public void StatusWithPromotionPrefix(){
-        o (F.Status((+cont).due.Via(
-                               log && "Attack", "A", "B")), "* +A.B (Attack)");
-    }
-
-    [Test] public void StatusWithDemotionPrefix(){
-        o (F.Status((-done).undue.Via(
-                               log && "Attack", "A", "B")), "+ -A.B (Attack)");
-    }
-
-    [Test] public void StatusWithCondonePrefix(){
-        o (F.Status((~fail).due.Via(
-                               log && "Attack", "A", "B")), "* ~A.B (Attack)");
-    }
-
-    [Test] public void StatusWithMultiplePrefix(){
-        o (F.Status(+-!~fail.Via(log && "Attack", "A", "B")),
-                                         "+ +-!~A.B (Attack)" );
-    }
-    */
+    string MakePath(string a, string b)
+    => System.IO.Path.Combine(a, b);
 
     [Test] public void TraceViaCallerInfo(){
         o (F.Status(done.Via()), "* TestStatusFormat.TraceViaCallerInfo");

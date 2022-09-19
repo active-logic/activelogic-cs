@@ -19,6 +19,15 @@ public readonly partial struct loop{
 
     public static loop cont(ValidString reason = null) => _cont;
 
+    public static implicit operator impending(loop self)
+    => impending._cont;
+
+    public static implicit operator pending(loop self)
+    => pending._cont;
+
+    public static implicit operator status(loop self)
+    => status._cont;
+
     #endif
 
     public static failure operator - (loop x) => failure._fail;
@@ -41,14 +50,5 @@ public readonly partial struct loop{
     public override bool Equals(object x) => x is loop;
 
     override public int GetHashCode() => 0;
-
-    public static implicit operator impending(loop self)
-    => impending._cont;
-
-    public static implicit operator pending(loop self)
-    => pending._cont;
-
-    public static implicit operator status(loop self)
-    => status._cont;
 
 }}
