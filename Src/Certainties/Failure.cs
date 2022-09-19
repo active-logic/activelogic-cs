@@ -33,21 +33,20 @@ public readonly partial struct failure{
 
     override public int GetHashCode() => -1;
 
+    public static implicit operator bool(failure self) => false;
+
     #if AL_OPTIMIZE   // --------------------------------------------
 
     public static failure fail(ValidString reason = null) => _fail;
 
     public static action operator ! (failure s) => action._done;
 
-    #endif
-
-    public static implicit operator bool(failure self)
-    => false;
-
     public static implicit operator impending(failure self)
     => impending._fail;
 
     public static implicit operator status(failure self)
     => status._fail;
+
+    #endif
 
 }}

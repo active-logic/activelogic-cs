@@ -65,11 +65,6 @@ public readonly partial struct pending{
     public static implicit operator status(pending self)
     => new status(self.ω);
 
-    #else  // !AL_OPTIMIZE
-
-    public static implicit operator status(pending self)
-    => new status(self.ω, self.meta);
-
     #endif
 
 }}

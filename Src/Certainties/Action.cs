@@ -35,19 +35,20 @@ public readonly partial struct action{
 
     override public int GetHashCode() => 1;
 
+    public static implicit operator bool(action self) => true;
+
     #if AL_OPTIMIZE   // --------------------------------------------
 
     public static action done(ValidString reason = null) => _done;
 
     public static failure operator ! (action s) => failure._fail;
-    #endif
-
-    public static implicit operator bool(action self) => true;
 
     public static implicit operator status(action self)
     => status._done;
 
     public static implicit operator pending(action self)
     => pending._done;
+
+    #endif
 
 }}
