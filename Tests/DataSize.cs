@@ -8,6 +8,12 @@ public class DataSize : TestBase {                      // Note: sizes in bytes
     // [Test] public void RxStatusSize()
     // => o (Marshal.SizeOf(new Active.Rx.status(0)), 4);
 
+  #if UNITY_2021
+    const int ED_STATUS_SIZE = 40;
+  #else
+    const int ED_STATUS_SIZE = 24;
+  #endif
+
   #if AL_OPTIMIZE
 
     [Test] public void StatusSize()
@@ -26,7 +32,7 @@ public class DataSize : TestBase {                      // Note: sizes in bytes
     #if UNITY_EDITOR
     [Test] public void StatusSize(){
         //print(""+Marshal.SizeOf(status.cont()));
-        o (Marshal.SizeOf(status.cont()), 24);
+        o (Marshal.SizeOf(status.cont()), ED_STATUS_SIZE);
     }
     #endif
 
