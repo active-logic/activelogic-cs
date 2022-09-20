@@ -5,6 +5,7 @@
 #if !AL_OPTIMIZE
 
 using Active.Core;
+using ArgEx = System.ArgumentException;
 
 namespace Active.Core.Details{
 public readonly struct Meta{
@@ -49,6 +50,14 @@ public readonly struct Meta{
         var @out = prev?.value.meta.Unwind(prev.value, n) ?? new status[n];
         @out[@out.Length-n] = owner;
         return @out;
+    }
+
+    public static Meta From(Meta meta, ValidString reason){
+        if(!status.log) return new Meta();
+        return new Meta(
+            new LogTrace(meta.trace.scope, meta.trace.next, reason),
+            null
+        );
     }
 
 }}

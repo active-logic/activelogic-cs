@@ -24,7 +24,10 @@ partial struct action{
 
     readonly Meta meta;
 
-    internal action(Meta meta) { this.meta = meta; }
+    public action this[ValidString reason]
+    => log ? new action(Meta.From(meta, reason)) : this;
+
+    internal action(in Meta meta) => this.meta = meta;
 
     public static failure operator ! (action s) => new failure(s.meta);
 
@@ -47,6 +50,11 @@ partial struct action{
 partial struct failure{
 
     readonly Meta meta;
+
+    public failure this[ValidString reason]
+    => log ? new failure(Meta.From(meta, reason)) : this;
+
+    internal failure(in Meta meta) => this.meta = meta;
 
     public static action operator ! (failure s) => new action(s.meta);
 
@@ -72,6 +80,11 @@ partial struct loop{
 
     readonly Meta meta;
 
+    public loop this[ValidString reason]
+    => log ? new loop(Meta.From(meta, reason)) : this;
+
+    internal loop(in Meta meta) => this.meta = meta;
+
     public loop(Meta meta) { this.meta = meta; }
 
     public static implicit operator impending(loop self)
@@ -95,6 +108,9 @@ partial struct loop{
 }
 
 partial struct pending{
+
+    public pending this[ValidString reason]
+    => log ? new pending(ω, Meta.From(meta, reason)) : this;
 
     internal pending(int val, Meta m) { ω = val; meta = m; }
 
@@ -120,6 +136,9 @@ partial struct pending{
 }
 
 partial struct impending{
+
+    public impending this[ValidString reason]
+    => log ? new impending(ω, Meta.From(meta, reason)) : this;
 
     internal impending(int val, Meta m) { ω = val; meta = m; }
 

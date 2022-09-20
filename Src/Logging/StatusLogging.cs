@@ -18,9 +18,8 @@ namespace Active.Core{
 
 partial struct status{
 
-    public status this[ValidString reason] => log
-    ? new status(this, new LogTrace(trace.scope, trace.next, reason))
-    : this;
+    public status this[ValidString reason]
+    => log ? new status(ω, Meta.From(meta, reason)) : this;
 
     [Obsolete("Use via Active.Raw or Active.Status", false)]
     public static status ε(status s, [P] S path="", [M] S member="",
