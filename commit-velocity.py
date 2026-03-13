@@ -19,6 +19,7 @@ Usage:
 """
 
 import argparse
+import statistics
 import subprocess
 import sys
 
@@ -109,14 +110,15 @@ def print_summary(rows):
     total_delta = sum(r["delta"] for r in rows)
     total_capped = sum(r["capped_hours"] for r in rows)
     n = len(rows)
+    velocities = [r["velocity"] for r in rows if r["velocity"] != float("inf")]
+    median_vel = statistics.median(velocities) if velocities else 0.0
 
     print(f"\n--- Summary ({n} intervals) ---")
     print(f"  Total change (lines):   {total_delta}")
     print(f"  Total time (capped, h): {total_capped:.1f}")
-    print(f"  Avg change per commit:  {total_delta / n:.1f} lines")
-    print(f"  Avg interval (capped):  {total_capped / n:.1f} hours")
+    print(f"  Median velocity:        {median_vel:.1f} lines/hour")
     if total_capped > 0:
-        print(f"  Overall velocity:       {total_delta / total_capped:.1f} lines/hour")
+        print(f"  Mean velocity:          {total_delta / total_capped:.1f} lines/hour")
 
 
 def single_commit(sha, cap_hours):
